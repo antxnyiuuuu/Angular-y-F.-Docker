@@ -1,2 +1,0 @@
-ng new [nombre]
-todo intro
