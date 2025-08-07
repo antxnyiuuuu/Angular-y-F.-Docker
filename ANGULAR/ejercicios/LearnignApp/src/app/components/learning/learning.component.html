@@ -1,0 +1,25 @@
+<div>
+    <div>
+        <ul>
+            <h1>
+            <li>Nombre: {{Course.name}}</li>
+            </h1>
+            ESTUDIANTES
+            <table>
+                <thead>
+                    <th>IDENTIFICACION</th>
+                    <th>NOMBRE</th>
+                    <th>APELLIDO</th>
+                </thead>
+                <tbody>
+                    @for (item of Course.students; track item) {
+                        <tr>
+                            <td>{{item.id}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.lastName}}</td>
+                        </tr>
+                    }
+            </table>
+        </ul>
+    </div>
+</div>
