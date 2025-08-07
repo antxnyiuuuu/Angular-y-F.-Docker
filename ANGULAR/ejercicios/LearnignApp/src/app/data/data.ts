@@ -1,6 +1,6 @@
 export const learning = {
     id : 1,
-    name : "Angular Basics",
+    name : "P316",
     students : [
         {
             id: 1,
