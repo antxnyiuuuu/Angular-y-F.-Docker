@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Course } from '../../models/course';
 import { LearningService } from '../../services/learning.service';
+import { CardInformationComponent } from '../card-information/card-information.component';
 
 @Component({
   selector: 'app-learning',
-  imports: [],
+  imports: [CardInformationComponent],
   templateUrl: './learning.component.html',
 
 })

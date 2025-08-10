@@ -4,26 +4,7 @@
             <div class="card-header">
                 <h1>CURSO</h1>
                 <li>Nombre: {{Course.name}}</li>
-            </div>
-            <div class="card-body">
-                <h3>ESTUDIANTES</h3>
-                <div class="card my-2">
-                    <table class="table table-striped">
-                        <thead>
-                            <th>IDENTIFICACION</th>
-                            <th>NOMBRE</th>
-                            <th>APELLIDO</th>
-                        </thead>
-                        <tbody>
-                            @for (item of Course.students; track item) {
-                            <tr>
-                                <td>{{item.id}}</td>
-                                <td>{{item.name}}</td>
-                                <td>{{item.lastName}}</td>
-                            </tr>
-                            }
-                    </table>
-                </div>
+                <card-information [Course] = "Course"></card-information>
             </div>
         </div>
     </div>

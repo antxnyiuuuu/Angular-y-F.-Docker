@@ -1,0 +1,16 @@
+<div class="card-body">
+    <h3>ESTUDIANTES</h3>
+    <div class="card my-2">
+        <table class="table table-striped">
+            <thead>
+                <th>IDENTIFICACION</th>
+                <th>NOMBRE</th>
+                <th>APELLIDO</th>
+            </thead>
+            <tbody>
+                @for (item of Course.students; track item) {
+                <tr course-item [item] = "item"></tr>
+                }
+        </table>
+    </div>
+</div>
