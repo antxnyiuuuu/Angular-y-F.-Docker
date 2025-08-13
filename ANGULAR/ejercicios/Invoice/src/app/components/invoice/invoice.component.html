@@ -17,51 +17,15 @@
                 <div>
                     <div class="row">
                         <div class="col">
-                            <h3>EMPRESA</h3>
-                            <div>
-                                <ul class="list-group">
-                                    <li class="list-group-item">RUC: {{ invoice.company.ruc }}</li>
-                                    <li class="list-group-item">NOMBRE: {{ invoice.company.name }}</li>
-                                    <li class="list-group-item">DIRECCION: {{ invoice.company.direction.city}} -
-                                        {{invoice.company.direction.principalStreet}}
-                                        - {{invoice.company.direction.secondaryStreet}}
-                                    </li>
-                                </ul>
-                            </div>
+                        <company-view [company]="invoice.company"></company-view>
                         </div>
                         <div class="col">
-                            <h3>CLIENTE</h3>
-                            <div>
-                                <ul class="list-group">
-                                    <li class="list-group-item">CEDULA: {{ invoice.customer.id }}</li>
-                                    <li class="list-group-item">NOMBRE: {{ invoice.customer.name }}
-                                        {{invoice.customer.surname}}</li>
-                                    <li class="list-group-item">DIRECCION: {{ invoice.customer.adress.city}} -
-                                        {{invoice.customer.adress.principalStreet}}
-                                        - {{invoice.customer.adress.secondaryStreet}}
-                                    </li>
-                                </ul>
-                            </div>
+                            <customer-view [customer]="invoice.customer"></customer-view>
                         </div>
                     </div>
                 </div>
                 <div class="card my-5">
-                    <table class="table table-striped">
-                        <thead>
-                            <th>PRODUCTO</th>
-                            <th>PRECIO UNITARIO</th>
-                            <th>CANTIDAD</th>
-                        </thead>
-                        <tbody>
-                            @for (item of invoice.items; track $index) {
-                            <tr>
-                                <td>{{item.product.name}}</td>
-                                <td>{{item.product.price}}</td>
-                                <td>{{item.product.id}}</td>
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
+                        <invoice-detail [items]="invoice.items"></invoice-detail>  
                 </div>
             </div>
         </div>
