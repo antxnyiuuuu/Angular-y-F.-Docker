@@ -1,11 +1,11 @@
 import { company } from "./company";
 import { customer } from "./customer";
-import { invoiceItem } from "./InvoiceItem";
+import { items } from "./items";
 
 
 export class invoice {
     id! : string;
     company! : company;
     customer! : customer;
-    items! : invoiceItem[];
+    items! : items[];
 }

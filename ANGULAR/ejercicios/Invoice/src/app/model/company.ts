@@ -1,7 +1,7 @@
-import { adress } from "./adress";
+import { address } from "./adress";
 
 export class company {
     ruc! : string;
     name! : string;
-    direction! : adress;
+    address! : address;
 }

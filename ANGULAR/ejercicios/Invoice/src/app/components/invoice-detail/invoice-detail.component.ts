@@ -1,12 +1,22 @@
 import { Component, Input } from '@angular/core';
-import { invoiceItem } from '../../model/InvoiceItem';
-import { InvoiceItemComponent } from '../invoice-item/invoice-item.component';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'invoice-detail',
-  imports: [InvoiceItemComponent],
+  standalone: true,
+  imports: [
+    CommonModule
+  ],
   templateUrl: './invoice-detail.component.html',
+
 })
-export class InvoiceDetailComponent {
-  @Input() items! : invoiceItem[];
+
+export class InvoiceComponentDetail {
+  invoice = {
+    items: [
+      { product: { idproducto: 1, name: 'Mouse', price: 25 }, quantity: 2 },
+      { product: { idproducto: 2, name: 'Laptop', price: 1200 }, quantity: 3 },
+    ]
+  };
 }

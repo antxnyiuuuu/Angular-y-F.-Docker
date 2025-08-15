@@ -1,4 +1,4 @@
-export class adress {
+export class address {
     city! : string;
     principalStreet! : string;
     secondaryStreet! : string;

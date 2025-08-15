@@ -1,16 +1,17 @@
 <table class="table table-striped">
-    <thead>
-        <th>PRODUCTO</th>
-        <th>PRECIO UNITARIO</th>
-        <th>CANTIDAD</th>
-    </thead>
-    <tbody>
-        @for (item of items; track $index) {
-        <tr>
-            <td>{{item.product.name}}</td>
-            <td>{{item.product.price}}</td>
-            <td>{{item.product.id}}</td>
-        </tr>
-        }
-    </tbody>
+  <thead>
+    <tr>
+      <th>PRODUCTO</th>
+      <th>PRECIO UNITARIO</th>
+      <th>CANTIDAD</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let items of invoice?.items">
+      <td>{{ items?.product?.name }}</td>
+      <td>{{ items?.product?.price }}</td>
+      <td>{{ items?.quantity }}</td>
+    </tr>
+  </tbody>
+
 </table>
