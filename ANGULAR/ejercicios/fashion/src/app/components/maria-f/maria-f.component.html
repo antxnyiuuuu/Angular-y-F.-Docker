@@ -1,0 +1,30 @@
+<h3>MARIA</h3>
+<div>
+    <ul class="list-group">
+        <li class="list-group-item">RUC: {{Maria.ruc }}</li>
+        <li class="list-group-item">NOMBRE: {{Maria.name }}</li>
+        <li class="list-group-item">DIRECCION: {{Maria.address.city}}
+            - {{Maria.address.principalStreet}}
+            - {{Maria.address.secondaryStreet}}
+        </li>
+    </ul>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>PRODUCTO</th>
+      <th>PRECIO UNITARIO</th>
+      <th>CANTIDAD</th>
+      <th>CATEGORIA</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let items of Maria?.items">
+      <td>{{ items?.product?.name }}</td>
+      <td>{{ items?.product?.price }}</td>
+      <td>{{ items?.quantity }}</td>
+      <td>{{ items?.product?.categoria }}</td>
+    </tr>
+  </tbody>
+
+</table>
