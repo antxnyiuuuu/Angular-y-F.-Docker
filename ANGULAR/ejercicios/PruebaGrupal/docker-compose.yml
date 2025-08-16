@@ -1,0 +1,26 @@
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app              # Monta la carpeta local "back" dentro del contenedor
+      - /app/node_modules        # Evita sobrescribir node_modules del contenedor
+    networks:
+      - appnet
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "4200:4200"               # Si usas ng serve
+    volumes:
+      - ./frontend:/app              # Monta la carpeta local "front" dentro del contenedor
+      - /app/node_modules         # Igual que en backend
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge
