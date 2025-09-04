@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Animaciones al hacer scroll
     initScrollAnimations();
+    
+    // Inicializar funciones globales de verificación de sesión
+    initSessionValidation();
 });
 
 // Navegación móvil
@@ -341,6 +344,281 @@ function handleApiResponse(response) {
     }
 }
 
+// Función para verificar si el usuario está logueado
+function isUserLoggedIn() {
+    try {
+        const userSession = localStorage.getItem('userSession');
+        
+        const hasUserSession = userSession !== null && userSession !== 'null' && userSession !== '';
+        
+        return hasUserSession;
+    } catch (error) {
+        console.error('Error al verificar sesión:', error);
+        return false;
+    }
+}
+
+// Función para mostrar modal de login requerido
+function showLoginRequiredModal(action = 'continuar') {
+    const modalHtml = `
+        <div class="login-required-modal" id="loginRequiredModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-user-lock"></i> Inicia sesión para ${action}</h3>
+                    <button class="close-modal" onclick="closeLoginRequiredModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Necesitas estar logueado para poder ${action}.</p>
+                    <div class="modal-actions">
+                        <a href="login.html" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                        </a>
+                        <button class="btn btn-outline" onclick="closeLoginRequiredModal()">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remover modal existente si hay uno
+    const existingModal = document.getElementById('loginRequiredModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Agregar modal al DOM
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    
+    // Mostrar modal con animación
+    setTimeout(() => {
+        const modal = document.getElementById('loginRequiredModal');
+        if (modal) {
+            modal.classList.add('active');
+        }
+    }, 10);
+}
+
+// Función para cerrar modal de login requerido
+function closeLoginRequiredModal() {
+    const modal = document.getElementById('loginRequiredModal');
+    if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    }
+}
+
+// Función para verificar sesión antes de realizar acciones
+function requireLogin(action = 'continuar', callback = null) {
+    if (!isUserLoggedIn()) {
+        showLoginRequiredModal(action);
+        return false;
+    }
+    
+    if (callback && typeof callback === 'function') {
+        callback();
+    }
+    return true;
+}
+
+// Función para agregar productos al carrito
+function addToCart(product) {
+    try {
+        // Verificar si el usuario está logueado
+        if (!isUserLoggedIn()) {
+            showLoginRequiredModal('agregar al carrito');
+            return false;
+        }
+        
+        // Cargar carrito actual
+        let cart = [];
+        try {
+            const stored = localStorage.getItem('vm_cart');
+            cart = stored ? JSON.parse(stored) : [];
+        } catch (e) {
+            cart = [];
+        }
+        
+        // Buscar si el producto ya existe en el carrito
+        const existingItem = cart.find(item => item.id === product.id);
+        
+        if (existingItem) {
+            // Incrementar cantidad si ya existe
+            existingItem.qty += 1;
+        } else {
+            // Agregar nuevo producto
+            cart.push({
+                id: product.id,
+                title: product.title,
+                price: product.price,
+                qty: 1,
+                image: product.image
+            });
+        }
+        
+        // Guardar carrito actualizado
+        localStorage.setItem('vm_cart', JSON.stringify(cart));
+        
+        console.log('Producto agregado al carrito:', product.title);
+        return true;
+        
+    } catch (error) {
+        console.error('Error al agregar al carrito:', error);
+        return false;
+    }
+}
+
+// Inicializar funciones de verificación de sesión
+function initSessionValidation() {
+    // Agregar estilos CSS para el modal si no existen
+    if (!document.getElementById('sessionValidationStyles')) {
+        const styles = `
+            <style id="sessionValidationStyles">
+                .login-required-modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.5);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                }
+                
+                .login-required-modal.active {
+                    opacity: 1;
+                }
+                
+                .login-required-modal .modal-content {
+                    background: white;
+                    border-radius: 12px;
+                    padding: 0;
+                    max-width: 400px;
+                    width: 90%;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                    transform: scale(0.8);
+                    transition: transform 0.3s ease;
+                }
+                
+                .login-required-modal.active .modal-content {
+                    transform: scale(1);
+                }
+                
+                .login-required-modal .modal-header {
+                    background: #3B82F6;
+                    color: white;
+                    padding: 1.5rem;
+                    border-radius: 12px 12px 0 0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .login-required-modal .modal-header h3 {
+                    margin: 0;
+                    font-size: 1.2rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+                
+                .login-required-modal .close-modal {
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 1.2rem;
+                    cursor: pointer;
+                    padding: 0.25rem;
+                    border-radius: 4px;
+                    transition: background-color 0.2s ease;
+                }
+                
+                .login-required-modal .close-modal:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+                
+                .login-required-modal .modal-body {
+                    padding: 2rem;
+                    text-align: center;
+                }
+                
+                .login-required-modal .modal-body p {
+                    margin-bottom: 1.5rem;
+                    color: #6B7280;
+                    font-size: 1rem;
+                    line-height: 1.5;
+                }
+                
+                .login-required-modal .modal-actions {
+                    display: flex;
+                    gap: 1rem;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                }
+                
+                .login-required-modal .btn {
+                    padding: 0.75rem 1.5rem;
+                    border-radius: 8px;
+                    text-decoration: none;
+                    font-weight: 500;
+                    transition: all 0.2s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+                
+                .login-required-modal .btn-primary {
+                    background: #3B82F6;
+                    color: white;
+                    border: none;
+                }
+                
+                .login-required-modal .btn-primary:hover {
+                    background: #2563EB;
+                    transform: translateY(-2px);
+                }
+                
+                .login-required-modal .btn-outline {
+                    background: transparent;
+                    color: #6B7280;
+                    border: 2px solid #E5E7EB;
+                }
+                
+                .login-required-modal .btn-outline:hover {
+                    background: #F9FAFB;
+                    border-color: #D1D5DB;
+                }
+                
+                @media (max-width: 480px) {
+                    .login-required-modal .modal-content {
+                        width: 95%;
+                        margin: 1rem;
+                    }
+                    
+                    .login-required-modal .modal-actions {
+                        flex-direction: column;
+                    }
+                    
+                    .login-required-modal .btn {
+                        width: 100%;
+                        justify-content: center;
+                    }
+                }
+            </style>
+        `;
+        document.head.insertAdjacentHTML('beforeend', styles);
+    }
+}
+
 // Exportar funciones para uso en otros archivos
 window.ViajesMundo = {
     showNotification,
@@ -355,5 +633,10 @@ window.ViajesMundo = {
     saveToStorage,
     clearStorage,
     makeRequest,
-    handleApiResponse
+    handleApiResponse,
+    isUserLoggedIn,
+    requireLogin,
+    showLoginRequiredModal,
+    closeLoginRequiredModal,
+    addToCart
 };

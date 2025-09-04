@@ -32,7 +32,7 @@ function checkUserSession() {
         if (!session) return false;
         
         const userData = JSON.parse(session);
-        return userData && userData.email;
+        return userData && userData.email && userData.role !== 'admin';
     } catch (error) {
         console.error('Error al verificar sesión:', error);
         return false;
@@ -41,32 +41,11 @@ function checkUserSession() {
 
 // Inicializar dashboard del usuario
 function initUserDashboard() {
-    // Agregar botón de cerrar sesión
-    addLogoutButton();
-    
     // Cargar información del usuario
     displayUserInfo();
 }
 
-// Agregar botón de cerrar sesión
-function addLogoutButton() {
-    const pageHeader = document.querySelector('.page-header');
-    if (!pageHeader) return;
-    
-    const logoutBtn = document.createElement('button');
-    logoutBtn.className = 'btn btn-outline';
-    logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Cerrar Sesión';
-    logoutBtn.style.cssText = 'position: absolute; top: 20px; right: 20px;';
-    
-    logoutBtn.addEventListener('click', function() {
-        if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
-            logout();
-        }
-    });
-    
-    pageHeader.style.position = 'relative';
-    pageHeader.appendChild(logoutBtn);
-}
+
 
 // Mostrar información del usuario
 function displayUserInfo() {
@@ -271,7 +250,7 @@ function createBookingCard(reservation, package) {
     return `
         <div class="booking-card" data-booking-id="${reservation.id}">
             <div class="booking-image">
-                <img src="${package.image}" alt="${package.title}" onerror="this.src='../assets/img/placeholder.jpg'">
+                <img src="${package.image}" alt="${package.title}" onerror="this.src='../assets/img/placeholder.svg'">
                 <div class="booking-status ${statusClass}">${statusText}</div>
             </div>
             <div class="booking-content">
@@ -448,6 +427,46 @@ function loadPaymentHistory() {
 function generatePaymentHistory(reservations) {
     const payments = [];
     
+    // Agregar datos ficticios de pagos para demostración
+    const mockPayments = [
+        {
+            id: 1,
+            date: '2024-01-15',
+            concept: 'Reserva: Europa Clásica',
+            amount: 1299,
+            status: 'completed'
+        },
+        {
+            id: 2,
+            date: '2024-02-20',
+            concept: 'Reserva: Caribe Exótico',
+            amount: 899,
+            status: 'completed'
+        },
+        {
+            id: 3,
+            date: '2024-03-10',
+            concept: 'Reserva: Asia Misteriosa',
+            amount: 1599,
+            status: 'pending'
+        },
+        {
+            id: 4,
+            date: '2024-04-05',
+            concept: 'Reserva: Islas Griegas',
+            amount: 799,
+            status: 'completed'
+        },
+        {
+            id: 5,
+            date: '2024-05-12',
+            concept: 'Reserva: Safari Africano',
+            amount: 1899,
+            status: 'refunded'
+        }
+    ];
+    
+    // Agregar pagos de las reservas reales si existen
     reservations.forEach(reservation => {
         const package = getPackageById(reservation.packageId);
         if (!package) return;
@@ -462,7 +481,10 @@ function generatePaymentHistory(reservations) {
         });
     });
     
-    return payments.sort((a, b) => new Date(b.date) - new Date(a.date));
+    // Combinar pagos ficticios con pagos reales
+    const allPayments = [...mockPayments, ...payments];
+    
+    return allPayments.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
 // Obtener texto del estado de pago
@@ -550,7 +572,63 @@ function getUserPreferences() {
 function getUserReservations() {
     try {
         const reservations = localStorage.getItem('userReservations');
-        return reservations ? JSON.parse(reservations) : [];
+        const savedReservations = reservations ? JSON.parse(reservations) : [];
+        
+        // Agregar datos ficticios para demostración si no hay reservas guardadas
+        if (savedReservations.length === 0) {
+            const mockReservations = [
+                {
+                    id: 1,
+                    packageId: 1,
+                    date: '2024-06-15',
+                    passengers: 2,
+                    status: 'active',
+                    createdAt: '2024-01-15T10:30:00Z',
+                    rating: 5
+                },
+                {
+                    id: 2,
+                    packageId: 2,
+                    date: '2024-07-10',
+                    passengers: 1,
+                    status: 'pending',
+                    createdAt: '2024-02-20T14:15:00Z'
+                },
+                {
+                    id: 3,
+                    packageId: 3,
+                    date: '2024-05-20',
+                    passengers: 3,
+                    status: 'completed',
+                    createdAt: '2024-03-10T09:45:00Z',
+                    rating: 4
+                },
+                {
+                    id: 4,
+                    packageId: 6,
+                    date: '2024-04-15',
+                    passengers: 2,
+                    status: 'completed',
+                    createdAt: '2024-04-05T16:20:00Z',
+                    rating: 5
+                },
+                {
+                    id: 5,
+                    packageId: 4,
+                    date: '2024-08-30',
+                    passengers: 4,
+                    status: 'cancelled',
+                    createdAt: '2024-05-12T11:00:00Z',
+                    cancelledAt: '2024-05-25T13:30:00Z'
+                }
+            ];
+            
+            // Guardar las reservas ficticias en localStorage
+            localStorage.setItem('userReservations', JSON.stringify(mockReservations));
+            return mockReservations;
+        }
+        
+        return savedReservations;
     } catch (error) {
         console.error('Error al obtener reservas:', error);
         return [];
@@ -708,7 +786,7 @@ function createBookingCard(booking) {
     
     return `
         <div class="booking-card">
-            <img src="${booking.image}" alt="${booking.title}" onerror="this.src='../assets/img/placeholder.jpg'">
+            <img src="${booking.image}" alt="${booking.title}" onerror="this.src='../assets/img/placeholder.svg'">
             <div class="booking-card-content">
                 <h3>${booking.title}</h3>
                 <p>${booking.destination}</p>

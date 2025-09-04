@@ -236,6 +236,24 @@ function initReservationModal() {
 
 // Abrir modal de reserva
 function openReservationModal(packageId) {
+    // Verificar sesión antes de abrir el modal de reserva
+    if (window.ViajesMundo && window.ViajesMundo.requireLogin) {
+        const canProceed = window.ViajesMundo.requireLogin('hacer una reserva', function() {
+            // Callback que se ejecuta si el usuario está logueado
+            openReservationModalInternal(packageId);
+        });
+        
+        if (!canProceed) {
+            return; // No continuar si no está logueado
+        }
+    } else {
+        // Fallback si no está disponible la función de verificación
+        openReservationModalInternal(packageId);
+    }
+}
+
+// Función interna para abrir el modal de reserva
+function openReservationModalInternal(packageId) {
     const package = getAgendaPackages().find(p => p.id === packageId);
     if (!package) return;
     

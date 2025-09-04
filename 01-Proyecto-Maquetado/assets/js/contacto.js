@@ -298,8 +298,8 @@ function showMapModal() {
                 <div class="modal-body">
                     <div class="map-info">
                         <div class="location-details">
-                            <h4><i class="fas fa-map-marker-alt"></i> Dirección</h4>
-                            <p>Calle Gran Vía, 28<br>28013 Madrid, España</p>
+                                                    <h4><i class="fas fa-map-marker-alt"></i> Dirección</h4>
+                        <p>Calle 10 de Agosto<br>Quito, Ecuador</p>
                             
                             <h4><i class="fas fa-clock"></i> Horario de Atención</h4>
                             <p>Lunes - Viernes: 9:00 - 18:00<br>Sábados: 10:00 - 14:00</p>
@@ -341,7 +341,7 @@ function closeMapModal() {
 
 // Abrir Google Maps
 function openGoogleMaps() {
-    const address = 'Calle Gran Vía, 28, Madrid, España';
+    const address = 'Calle 10 de Agosto, Quito, Ecuador';
     const encodedAddress = encodeURIComponent(address);
     const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
     

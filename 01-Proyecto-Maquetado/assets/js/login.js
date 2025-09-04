@@ -43,6 +43,7 @@ function initAdminAccess() {
     const adminBtn = document.querySelector('.admin-section .btn');
     if (!adminBtn) return;
     
+    
     adminBtn.addEventListener('click', function(e) {
         // Simular verificación de credenciales de administrador
         e.preventDefault();
@@ -82,6 +83,11 @@ async function handleLogin() {
             
             // Guardar datos de sesión
             saveUserSession(userData);
+            
+            // Actualizar visibilidad del menú de perfil si está disponible
+            if (window.ProfileMenuManager && window.ProfileMenuManager.updateProfileMenuVisibility) {
+                window.ProfileMenuManager.updateProfileMenuVisibility();
+            }
             
             // Mostrar mensaje de éxito
             showNotification('¡Login exitoso! Redirigiendo...', 'success');
@@ -474,6 +480,27 @@ function closeAdminLoginModal() {
 // Ir al panel de administrador
 function goToAdminPanel() {
     closeAdminLoginModal();
+    
+    // Guardar sesión de administrador usando userSession con role 'admin'
+    const adminData = {
+        email: 'admin@test.com',
+        name: 'Administrador',
+        role: 'admin',
+        loginTime: new Date().toISOString()
+    };
+    
+    try {
+        localStorage.setItem('userSession', JSON.stringify(adminData));
+        console.log('Sesión de administrador guardada:', adminData);
+        
+        // Actualizar visibilidad del menú de perfil si está disponible
+        if (window.ProfileMenuManager && window.ProfileMenuManager.updateProfileMenuVisibility) {
+            window.ProfileMenuManager.updateProfileMenuVisibility();
+        }
+    } catch (error) {
+        console.error('Error al guardar sesión de administrador:', error);
+    }
+    
     window.location.href = 'admin.html';
 }
 
@@ -520,6 +547,12 @@ function logout() {
     try {
         localStorage.removeItem('userSession');
         localStorage.removeItem('rememberMe');
+        
+        // Actualizar visibilidad del menú de perfil si está disponible
+        if (window.ProfileMenuManager && window.ProfileMenuManager.updateProfileMenuVisibility) {
+            window.ProfileMenuManager.updateProfileMenuVisibility();
+        }
+        
         window.location.href = 'login.html';
     } catch (error) {
         console.error('Error al cerrar sesión:', error);

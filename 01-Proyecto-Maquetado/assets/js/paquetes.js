@@ -194,12 +194,14 @@ function addReservationEventListeners() {
             const packageId = parseInt(this.dataset.packageId, 10);
             const pkg = getAllPackages().find(p => p.id === packageId);
             if (pkg) {
-                // Agregar al carrito primero
+                // Agregar al carrito (la verificación de sesión está integrada en addToCart)
                 if (window.ViajesMundo && window.ViajesMundo.addToCart) {
-                    window.ViajesMundo.addToCart(pkg);
+                    const success = window.ViajesMundo.addToCart(pkg);
+                    if (success) {
+                        // Redirigir a agenda solo si se agregó exitosamente
+                        window.location.href = 'agenda.html';
+                    }
                 }
-                // Redirigir a agenda
-                window.location.href = 'agenda.html';
             }
         });
     });
@@ -208,9 +210,14 @@ function addReservationEventListeners() {
         button.addEventListener('click', function() {
             const packageId = parseInt(this.dataset.packageId, 10);
             const pkg = getAllPackages().find(p => p.id === packageId);
-            if (pkg && window.ViajesMundo && window.ViajesMundo.addToCart) {
-                window.ViajesMundo.addToCart(pkg);
-                showNotification('Paquete agregado al carrito', 'success');
+            if (pkg) {
+                // Agregar al carrito (la verificación de sesión está integrada en addToCart)
+                if (window.ViajesMundo && window.ViajesMundo.addToCart) {
+                    const success = window.ViajesMundo.addToCart(pkg);
+                    if (success) {
+                        showNotification('Paquete agregado al carrito', 'success');
+                    }
+                }
             }
         });
     });

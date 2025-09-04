@@ -135,9 +135,6 @@ function loadAdminProfile() {
 
 // Inicializar dashboard de administrador
 function initAdminDashboard() {
-    // Agregar botón de cerrar sesión
-    addLogoutButton();
-    
     // Inicializar filtros
     initPaymentFilters();
     
@@ -183,25 +180,7 @@ function updateAdminProfileDisplay(profileData) {
     }
 }
 
-// Agregar botón de cerrar sesión
-function addLogoutButton() {
-    const pageHeader = document.querySelector('.page-header');
-    if (!pageHeader) return;
-    
-    const logoutBtn = document.createElement('button');
-    logoutBtn.className = 'btn btn-outline';
-    logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Cerrar Sesión';
-    logoutBtn.style.cssText = 'position: absolute; top: 20px; right: 20px;';
-    
-    logoutBtn.addEventListener('click', function() {
-        if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
-            logout();
-        }
-    });
-    
-    pageHeader.style.position = 'relative';
-    pageHeader.appendChild(logoutBtn);
-}
+
 
 // Inicializar funcionalidades del perfil del administrador
 function initProfileFunctionality() {

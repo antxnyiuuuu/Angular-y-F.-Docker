@@ -9,11 +9,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const TAX_RATE = 0.12; // 12% simulado
 
-    // Cargar carrito desde localStorage o crear mock si está vacío
+    // Verificar si el usuario está logueado
+    function isUserLoggedIn() {
+        try {
+            const userSession = localStorage.getItem('userSession');
+            
+            const hasUserSession = userSession !== null && userSession !== 'null' && userSession !== '';
+            
+            return hasUserSession;
+        } catch (error) {
+            console.error('Error al verificar sesión:', error);
+            return false;
+        }
+    }
+
+    // Cargar carrito desde localStorage
     let cart = loadCart();
-    if (cart.length === 0) {
-        cart = getMockCart();
+    
+    // Si no hay sesión, limpiar el carrito
+    if (!isUserLoggedIn()) {
+        cart = [];
         saveCart(cart);
+        console.log('Carrito: Usuario no logueado, carrito limpiado');
+    } else {
+        // Solo cargar mock si está vacío y el usuario está logueado
+        if (cart.length === 0) {
+            cart = getMockCart();
+            saveCart(cart);
+            console.log('Carrito: Usuario logueado, carrito con datos de ejemplo cargado');
+        }
     }
 
     renderCartItems();
@@ -21,6 +45,16 @@ document.addEventListener('DOMContentLoaded', function() {
     initPaymentMethods();
 
     confirmPaymentBtn.addEventListener('click', onConfirmPayment);
+    
+    // Escuchar cambios en localStorage para verificar sesión
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'userSession') {
+            // Recargar la página si cambia el estado de sesión
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+        }
+    });
 
     function loadCart() {
         try {
@@ -44,14 +78,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function renderCartItems() {
         if (!cartItemsContainer) return;
+        
+        // Verificar si el usuario está logueado
+        const isLoggedIn = isUserLoggedIn();
+        
         if (cart.length === 0) {
-            cartItemsContainer.innerHTML = `
-                <div class="empty-cart">
-                    <i class="fas fa-shopping-cart"></i>
-                    <h3>Tu carrito está vacío</h3>
-                    <p>Explora nuestros <a href="paquetes.html">paquetes</a> y añade tus favoritos.</p>
-                </div>
-            `;
+            if (!isLoggedIn) {
+                // Mensaje para usuarios no logueados
+                cartItemsContainer.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-user-lock"></i>
+                        <h3>Inicia sesión para ver tu carrito</h3>
+                        <p>Necesitas estar logueado para acceder a tu carrito de compras.</p>
+                        <a href="login.html" class="btn btn-primary">Iniciar Sesión</a>
+                    </div>
+                `;
+            } else {
+                // Mensaje para usuarios logueados con carrito vacío
+                cartItemsContainer.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Tu carrito está vacío</h3>
+                        <p>Explora nuestros <a href="paquetes.html">paquetes</a> y añade tus favoritos.</p>
+                    </div>
+                `;
+            }
             return;
         }
 
@@ -130,6 +181,24 @@ document.addEventListener('DOMContentLoaded', function() {
         subtotalEl.textContent = formatPrice(subtotal);
         taxEl.textContent = formatPrice(tax);
         totalEl.textContent = formatPrice(total);
+        
+        // Verificar si el usuario está logueado para habilitar/deshabilitar el botón de pago
+        const isLoggedIn = isUserLoggedIn();
+        if (confirmPaymentBtn) {
+            if (!isLoggedIn) {
+                confirmPaymentBtn.disabled = true;
+                confirmPaymentBtn.textContent = 'Inicia sesión para continuar';
+                confirmPaymentBtn.classList.add('btn-disabled');
+            } else if (cart.length === 0) {
+                confirmPaymentBtn.disabled = true;
+                confirmPaymentBtn.textContent = 'Carrito vacío';
+                confirmPaymentBtn.classList.add('btn-disabled');
+            } else {
+                confirmPaymentBtn.disabled = false;
+                confirmPaymentBtn.textContent = 'Confirmar Pago';
+                confirmPaymentBtn.classList.remove('btn-disabled');
+            }
+        }
     }
 
     function initPaymentMethods() {
