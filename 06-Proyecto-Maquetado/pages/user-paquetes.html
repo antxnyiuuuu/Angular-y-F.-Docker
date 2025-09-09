@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paquetes - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/enhanced.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">TravelApp</h1>
+                    <p class="user-welcome">Paquetes de Viaje</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">👤</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Filtros -->
+            <section class="filtros-section">
+                <h2>Filtrar Paquetes</h2>
+                <div class="filtros-grid">
+                    <div class="filtro-group">
+                        <label for="destino">Destino</label>
+                        <select id="destino" class="form-select">
+                            <option value="">Todos los destinos</option>
+                            <option value="playa">Playa</option>
+                            <option value="montaña">Montaña</option>
+                            <option value="ciudad">Ciudad</option>
+                            <option value="aventura">Aventura</option>
+                        </select>
+                    </div>
+                    <div class="filtro-group">
+                        <label for="precio">Precio</label>
+                        <select id="precio" class="form-select">
+                            <option value="">Todos los precios</option>
+                            <option value="0-200">$0 - $200</option>
+                            <option value="200-500">$200 - $500</option>
+                            <option value="500-1000">$500 - $1000</option>
+                            <option value="1000+">$1000+</option>
+                        </select>
+                    </div>
+                    <div class="filtro-group">
+                        <label for="duracion">Duración</label>
+                        <select id="duracion" class="form-select">
+                            <option value="">Todas las duraciones</option>
+                            <option value="1-3">1-3 días</option>
+                            <option value="4-7">4-7 días</option>
+                            <option value="8-14">8-14 días</option>
+                            <option value="15+">15+ días</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Paquetes Disponibles -->
+            <section class="paquetes-section">
+                <h2 class="text-gradient">Paquetes Disponibles</h2>
+                <div class="grid-enhanced" id="paquetesGrid">
+                    <div class="enhanced-card interactive">
+                        <div class="badge-enhanced badge-success" style="position: absolute; top: 15px; left: 15px; z-index: 10;">Más Popular</div>
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=250&fit=crop" alt="Paquete Playa Paradise">
+                            <div class="image-overlay">
+                                <h3>Paquete Playa Paradise</h3>
+                                <p>3 días y 2 noches en el mejor resort de la costa</p>
+                            </div>
+                        </div>
+                        <div class="paquete-incluye" style="margin: 20px 0;">
+                            <h4 style="color: var(--text-primary); margin-bottom: 10px;">✨ Incluye:</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin: 5px 0; color: var(--text-secondary);">🏨 Hotel 4 estrellas</li>
+                                <li style="margin: 5px 0; color: var(--text-secondary);">🍳 Desayuno incluido</li>
+                                <li style="margin: 5px 0; color: var(--text-secondary);">🚌 Tour por la ciudad</li>
+                                <li style="margin: 5px 0; color: var(--text-secondary);">✈️ Transporte aeropuerto</li>
+                            </ul>
+                        </div>
+                        <div class="paquete-precio" style="text-align: center; margin: 20px 0;">
+                            <span style="text-decoration: line-through; color: var(--text-muted); font-size: 1.2rem;">$600</span>
+                            <span style="font-size: 2rem; font-weight: bold; color: #28a745; margin: 0 10px;">$450</span>
+                            <span class="badge-enhanced badge-danger">-25%</span>
+                        </div>
+                        <button class="btn-enhanced w-100" onclick="reservarPaquete(1)">
+                            🎯 Reservar Ahora
+                        </button>
+                    </div>
+
+                    <div class="paquete-card">
+                        <div class="paquete-image">🏔️</div>
+                        <div class="paquete-badge">Aventura</div>
+                        <div class="paquete-content">
+                            <h3>Paquete Montaña Adventure</h3>
+                            <p class="paquete-descripcion">5 días de trekking y naturaleza en la sierra</p>
+                            <div class="paquete-incluye">
+                                <h4>Incluye:</h4>
+                                <ul>
+                                    <li>✅ Cabaña en la montaña</li>
+                                    <li>✅ Guía especializado</li>
+                                    <li>✅ Equipo de trekking</li>
+                                    <li>✅ Comidas incluidas</li>
+                                </ul>
+                            </div>
+                            <div class="paquete-precio">
+                                <span class="precio-original">$800</span>
+                                <span class="precio-actual">$650</span>
+                                <span class="descuento">-19%</span>
+                            </div>
+                            <button class="btn btn-primary w-100" onclick="reservarPaquete(2)">
+                                Reservar Ahora
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="paquete-card">
+                        <div class="paquete-image">🏙️</div>
+                        <div class="paquete-badge">Cultural</div>
+                        <div class="paquete-content">
+                            <h3>Paquete Ciudad Cultural</h3>
+                            <p class="paquete-descripcion">4 días explorando museos y sitios históricos</p>
+                            <div class="paquete-incluye">
+                                <h4>Incluye:</h4>
+                                <ul>
+                                    <li>✅ Hotel céntrico</li>
+                                    <li>✅ Entradas a museos</li>
+                                    <li>✅ Tour guiado</li>
+                                    <li>✅ Transporte público</li>
+                                </ul>
+                            </div>
+                            <div class="paquete-precio">
+                                <span class="precio-original">$400</span>
+                                <span class="precio-actual">$320</span>
+                                <span class="descuento">-20%</span>
+                            </div>
+                            <button class="btn btn-primary w-100" onclick="reservarPaquete(3)">
+                                Reservar Ahora
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="paquete-card">
+                        <div class="paquete-image">🌊</div>
+                        <div class="paquete-badge">Relax</div>
+                        <div class="paquete-content">
+                            <h3>Paquete Spa & Wellness</h3>
+                            <p class="paquete-descripcion">2 días de relajación y tratamientos spa</p>
+                            <div class="paquete-incluye">
+                                <h4>Incluye:</h4>
+                                <ul>
+                                    <li>✅ Resort spa</li>
+                                    <li>✅ Masajes incluidos</li>
+                                    <li>✅ Clases de yoga</li>
+                                    <li>✅ Comida saludable</li>
+                                </ul>
+                            </div>
+                            <div class="paquete-precio">
+                                <span class="precio-original">$350</span>
+                                <span class="precio-actual">$280</span>
+                                <span class="descuento">-20%</span>
+                            </div>
+                            <button class="btn btn-primary w-100" onclick="reservarPaquete(4)">
+                                Reservar Ahora
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="user-inicio.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Inicio</span>
+            </a>
+            <a href="user-paquetes.html" class="nav-item active">
+                <span class="nav-icon">📦</span>
+                <span>Paquetes</span>
+            </a>
+            <a href="user-transportes.html" class="nav-item">
+                <span class="nav-icon">🚗</span>
+                <span>Transportes</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showUserMenu()">
+                <span class="nav-icon">👤</span>
+                <span>Mi Cuenta</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-user.js"></script>
+    <script>
+        function reservarPaquete(paqueteId) {
+            alert(`Reservando paquete ${paqueteId}. Función en desarrollo.`);
+        }
+    </script>
+</body>
+</html>

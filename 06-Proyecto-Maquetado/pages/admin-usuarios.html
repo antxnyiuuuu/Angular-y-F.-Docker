@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - TravelApp Admin</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">TravelApp Admin</h1>
+                    <p class="user-welcome">Gestión de Usuarios</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">👨‍💼</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Estadísticas de Usuarios -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <h3 id="totalUsuarios">1,247</h3>
+                            <p>Usuarios Totales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-info">
+                            <h3 id="usuariosActivos">1,180</h3>
+                            <p>Usuarios Activos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🆕</div>
+                        <div class="stat-info">
+                            <h3 id="nuevosUsuarios">67</h3>
+                            <p>Nuevos este mes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚠️</div>
+                        <div class="stat-info">
+                            <h3 id="usuariosPendientes">12</h3>
+                            <p>Pendientes Verificación</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Filtros y Búsqueda -->
+            <section class="filtros-section">
+                <div class="filtros-header">
+                    <h2>Gestión de Usuarios</h2>
+                    <div class="filtros-actions">
+                        <input type="text" id="buscarUsuario" class="form-input" placeholder="Buscar usuario...">
+                        <select id="filtroEstado" class="form-select">
+                            <option value="">Todos los estados</option>
+                            <option value="activo">Activos</option>
+                            <option value="inactivo">Inactivos</option>
+                            <option value="pendiente">Pendientes</option>
+                            <option value="suspendido">Suspendidos</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="filtrarUsuarios()">
+                            Filtrar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lista de Usuarios -->
+            <section class="usuarios-section">
+                <div class="usuarios-table">
+                    <div class="table-header">
+                        <div class="table-cell">Usuario</div>
+                        <div class="table-cell">Email</div>
+                        <div class="table-cell">Estado</div>
+                        <div class="table-cell">Última Actividad</div>
+                        <div class="table-cell">Acciones</div>
+                    </div>
+                    
+                    <div class="table-row">
+                        <div class="table-cell">
+                            <div class="user-info-cell">
+                                <div class="user-avatar-small">👤</div>
+                                <div class="user-details">
+                                    <h4>María González</h4>
+                                    <p>ID: #1001</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-cell">maria.gonzalez@email.com</div>
+                        <div class="table-cell">
+                            <span class="status-badge status-activo">Activo</span>
+                        </div>
+                        <div class="table-cell">Hace 2 horas</div>
+                        <div class="table-cell">
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-info" onclick="verDetallesUsuario(1001)">
+                                    Ver
+                                </button>
+                                <button class="btn btn-sm btn-warning" onclick="editarUsuario(1001)">
+                                    Editar
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="suspenderUsuario(1001)">
+                                    Suspender
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="table-cell">
+                            <div class="user-info-cell">
+                                <div class="user-avatar-small">👤</div>
+                                <div class="user-details">
+                                    <h4>Carlos Rodríguez</h4>
+                                    <p>ID: #1002</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-cell">carlos.rodriguez@email.com</div>
+                        <div class="table-cell">
+                            <span class="status-badge status-pendiente">Pendiente</span>
+                        </div>
+                        <div class="table-cell">Hace 1 día</div>
+                        <div class="table-cell">
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-info" onclick="verDetallesUsuario(1002)">
+                                    Ver
+                                </button>
+                                <button class="btn btn-sm btn-success" onclick="aprobarUsuario(1002)">
+                                    Aprobar
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="rechazarUsuario(1002)">
+                                    Rechazar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="table-cell">
+                            <div class="user-info-cell">
+                                <div class="user-avatar-small">👤</div>
+                                <div class="user-details">
+                                    <h4>Ana Martínez</h4>
+                                    <p>ID: #1003</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-cell">ana.martinez@email.com</div>
+                        <div class="table-cell">
+                            <span class="status-badge status-activo">Activo</span>
+                        </div>
+                        <div class="table-cell">Hace 30 min</div>
+                        <div class="table-cell">
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-info" onclick="verDetallesUsuario(1003)">
+                                    Ver
+                                </button>
+                                <button class="btn btn-sm btn-warning" onclick="editarUsuario(1003)">
+                                    Editar
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="suspenderUsuario(1003)">
+                                    Suspender
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="table-cell">
+                            <div class="user-info-cell">
+                                <div class="user-avatar-small">👤</div>
+                                <div class="user-details">
+                                    <h4>Luis Fernández</h4>
+                                    <p>ID: #1004</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-cell">luis.fernandez@email.com</div>
+                        <div class="table-cell">
+                            <span class="status-badge status-suspendido">Suspendido</span>
+                        </div>
+                        <div class="table-cell">Hace 5 días</div>
+                        <div class="table-cell">
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-info" onclick="verDetallesUsuario(1004)">
+                                    Ver
+                                </button>
+                                <button class="btn btn-sm btn-success" onclick="reactivarUsuario(1004)">
+                                    Reactivar
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="eliminarUsuario(1004)">
+                                    Eliminar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Detalles de Usuario -->
+    <div id="detallesUsuarioModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Detalles del Usuario</h3>
+                <span class="close" onclick="Modal.hide('detallesUsuarioModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="usuario-detalles" id="usuarioDetalles">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="dashboard-admin.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Inicio</span>
+            </a>
+            <a href="admin-usuarios.html" class="nav-item active">
+                <span class="nav-icon">👥</span>
+                <span>Usuarios</span>
+            </a>
+            <a href="admin-paquetes.html" class="nav-item">
+                <span class="nav-icon">📦</span>
+                <span>Paquetes</span>
+            </a>
+            <a href="admin-productos.html" class="nav-item">
+                <span class="nav-icon">🛍️</span>
+                <span>Productos</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-admin.js"></script>
+    <script>
+        function filtrarUsuarios() {
+            const busqueda = document.getElementById('buscarUsuario').value;
+            const estado = document.getElementById('filtroEstado').value;
+            alert(`Filtrando usuarios: "${busqueda}" con estado: "${estado}"`);
+        }
+
+        function verDetallesUsuario(userId) {
+            Modal.show('detallesUsuarioModal');
+            // Aquí cargarías los detalles del usuario
+        }
+
+        function editarUsuario(userId) {
+            alert(`Editando usuario ${userId}`);
+        }
+
+        function suspenderUsuario(userId) {
+            if (confirm(`¿Estás seguro de suspender al usuario ${userId}?`)) {
+                alert(`Usuario ${userId} suspendido`);
+            }
+        }
+
+        function aprobarUsuario(userId) {
+            alert(`Usuario ${userId} aprobado`);
+        }
+
+        function rechazarUsuario(userId) {
+            if (confirm(`¿Estás seguro de rechazar al usuario ${userId}?`)) {
+                alert(`Usuario ${userId} rechazado`);
+            }
+        }
+
+        function reactivarUsuario(userId) {
+            alert(`Usuario ${userId} reactivado`);
+        }
+
+        function eliminarUsuario(userId) {
+            if (confirm(`¿Estás seguro de eliminar permanentemente al usuario ${userId}?`)) {
+                alert(`Usuario ${userId} eliminado`);
+            }
+        }
+    </script>
+</body>
+</html>

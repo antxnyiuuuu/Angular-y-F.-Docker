@@ -1,0 +1,320 @@
+{
+  "hotels": [
+    {
+      "id": "hotel_1",
+      "name": "Hotel Paradise Beach",
+      "image": "assets/images/hotel1.webp",
+      "price": 120,
+      "rating": 4.8,
+      "description": "Hotel frente al mar con piscina infinity y spa completo",
+      "availability": true,
+      "location": "Playa del Carmen",
+      "amenities": ["WiFi", "Piscina", "Spa", "Restaurante", "Gimnasio"]
+    },
+    {
+      "id": "hotel_2", 
+      "name": "Boutique Hotel Centro",
+      "image": "assets/images/hotel2.webp",
+      "price": 85,
+      "rating": 4.5,
+      "description": "Hotel boutique en el centro histórico con arquitectura colonial",
+      "availability": true,
+      "location": "Ciudad de México",
+      "amenities": ["WiFi", "Desayuno", "Terraza", "Bar"]
+    },
+    {
+      "id": "hotel_3",
+      "name": "Mountain Lodge",
+      "image": "assets/images/hotel3.webp", 
+      "price": 95,
+      "rating": 4.6,
+      "description": "Lodge en la montaña con vistas panorámicas y actividades al aire libre",
+      "availability": true,
+      "location": "San Miguel de Allende",
+      "amenities": ["WiFi", "Senderismo", "Restaurante", "Chimenea"]
+    },
+    {
+      "id": "hotel_4",
+      "name": "Urban Suites",
+      "image": "assets/images/hotel4.webp",
+      "price": 110,
+      "rating": 4.4,
+      "description": "Suites modernas en zona financiera con servicios de lujo",
+      "availability": true,
+      "location": "Guadalajara",
+      "amenities": ["WiFi", "Gimnasio", "Spa", "Room Service", "Valet"]
+    },
+    {
+      "id": "hotel_5",
+      "name": "Eco Resort",
+      "image": "assets/images/hotel5.webp",
+      "price": 140,
+      "rating": 4.9,
+      "description": "Resort ecológico con cabañas sustentables y actividades de naturaleza",
+      "availability": true,
+      "location": "Tulum",
+      "amenities": ["WiFi", "Eco-friendly", "Yoga", "Restaurante Orgánico", "Bicicletas"]
+    },
+    {
+      "id": "hotel_6",
+      "name": "Historic Inn",
+      "image": "assets/images/hotel6.webp",
+      "price": 75,
+      "rating": 4.3,
+      "description": "Posada histórica restaurada con encanto colonial y jardines",
+      "availability": true,
+      "location": "Puebla",
+      "amenities": ["WiFi", "Jardines", "Desayuno", "Tours Históricos"]
+    }
+  ],
+  "restaurants": [
+    {
+      "id": "rest_1",
+      "name": "Mariscos del Puerto",
+      "image": "assets/images/rest1.webp",
+      "rating": 4.7,
+      "description": "Especialidad en mariscos frescos y ceviches tradicionales",
+      "location": "Veracruz",
+      "dishes": [
+        {"name": "Ceviche de Camarón", "price": 15},
+        {"name": "Pescado a la Veracruzana", "price": 22},
+        {"name": "Cóctel de Pulpo", "price": 18},
+        {"name": "Arroz a la Tumbada", "price": 20}
+      ]
+    },
+    {
+      "id": "rest_2",
+      "name": "Casa de los Tacos",
+      "image": "assets/images/rest2.webp",
+      "rating": 4.5,
+      "description": "Tacos tradicionales con recetas familiares de generaciones",
+      "location": "Ciudad de México",
+      "dishes": [
+        {"name": "Tacos al Pastor", "price": 8},
+        {"name": "Tacos de Barbacoa", "price": 10},
+        {"name": "Tacos de Carnitas", "price": 9},
+        {"name": "Tacos de Cochinita", "price": 11}
+      ]
+    },
+    {
+      "id": "rest_3",
+      "name": "Mole Poblano",
+      "image": "assets/images/rest3.webp",
+      "rating": 4.8,
+      "description": "Restaurante especializado en la cocina poblana tradicional",
+      "location": "Puebla",
+      "dishes": [
+        {"name": "Mole Poblano", "price": 25},
+        {"name": "Chiles en Nogada", "price": 28},
+        {"name": "Cemitas Poblanas", "price": 12},
+        {"name": "Tacos Árabes", "price": 14}
+      ]
+    },
+    {
+      "id": "rest_4",
+      "name": "Carnes del Norte",
+      "image": "assets/images/rest4.webp",
+      "rating": 4.6,
+      "description": "Carnes premium y cortes especiales del norte de México",
+      "location": "Monterrey",
+      "dishes": [
+        {"name": "Ribeye 300g", "price": 35},
+        {"name": "Arrachera", "price": 28},
+        {"name": "Costillas BBQ", "price": 30},
+        {"name": "Hamburguesa Gourmet", "price": 18}
+      ]
+    },
+    {
+      "id": "rest_5",
+      "name": "Vegetariano Verde",
+      "image": "assets/images/rest5.webp",
+      "rating": 4.4,
+      "description": "Cocina vegetariana y vegana con ingredientes orgánicos locales",
+      "location": "Oaxaca",
+      "dishes": [
+        {"name": "Ensalada Quinoa", "price": 16},
+        {"name": "Bowl de Acai", "price": 14},
+        {"name": "Hamburguesa de Lentejas", "price": 15},
+        {"name": "Smoothie Verde", "price": 8}
+      ]
+    },
+    {
+      "id": "rest_6",
+      "name": "Dulces Tradicionales",
+      "image": "assets/images/rest6.webp",
+      "rating": 4.3,
+      "description": "Postres y dulces tradicionales mexicanos artesanales",
+      "location": "Mérida",
+      "dishes": [
+        {"name": "Flan Napolitano", "price": 9},
+        {"name": "Tres Leches", "price": 10},
+        {"name": "Churros con Chocolate", "price": 7},
+        {"name": "Helado de Mamey", "price": 6}
+      ]
+    }
+  ],
+  "foods": [
+    {
+      "id": "food_1",
+      "name": "Tacos de Birria",
+      "image": "assets/images/food1.webp",
+      "price": 12,
+      "description": "Tacos de birria tradicional con consomé",
+      "type": "Mexicana"
+    },
+    {
+      "id": "food_2",
+      "name": "Enchiladas Verdes",
+      "image": "assets/images/food2.webp",
+      "price": 14,
+      "description": "Enchiladas con salsa verde y crema",
+      "type": "Mexicana"
+    },
+    {
+      "id": "food_3",
+      "name": "Pozole Rojo",
+      "image": "assets/images/food3.webp",
+      "price": 16,
+      "description": "Pozole tradicional con carne de cerdo",
+      "type": "Mexicana"
+    },
+    {
+      "id": "food_4",
+      "name": "Quesadillas de Huitlacoche",
+      "image": "assets/images/food4.webp",
+      "price": 13,
+      "description": "Quesadillas con huitlacoche y queso Oaxaca",
+      "type": "Mexicana"
+    },
+    {
+      "id": "food_5",
+      "name": "Tostadas de Atún",
+      "image": "assets/images/food5.webp",
+      "price": 11,
+      "description": "Tostadas con atún fresco y aguacate",
+      "type": "Mariscos"
+    },
+    {
+      "id": "food_6",
+      "name": "Sopes de Chorizo",
+      "image": "assets/images/food6.webp",
+      "price": 10,
+      "description": "Sopes con chorizo, frijoles y queso",
+      "type": "Mexicana"
+    },
+    {
+      "id": "food_7",
+      "name": "Aguachile de Camarón",
+      "image": "assets/images/food7.webp",
+      "price": 18,
+      "description": "Aguachile con camarón crudo y pepino",
+      "type": "Mariscos"
+    },
+    {
+      "id": "food_8",
+      "name": "Chilaquiles Rojos",
+      "image": "assets/images/food8.webp",
+      "price": 12,
+      "description": "Chilaquiles con salsa roja, crema y queso",
+      "type": "Mexicana"
+    }
+  ],
+  "activities": [
+    {
+      "id": "act_1",
+      "name": "Tour de Teotihuacán",
+      "image": "assets/images/act1.webp",
+      "price": 45,
+      "description": "Visita guiada a las pirámides de Teotihuacán con guía certificado",
+      "duration": "6 horas",
+      "schedule": "9:00 AM - 3:00 PM",
+      "location": "Teotihuacán, Estado de México"
+    },
+    {
+      "id": "act_2",
+      "name": "Snorkel en Cozumel",
+      "image": "assets/images/act2.webp",
+      "price": 35,
+      "description": "Snorkel en el arrecife de coral con equipo incluido",
+      "duration": "4 horas",
+      "schedule": "8:00 AM - 12:00 PM",
+      "location": "Cozumel, Quintana Roo"
+    },
+    {
+      "id": "act_3",
+      "name": "Caminata en el Bosque",
+      "image": "assets/images/act3.webp",
+      "price": 25,
+      "description": "Caminata ecológica por senderos naturales con guía",
+      "duration": "3 horas",
+      "schedule": "7:00 AM - 10:00 AM",
+      "location": "Bosque de Chapultepec, CDMX"
+    },
+    {
+      "id": "act_4",
+      "name": "Clase de Cocina Mexicana",
+      "image": "assets/images/act4.webp",
+      "price": 40,
+      "description": "Aprende a cocinar platillos tradicionales mexicanos",
+      "duration": "3 horas",
+      "schedule": "10:00 AM - 1:00 PM",
+      "location": "Oaxaca, Oaxaca"
+    },
+    {
+      "id": "act_5",
+      "name": "Paseo en Globo Aerostático",
+      "image": "assets/images/act5.webp",
+      "price": 120,
+      "description": "Vuelo en globo aerostático sobre el valle con desayuno",
+      "duration": "4 horas",
+      "schedule": "6:00 AM - 10:00 AM",
+      "location": "Teotihuacán, Estado de México"
+    }
+  ],
+  "transports": [
+    {
+      "id": "trans_1",
+      "name": "Autobús Turístico CDMX",
+      "image": "assets/images/trans1.webp",
+      "description": "Autobús de lujo con aire acondicionado y WiFi",
+      "capacity": 50,
+      "schedule": [
+        {
+          "day": "Lunes",
+          "departure": "08:00",
+          "arrival": "12:00",
+          "availableSeats": 45,
+          "route": "CDMX - Teotihuacán"
+        },
+        {
+          "day": "Martes", 
+          "departure": "08:00",
+          "arrival": "12:00",
+          "availableSeats": 50,
+          "route": "CDMX - Teotihuacán"
+        },
+        {
+          "day": "Miércoles",
+          "departure": "08:00", 
+          "arrival": "12:00",
+          "availableSeats": 38,
+          "route": "CDMX - Teotihuacán"
+        },
+        {
+          "day": "Jueves",
+          "departure": "08:00",
+          "arrival": "12:00", 
+          "availableSeats": 50,
+          "route": "CDMX - Teotihuacán"
+        },
+        {
+          "day": "Viernes",
+          "departure": "08:00",
+          "arrival": "12:00",
+          "availableSeats": 42,
+          "route": "CDMX - Teotihuacán"
+        }
+      ]
+    }
+  ]
+}

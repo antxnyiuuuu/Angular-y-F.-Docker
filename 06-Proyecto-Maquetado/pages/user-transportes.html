@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transportes - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">TravelApp</h1>
+                    <p class="user-welcome">Transportes Disponibles</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">👤</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Búsqueda de Transporte -->
+            <section class="busqueda-section">
+                <h2>Buscar Transporte</h2>
+                <div class="busqueda-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="origen">Origen</label>
+                            <input type="text" id="origen" class="form-input" placeholder="Ciudad de origen">
+                        </div>
+                        <div class="form-group">
+                            <label for="destino">Destino</label>
+                            <input type="text" id="destino" class="form-input" placeholder="Ciudad de destino">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fecha">Fecha</label>
+                            <input type="date" id="fecha" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="pasajeros">Pasajeros</label>
+                            <select id="pasajeros" class="form-select">
+                                <option value="1">1 pasajero</option>
+                                <option value="2">2 pasajeros</option>
+                                <option value="3">3 pasajeros</option>
+                                <option value="4">4 pasajeros</option>
+                                <option value="5+">5+ pasajeros</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="buscarTransporte()">
+                        Buscar Transporte
+                    </button>
+                </div>
+            </section>
+
+            <!-- Tipos de Transporte -->
+            <section class="tipos-section">
+                <h2>Tipos de Transporte</h2>
+                <div class="tipos-grid">
+                    <div class="tipo-card" onclick="filtrarPorTipo('taxi')">
+                        <div class="tipo-icon">🚕</div>
+                        <h3>Taxi</h3>
+                        <p>Traslados rápidos y cómodos</p>
+                        <div class="tipo-precio">Desde $15</div>
+                    </div>
+                    <div class="tipo-card" onclick="filtrarPorTipo('bus')">
+                        <div class="tipo-icon">🚌</div>
+                        <h3>Autobús</h3>
+                        <p>Viajes económicos y seguros</p>
+                        <div class="tipo-precio">Desde $8</div>
+                    </div>
+                    <div class="tipo-card" onclick="filtrarPorTipo('rental')">
+                        <div class="tipo-icon">🚗</div>
+                        <h3>Alquiler</h3>
+                        <p>Libertad total en tu viaje</p>
+                        <div class="tipo-precio">Desde $25/día</div>
+                    </div>
+                    <div class="tipo-card" onclick="filtrarPorTipo('private')">
+                        <div class="tipo-icon">🚙</div>
+                        <h3>Privado</h3>
+                        <p>Servicio exclusivo y personalizado</p>
+                        <div class="tipo-precio">Desde $50</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Transportes Disponibles -->
+            <section class="transportes-section">
+                <h2>Opciones de Transporte</h2>
+                <div class="transportes-grid" id="transportesGrid">
+                    <div class="transporte-card" data-tipo="taxi">
+                        <div class="transporte-header">
+                            <div class="transporte-icon">🚕</div>
+                            <div class="transporte-info">
+                                <h3>Taxi Express</h3>
+                                <p>Servicio 24/7 disponible</p>
+                            </div>
+                            <div class="transporte-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <div class="transporte-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Tiempo estimado:</span>
+                                <span class="detail-value">15-30 min</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Capacidad:</span>
+                                <span class="detail-value">4 pasajeros</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Incluye:</span>
+                                <span class="detail-value">A/C, WiFi</span>
+                            </div>
+                        </div>
+                        <div class="transporte-precio">
+                            <span class="precio">$20</span>
+                            <button class="btn btn-primary" onclick="reservarTransporte(1)">
+                                Reservar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="transporte-card" data-tipo="bus">
+                        <div class="transporte-header">
+                            <div class="transporte-icon">🚌</div>
+                            <div class="transporte-info">
+                                <h3>Bus Interurbano</h3>
+                                <p>Confort y economía</p>
+                            </div>
+                            <div class="transporte-rating">⭐⭐⭐⭐</div>
+                        </div>
+                        <div class="transporte-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Tiempo estimado:</span>
+                                <span class="detail-value">45-60 min</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Capacidad:</span>
+                                <span class="detail-value">50 pasajeros</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Incluye:</span>
+                                <span class="detail-value">A/C, Baño</span>
+                            </div>
+                        </div>
+                        <div class="transporte-precio">
+                            <span class="precio">$12</span>
+                            <button class="btn btn-primary" onclick="reservarTransporte(2)">
+                                Reservar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="transporte-card" data-tipo="rental">
+                        <div class="transporte-header">
+                            <div class="transporte-icon">🚗</div>
+                            <div class="transporte-info">
+                                <h3>Auto Compacto</h3>
+                                <p>Perfecto para la ciudad</p>
+                            </div>
+                            <div class="transporte-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <div class="transporte-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Tipo:</span>
+                                <span class="detail-value">Automático</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Capacidad:</span>
+                                <span class="detail-value">5 pasajeros</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Incluye:</span>
+                                <span class="detail-value">Seguro, GPS</span>
+                            </div>
+                        </div>
+                        <div class="transporte-precio">
+                            <span class="precio">$35/día</span>
+                            <button class="btn btn-primary" onclick="reservarTransporte(3)">
+                                Reservar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="transporte-card" data-tipo="private">
+                        <div class="transporte-header">
+                            <div class="transporte-icon">🚙</div>
+                            <div class="transporte-info">
+                                <h3>SUV Premium</h3>
+                                <p>Lujo y comodidad</p>
+                            </div>
+                            <div class="transporte-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <div class="transporte-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Tiempo estimado:</span>
+                                <span class="detail-value">20-40 min</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Capacidad:</span>
+                                <span class="detail-value">7 pasajeros</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Incluye:</span>
+                                <span class="detail-value">Chofer, WiFi, Agua</span>
+                            </div>
+                        </div>
+                        <div class="transporte-precio">
+                            <span class="precio">$65</span>
+                            <button class="btn btn-primary" onclick="reservarTransporte(4)">
+                                Reservar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="user-inicio.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Inicio</span>
+            </a>
+            <a href="user-paquetes.html" class="nav-item">
+                <span class="nav-icon">📦</span>
+                <span>Paquetes</span>
+            </a>
+            <a href="user-transportes.html" class="nav-item active">
+                <span class="nav-icon">🚗</span>
+                <span>Transportes</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showUserMenu()">
+                <span class="nav-icon">👤</span>
+                <span>Mi Cuenta</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-user.js"></script>
+    <script>
+        function buscarTransporte() {
+            const origen = document.getElementById('origen').value;
+            const destino = document.getElementById('destino').value;
+            const fecha = document.getElementById('fecha').value;
+            const pasajeros = document.getElementById('pasajeros').value;
+            
+            if (!origen || !destino || !fecha) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+            
+            alert(`Buscando transporte de ${origen} a ${destino} para ${pasajeros} pasajeros el ${fecha}`);
+        }
+
+        function filtrarPorTipo(tipo) {
+            const cards = document.querySelectorAll('.transporte-card');
+            cards.forEach(card => {
+                if (card.dataset.tipo === tipo || tipo === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function reservarTransporte(transporteId) {
+            alert(`Reservando transporte ${transporteId}. Función en desarrollo.`);
+        }
+    </script>
+</body>
+</html>

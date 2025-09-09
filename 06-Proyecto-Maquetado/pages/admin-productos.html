@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos - TravelApp Admin</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">TravelApp Admin</h1>
+                    <p class="user-welcome">Gestión de Productos</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">👨‍💼</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Estadísticas de Productos -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🛍️</div>
+                        <div class="stat-info">
+                            <h3 id="totalProductos">1,234</h3>
+                            <p>Productos Totales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏨</div>
+                        <div class="stat-info">
+                            <h3 id="productosHoteles">456</h3>
+                            <p>Productos Hoteles</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🍽️</div>
+                        <div class="stat-info">
+                            <h3 id="productosRestaurantes">378</h3>
+                            <p>Productos Restaurantes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-info">
+                            <h3 id="productosActividades">400</h3>
+                            <p>Productos Actividades</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Filtros por Categoría -->
+            <section class="categorias-section">
+                <h2>Productos por Categoría</h2>
+                <div class="categorias-grid">
+                    <div class="categoria-card" onclick="filtrarPorCategoria('hoteles')">
+                        <div class="categoria-icon">🏨</div>
+                        <h3>Hoteles</h3>
+                        <p>Habitaciones y servicios</p>
+                        <div class="categoria-count">456 productos</div>
+                    </div>
+                    <div class="categoria-card" onclick="filtrarPorCategoria('restaurantes')">
+                        <div class="categoria-icon">🍽️</div>
+                        <h3>Restaurantes</h3>
+                        <p>Platos y menús</p>
+                        <div class="categoria-count">378 productos</div>
+                    </div>
+                    <div class="categoria-card" onclick="filtrarPorCategoria('actividades')">
+                        <div class="categoria-icon">🎯</div>
+                        <h3>Actividades</h3>
+                        <p>Tours y experiencias</p>
+                        <div class="categoria-count">400 productos</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Filtros de Búsqueda -->
+            <section class="filtros-section">
+                <div class="filtros-header">
+                    <h2>Filtrar Productos</h2>
+                    <div class="filtros-actions">
+                        <input type="text" id="buscarProducto" class="form-input" placeholder="Buscar producto...">
+                        <select id="filtroCategoria" class="form-select">
+                            <option value="">Todas las categorías</option>
+                            <option value="hoteles">Hoteles</option>
+                            <option value="restaurantes">Restaurantes</option>
+                            <option value="actividades">Actividades</option>
+                        </select>
+                        <select id="filtroEstado" class="form-select">
+                            <option value="">Todos los estados</option>
+                            <option value="activo">Activos</option>
+                            <option value="inactivo">Inactivos</option>
+                            <option value="pendiente">Pendientes</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="filtrarProductos()">
+                            Filtrar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lista de Productos -->
+            <section class="productos-section">
+                <div class="productos-grid" id="productosGrid">
+                    <!-- Productos de Hoteles -->
+                    <div class="producto-card" data-categoria="hoteles">
+                        <div class="producto-header">
+                            <div class="producto-image">🏨</div>
+                            <div class="producto-info">
+                                <h3>Habitación Deluxe</h3>
+                                <p>Hotel Paradise Resort</p>
+                                <div class="producto-meta">
+                                    <span class="producto-id">ID: #HT001</span>
+                                    <span class="producto-categoria">Hotel</span>
+                                </div>
+                            </div>
+                            <div class="producto-status">
+                                <span class="status-badge status-activo">Activo</span>
+                            </div>
+                        </div>
+                        <div class="producto-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Precio:</span>
+                                <span class="detail-value">$150/noche</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Capacidad:</span>
+                                <span class="detail-value">2 personas</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Disponibles:</span>
+                                <span class="detail-value">12 habitaciones</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Rating:</span>
+                                <span class="detail-value">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                        <div class="producto-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesProducto('HT001')">
+                                Ver
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="editarProducto('HT001')">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarProducto('HT001')">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Productos de Restaurantes -->
+                    <div class="producto-card" data-categoria="restaurantes">
+                        <div class="producto-header">
+                            <div class="producto-image">🍽️</div>
+                            <div class="producto-info">
+                                <h3>Menú Gourmet</h3>
+                                <p>Restaurante El Dorado</p>
+                                <div class="producto-meta">
+                                    <span class="producto-id">ID: #RS001</span>
+                                    <span class="producto-categoria">Restaurante</span>
+                                </div>
+                            </div>
+                            <div class="producto-status">
+                                <span class="status-badge status-activo">Activo</span>
+                            </div>
+                        </div>
+                        <div class="producto-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Precio:</span>
+                                <span class="detail-value">$45/persona</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Tipo:</span>
+                                <span class="detail-value">Cena</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Disponible:</span>
+                                <span class="detail-value">Todos los días</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Rating:</span>
+                                <span class="detail-value">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                        <div class="producto-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesProducto('RS001')">
+                                Ver
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="editarProducto('RS001')">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarProducto('RS001')">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Productos de Actividades -->
+                    <div class="producto-card" data-categoria="actividades">
+                        <div class="producto-header">
+                            <div class="producto-image">🎯</div>
+                            <div class="producto-info">
+                                <h3>Tour Aventura Selva</h3>
+                                <p>Eco Tours Adventure</p>
+                                <div class="producto-meta">
+                                    <span class="producto-id">ID: #AC001</span>
+                                    <span class="producto-categoria">Actividad</span>
+                                </div>
+                            </div>
+                            <div class="producto-status">
+                                <span class="status-badge status-activo">Activo</span>
+                            </div>
+                        </div>
+                        <div class="producto-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Precio:</span>
+                                <span class="detail-value">$80/persona</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Duración:</span>
+                                <span class="detail-value">6 horas</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Capacidad:</span>
+                                <span class="detail-value">15 personas</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Rating:</span>
+                                <span class="detail-value">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                        <div class="producto-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesProducto('AC001')">
+                                Ver
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="editarProducto('AC001')">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarProducto('AC001')">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="producto-card" data-categoria="hoteles">
+                        <div class="producto-header">
+                            <div class="producto-image">🏨</div>
+                            <div class="producto-info">
+                                <h3>Suite Presidencial</h3>
+                                <p>Hotel Grand Palace</p>
+                                <div class="producto-meta">
+                                    <span class="producto-id">ID: #HT002</span>
+                                    <span class="producto-categoria">Hotel</span>
+                                </div>
+                            </div>
+                            <div class="producto-status">
+                                <span class="status-badge status-pendiente">Pendiente</span>
+                            </div>
+                        </div>
+                        <div class="producto-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Precio:</span>
+                                <span class="detail-value">$300/noche</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Capacidad:</span>
+                                <span class="detail-value">4 personas</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Disponibles:</span>
+                                <span class="detail-value">2 suites</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Rating:</span>
+                                <span class="detail-value">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                        <div class="producto-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesProducto('HT002')">
+                                Ver
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="aprobarProducto('HT002')">
+                                Aprobar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="rechazarProducto('HT002')">
+                                Rechazar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Detalles de Producto -->
+    <div id="detallesProductoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Detalles del Producto</h3>
+                <span class="close" onclick="Modal.hide('detallesProductoModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="producto-detalles" id="productoDetalles">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="dashboard-admin.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Inicio</span>
+            </a>
+            <a href="admin-usuarios.html" class="nav-item">
+                <span class="nav-icon">👥</span>
+                <span>Usuarios</span>
+            </a>
+            <a href="admin-paquetes.html" class="nav-item">
+                <span class="nav-icon">📦</span>
+                <span>Paquetes</span>
+            </a>
+            <a href="admin-productos.html" class="nav-item active">
+                <span class="nav-icon">🛍️</span>
+                <span>Productos</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-admin.js"></script>
+    <script>
+        function filtrarPorCategoria(categoria) {
+            const cards = document.querySelectorAll('.producto-card');
+            cards.forEach(card => {
+                if (card.dataset.categoria === categoria) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function filtrarProductos() {
+            const busqueda = document.getElementById('buscarProducto').value;
+            const categoria = document.getElementById('filtroCategoria').value;
+            const estado = document.getElementById('filtroEstado').value;
+            alert(`Filtrando productos: "${busqueda}" - Categoría: ${categoria} - Estado: ${estado}`);
+        }
+
+        function verDetallesProducto(productoId) {
+            Modal.show('detallesProductoModal');
+            // Aquí cargarías los detalles del producto
+        }
+
+        function editarProducto(productoId) {
+            alert(`Editando producto ${productoId}`);
+        }
+
+        function eliminarProducto(productoId) {
+            if (confirm(`¿Estás seguro de eliminar el producto ${productoId}?`)) {
+                alert(`Producto ${productoId} eliminado`);
+            }
+        }
+
+        function aprobarProducto(productoId) {
+            alert(`Producto ${productoId} aprobado`);
+        }
+
+        function rechazarProducto(productoId) {
+            if (confirm(`¿Estás seguro de rechazar el producto ${productoId}?`)) {
+                alert(`Producto ${productoId} rechazado`);
+            }
+        }
+    </script>
+</body>
+</html>

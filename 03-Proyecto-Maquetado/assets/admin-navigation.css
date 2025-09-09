@@ -1,157 +1,101 @@
 /* Estilos específicos para navegación de admin - Mismo diseño que user-nav */
 .admin-nav {
   /* Mismo estilo base que user-nav */
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  background: white;
-  border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
-  box-shadow: var(--shadow-xl);
-  padding: 1rem 1.5rem;
-  z-index: 1000;
-  width: 90%;
-  max-width: 400px;
-  border-top: 1px solid #e2e8f0;
-  
-  /* Estilos específicos de admin */
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-top: 2px solid #4a5568;
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background: var(--white, #ffffff) !important;
+  border-radius: 20px 20px 0 0 !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1) !important;
+  padding: 1rem 1.5rem !important;
+  z-index: 1000 !important;
+  width: 90% !important;
+  max-width: 400px !important;
+  border-top: 1px solid #e2e8f0 !important;
+  display: flex !important;
+  justify-content: space-around !important;
+  align-items: center !important;
 }
 
 .admin-nav .nav-item {
   /* Mismo estilo base que .nav-item de user-nav */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.75rem 0.5rem;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 60px;
-  max-width: 100px;
-  text-align: center;
-  flex: 1;
-  
-  /* Estilos específicos de admin */
-  color: #ffffff;
-  position: relative;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+  padding: 0.75rem 0.5rem !important;
+  border-radius: 12px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  min-width: 60px !important;
+  max-width: 100px !important;
+  text-align: center !important;
+  flex: 1 !important;
+  color: var(--gray-600, #6b7280) !important;
+  position: relative !important;
 }
 
 .admin-nav .nav-item:hover {
-  /* Mismo hover que user-nav pero con colores admin */
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  /* Mismo hover que user-nav */
+  background: var(--gray-100, #f3f4f6) !important;
+  color: var(--primary-blue, #3b82f6) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
 .admin-nav .nav-item.active {
-  /* Mismo active que user-nav pero con colores admin */
-  background: rgba(255, 255, 255, 0.2);
-  color: #fbbf24;
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-top: 3px solid #fbbf24;
+  /* Mismo active que user-nav */
+  background: var(--primary-blue, #3b82f6) !important;
+  color: var(--white, #ffffff) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
 }
 
 .admin-nav .nav-item i {
   /* Mismo estilo que user-nav */
-  font-size: 1.25rem;
-  margin-bottom: 0.25rem;
-  
-  /* Estilos específicos de admin */
-  color: #ffffff;
-  transition: color 0.3s ease;
-}
-
-.admin-nav .nav-item.active i {
-  color: #fbbf24;
+  font-size: 1.25rem !important;
+  margin-bottom: 0.25rem !important;
+  color: inherit !important;
+  transition: color 0.3s ease !important;
 }
 
 .admin-nav .nav-item span {
   /* Mismo estilo que user-nav */
-  font-size: 0.75rem;
-  font-weight: 600;
-  
-  /* Estilos específicos de admin */
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-/* Diferenciar visualmente las páginas admin */
-.admin-nav .nav-item[data-page="home"] i::before {
-  content: "\f015"; /* Icono de casa */
-}
-
-.admin-nav .nav-item[data-page="products"] i::before {
-  content: "\f49e"; /* Icono de caja */
-}
-
-.admin-nav .nav-item[data-page="packages"] i::before {
-  content: "\f0f2"; /* Icono de maleta */
-}
-
-.admin-nav .nav-item[data-page="transport"] i::before {
-  content: "\f207"; /* Icono de bus */
-}
-
-.admin-nav .nav-item[data-page="profile"] i::before {
-  content: "\f007"; /* Icono de usuario */
-}
-
-/* Efectos adicionales para admin - Mantener el estilo moderno */
-.admin-nav .nav-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: #fbbf24;
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
-  border-radius: 1px;
-}
-
-.admin-nav .nav-item:hover::before {
-  width: 80%;
-}
-
-.admin-nav .nav-item.active::before {
-  width: 80%;
-  background: #fbbf24;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  color: inherit !important;
 }
 
 /* Responsive design - Mismo que user-nav */
 @media (max-width: 480px) {
   .admin-nav {
-    width: 95%;
-    padding: 0.75rem 1rem;
+    width: 95% !important;
+    padding: 0.75rem 1rem !important;
   }
   
   .admin-nav .nav-item {
-    padding: 0.5rem 0.25rem;
-    min-width: 50px;
+    padding: 0.5rem 0.25rem !important;
+    min-width: 50px !important;
   }
   
   .admin-nav .nav-item i {
-    font-size: 1.1rem;
+    font-size: 1.1rem !important;
   }
   
   .admin-nav .nav-item span {
-    font-size: 0.7rem;
+    font-size: 0.7rem !important;
   }
 }
 
 @media (max-width: 360px) {
   .admin-nav {
-    width: 98%;
-    padding: 0.5rem 0.75rem;
+    width: 98% !important;
+    padding: 0.5rem 0.75rem !important;
   }
   
   .admin-nav .nav-item {
-    padding: 0.4rem 0.2rem;
-    min-width: 45px;
+    padding: 0.4rem 0.2rem !important;
+    min-width: 45px !important;
   }
 }

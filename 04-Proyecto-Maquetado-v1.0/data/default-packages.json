@@ -1,0 +1,133 @@
+{
+  "packages": [
+    {
+      "id": "pkg_1",
+      "name": "Aventura Maya",
+      "description": "Paquete completo para explorar la cultura maya y las playas del Caribe",
+      "image": "assets/images/package1.webp",
+      "price": 450,
+      "duration": "5 días / 4 noches",
+      "createdBy": "admin",
+      "items": [
+        {
+          "type": "hotel",
+          "id": "hotel_1",
+          "details": {
+            "guests": 2,
+            "checkIn": "2024-03-15",
+            "checkOut": "2024-03-19"
+          }
+        },
+        {
+          "type": "restaurant",
+          "id": "rest_1",
+          "details": {
+            "dishes": [
+              {"name": "Ceviche de Camarón", "quantity": 2},
+              {"name": "Pescado a la Veracruzana", "quantity": 1}
+            ]
+          }
+        },
+        {
+          "type": "activity",
+          "id": "act_2",
+          "details": {
+            "guests": 2,
+            "time": "08:00"
+          }
+        }
+      ],
+      "transport": {
+        "id": "trans_1",
+        "day": "Lunes",
+        "guests": 2
+      }
+    },
+    {
+      "id": "pkg_2", 
+      "name": "Ciudad Histórica",
+      "description": "Descubre la rica historia y arquitectura colonial de México",
+      "image": "assets/images/package2.webp",
+      "price": 320,
+      "duration": "3 días / 2 noches",
+      "createdBy": "admin",
+      "items": [
+        {
+          "type": "hotel",
+          "id": "hotel_2",
+          "details": {
+            "guests": 2,
+            "checkIn": "2024-03-20",
+            "checkOut": "2024-03-22"
+          }
+        },
+        {
+          "type": "restaurant",
+          "id": "rest_3",
+          "details": {
+            "dishes": [
+              {"name": "Mole Poblano", "quantity": 1},
+              {"name": "Chiles en Nogada", "quantity": 1}
+            ]
+          }
+        },
+        {
+          "type": "activity",
+          "id": "act_1",
+          "details": {
+            "guests": 2,
+            "time": "09:00"
+          }
+        }
+      ],
+      "transport": {
+        "id": "trans_1",
+        "day": "Martes",
+        "guests": 2
+      }
+    },
+    {
+      "id": "pkg_3",
+      "name": "Naturaleza y Relax",
+      "description": "Escápate a la naturaleza y disfruta de actividades al aire libre",
+      "image": "assets/images/package3.webp", 
+      "price": 280,
+      "duration": "4 días / 3 noches",
+      "createdBy": "admin",
+      "items": [
+        {
+          "type": "hotel",
+          "id": "hotel_5",
+          "details": {
+            "guests": 2,
+            "checkIn": "2024-03-25",
+            "checkOut": "2024-03-28"
+          }
+        },
+        {
+          "type": "restaurant",
+          "id": "rest_5",
+          "details": {
+            "dishes": [
+              {"name": "Ensalada Quinoa", "quantity": 2},
+              {"name": "Bowl de Acai", "quantity": 1}
+            ]
+          }
+        },
+        {
+          "type": "activity",
+          "id": "act_3",
+          "details": {
+            "guests": 2,
+            "time": "07:00"
+          }
+        }
+      ],
+      "transport": {
+        "id": "trans_1",
+        "day": "Miércoles",
+        "guests": 2
+      }
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destinos - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/destinos.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">TravelApp</h1>
+            <p class="subtitle">Descubre destinos increíbles</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Filtros de Búsqueda -->
+            <section class="filters-section">
+                <div class="card">
+                    <h2>Encuentra tu destino perfecto</h2>
+                    <form id="destinoForm" class="destino-form">
+                        <div class="form-group">
+                            <label for="destinoSearch" class="form-label">Buscar Destino</label>
+                            <input type="text" id="destinoSearch" name="destinoSearch" class="form-input" placeholder="Escribe el nombre de un destino...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tipoDestino" class="form-label">Tipo de Destino</label>
+                            <select id="tipoDestino" name="tipoDestino" class="form-select">
+                                <option value="">Todos los tipos</option>
+                                <option value="playa">Playa</option>
+                                <option value="ciudad">Ciudad</option>
+                                <option value="montaña">Montaña</option>
+                                <option value="cultural">Cultural</option>
+                                <option value="aventura">Aventura</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="precioRango" class="form-label">Rango de Precio</label>
+                            <select id="precioRango" name="precioRango" class="form-select">
+                                <option value="">Todos los precios</option>
+                                <option value="$">Económico ($)</option>
+                                <option value="$$">Moderado ($$)</option>
+                                <option value="$$$">Premium ($$$)</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">
+                            Buscar Destinos
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Destinos Populares -->
+            <section class="destinos-section">
+                <h2>Destinos Populares</h2>
+                <div class="destinos-grid" id="destinosGrid">
+                    <!-- Se cargarán dinámicamente -->
+                </div>
+            </section>
+
+            <!-- Categorías de Destinos -->
+            <section class="categorias-section">
+                <h2>Explora por Categoría</h2>
+                <div class="categorias-grid">
+                    <div class="categoria-card" onclick="filtrarPorCategoria('playa')">
+                        <div class="categoria-icon">🏖️</div>
+                        <h3>Playas</h3>
+                        <p>Destinos paradisíacos con aguas cristalinas</p>
+                    </div>
+                    <div class="categoria-card" onclick="filtrarPorCategoria('ciudad')">
+                        <div class="categoria-icon">🏙️</div>
+                        <h3>Ciudades</h3>
+                        <p>Urbes vibrantes llenas de cultura y vida</p>
+                    </div>
+                    <div class="categoria-card" onclick="filtrarPorCategoria('cultural')">
+                        <div class="categoria-icon">🏛️</div>
+                        <h3>Cultural</h3>
+                        <p>Lugares históricos y tradiciones ancestrales</p>
+                    </div>
+                    <div class="categoria-card" onclick="filtrarPorCategoria('aventura')">
+                        <div class="categoria-icon">🧗</div>
+                        <h3>Aventura</h3>
+                        <p>Experiencias emocionantes y extremas</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Detalles del Destino -->
+    <div id="destinoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="destinoModalTitle">Detalles del Destino</h3>
+                <span class="close" onclick="Modal.hide('destinoModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="destino-details" id="destinoDetails">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Servicios del Destino -->
+    <div id="serviciosModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="serviciosModalTitle">Servicios Disponibles</h3>
+                <span class="close" onclick="Modal.hide('serviciosModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="servicios-content" id="serviciosContent">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="../index.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Inicio</span>
+            </a>
+            <a href="login.html" class="nav-item">
+                <span class="nav-icon">🔐</span>
+                <span>Login</span>
+            </a>
+            <a href="destinos.html" class="nav-item active">
+                <span class="nav-icon">🌍</span>
+                <span>Destinos</span>
+            </a>
+            <a href="vehiculos.html" class="nav-item">
+                <span class="nav-icon">🚗</span>
+                <span>Transporte</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/destinos.js"></script>
+</body>
+</html>

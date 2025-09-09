@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/enhanced.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">TravelApp</h1>
+                    <p class="user-welcome" id="userWelcome">¡Hola Usuario!</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">👤</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero-enhanced animate-fadeInUp">
+                <h1 class="text-gradient">¡Descubre tu próximo destino!</h1>
+                <p>Encuentra las mejores ofertas y experiencias únicas</p>
+                <button class="btn-enhanced" onclick="Navigation.goTo('user-paquetes.html')">
+                    🎯 Explorar Ofertas
+                </button>
+            </section>
+
+            <!-- Cosas Destacadas -->
+            <section class="destacados-section animate-fadeInUp">
+                <h3 class="text-gradient">🔥 Lo Más Destacado</h3>
+                <div class="grid-enhanced" id="destacadosGrid">
+                    <div class="enhanced-card interactive">
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=200&fit=crop" alt="Hotel Paradise">
+                            <div class="image-overlay">
+                                <h4>Hotel Paradise</h4>
+                                <p>Resort de lujo con vista al mar</p>
+                            </div>
+                        </div>
+                        <div class="destacado-price badge-enhanced badge-success">$150/noche</div>
+                        <div class="destacado-rating">⭐⭐⭐⭐⭐</div>
+                    </div>
+                    <div class="enhanced-card interactive">
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=200&fit=crop" alt="Restaurante El Dorado">
+                            <div class="image-overlay">
+                                <h4>Restaurante El Dorado</h4>
+                                <p>Gastronomía gourmet local</p>
+                            </div>
+                        </div>
+                        <div class="destacado-price badge-enhanced badge-warning">$45/persona</div>
+                        <div class="destacado-rating">⭐⭐⭐⭐⭐</div>
+                    </div>
+                    <div class="enhanced-card interactive">
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop" alt="Tour Aventura">
+                            <div class="image-overlay">
+                                <h4>Tour Aventura</h4>
+                                <p>Excursión por la selva tropical</p>
+                            </div>
+                        </div>
+                        <div class="destacado-price badge-enhanced badge-info">$80/persona</div>
+                        <div class="destacado-rating">⭐⭐⭐⭐⭐</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ofertas Especiales -->
+            <section class="ofertas-section animate-slideInRight">
+                <h3 class="text-gradient">💎 Ofertas Especiales</h3>
+                <div class="grid-2" id="ofertasGrid">
+                    <div class="enhanced-card interactive animate-pulse">
+                        <div class="badge-enhanced badge-danger" style="position: absolute; top: 15px; right: 15px; z-index: 10;">-30%</div>
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=200&fit=crop" alt="Paquete Playa">
+                            <div class="image-overlay">
+                                <h4>Paquete Playa</h4>
+                                <p>Hotel + Actividades + Comidas</p>
+                            </div>
+                        </div>
+                        <div class="oferta-price" style="text-align: center; margin-top: 15px;">
+                            <span style="text-decoration: line-through; color: var(--text-muted);">$500</span>
+                            <span style="font-size: 1.5rem; font-weight: bold; color: #28a745; margin-left: 10px;">$350</span>
+                        </div>
+                    </div>
+                    <div class="enhanced-card interactive animate-pulse">
+                        <div class="badge-enhanced badge-danger" style="position: absolute; top: 15px; right: 15px; z-index: 10;">-25%</div>
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1464822759844-d150baec1b4b?w=400&h=200&fit=crop" alt="Paquete Montaña">
+                            <div class="image-overlay">
+                                <h4>Paquete Montaña</h4>
+                                <p>Hotel + Trekking + Gastronomía</p>
+                            </div>
+                        </div>
+                        <div class="oferta-price" style="text-align: center; margin-top: 15px;">
+                            <span style="text-decoration: line-through; color: var(--text-muted);">$400</span>
+                            <span style="font-size: 1.5rem; font-weight: bold; color: #28a745; margin-left: 10px;">$300</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Categorías Populares -->
+            <section class="categorias-section animate-fadeInUp">
+                <h3 class="text-gradient">🌟 Categorías Populares</h3>
+                <div class="grid-2">
+                    <div class="enhanced-card interactive" onclick="Navigation.goTo('user-paquetes.html')">
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=300&h=150&fit=crop" alt="Paquetes">
+                        </div>
+                        <h4 style="text-align: center; margin-top: 15px;">📦 Paquetes</h4>
+                        <p style="text-align: center; color: var(--text-secondary);">Ofertas completas</p>
+                    </div>
+                    <div class="enhanced-card interactive" onclick="Navigation.goTo('user-transportes.html')">
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=300&h=150&fit=crop" alt="Transportes">
+                        </div>
+                        <h4 style="text-align: center; margin-top: 15px;">🚗 Transportes</h4>
+                        <p style="text-align: center; color: var(--text-secondary);">Movilidad segura</p>
+                    </div>
+                    <div class="enhanced-card interactive">
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=300&h=150&fit=crop" alt="Hoteles">
+                        </div>
+                        <h4 style="text-align: center; margin-top: 15px;">🏨 Hoteles</h4>
+                        <p style="text-align: center; color: var(--text-secondary);">Hospedaje cómodo</p>
+                    </div>
+                    <div class="enhanced-card interactive">
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=300&h=150&fit=crop" alt="Restaurantes">
+                        </div>
+                        <h4 style="text-align: center; margin-top: 15px;">🍽️ Restaurantes</h4>
+                        <p style="text-align: center; color: var(--text-secondary);">Gastronomía local</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="user-inicio.html" class="nav-item active">
+                <span class="nav-icon">🏠</span>
+                <span>Inicio</span>
+            </a>
+            <a href="user-paquetes.html" class="nav-item">
+                <span class="nav-icon">📦</span>
+                <span>Paquetes</span>
+            </a>
+            <a href="user-transportes.html" class="nav-item">
+                <span class="nav-icon">🚗</span>
+                <span>Transportes</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showUserMenu()">
+                <span class="nav-icon">👤</span>
+                <span>Mi Cuenta</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-user.js"></script>
+</body>
+</html>

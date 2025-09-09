@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compras del Restaurante - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/provider.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">Restaurante El Dorado</h1>
+                    <p class="user-welcome">Compras y Reservas</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">🍽️</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Estadísticas de Compras -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🛒</div>
+                        <div class="stat-info">
+                            <h3 id="totalCompras">156</h3>
+                            <p>Compras Totales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-info">
+                            <h3 id="comprasConfirmadas">142</h3>
+                            <p>Confirmadas</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <h3 id="ingresosTotales">$18,230</h3>
+                            <p>Ingresos Totales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-info">
+                            <h3 id="comprasHoy">8</h3>
+                            <p>Compras Hoy</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Filtros de Compras -->
+            <section class="filtros-section">
+                <h2>Filtrar Compras</h2>
+                <div class="filtros-grid">
+                    <div class="filtro-group">
+                        <label for="filtroEstado">Estado</label>
+                        <select id="filtroEstado" class="form-select">
+                            <option value="">Todos los estados</option>
+                            <option value="pendiente">Pendientes</option>
+                            <option value="confirmada">Confirmadas</option>
+                            <option value="cancelada">Canceladas</option>
+                            <option value="completada">Completadas</option>
+                        </select>
+                    </div>
+                    <div class="filtro-group">
+                        <label for="filtroFecha">Fecha</label>
+                        <select id="filtroFecha" class="form-select">
+                            <option value="">Todas las fechas</option>
+                            <option value="hoy">Hoy</option>
+                            <option value="semana">Esta semana</option>
+                            <option value="mes">Este mes</option>
+                            <option value="personalizada">Personalizada</option>
+                        </select>
+                    </div>
+                    <div class="filtro-group">
+                        <label for="filtroPlato">Plato</label>
+                        <select id="filtroPlato" class="form-select">
+                            <option value="">Todos los platos</option>
+                            <option value="pasta">Pasta Carbonara</option>
+                            <option value="bistec">Bistec a la Parrilla</option>
+                            <option value="salmon">Salmón Teriyaki</option>
+                            <option value="ensalada">Ensalada César</option>
+                        </select>
+                    </div>
+                    <div class="filtro-group">
+                        <button class="btn btn-primary" onclick="filtrarCompras()">
+                            Filtrar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lista de Compras -->
+            <section class="compras-section">
+                <h2>Compras de Clientes</h2>
+                <div class="compras-list">
+                    <div class="compra-item">
+                        <div class="compra-header">
+                            <div class="compra-info">
+                                <h3>María González</h3>
+                                <p>maria.gonzalez@email.com</p>
+                                <span class="compra-id">ID: #R001</span>
+                            </div>
+                            <div class="compra-status">
+                                <span class="status-badge status-confirmada">Confirmada</span>
+                            </div>
+                        </div>
+                        <div class="compra-details">
+                            <div class="compra-platos">
+                                <h4>Pasta Carbonara + Ensalada César</h4>
+                                <p>2 personas - Mesa 5 - Hoy 19:30</p>
+                            </div>
+                            <div class="compra-precio">
+                                <span class="precio-total">$45</span>
+                                <span class="precio-detalle">$18 + $12 + $15</span>
+                            </div>
+                        </div>
+                        <div class="compra-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesCompra('R001')">
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="confirmarLlegada('R001')">
+                                Confirmar Llegada
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="contactarCliente('R001')">
+                                Contactar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="compra-item">
+                        <div class="compra-header">
+                            <div class="compra-info">
+                                <h3>Carlos Rodríguez</h3>
+                                <p>carlos.rodriguez@email.com</p>
+                                <span class="compra-id">ID: #R002</span>
+                            </div>
+                            <div class="compra-status">
+                                <span class="status-badge status-pendiente">Pendiente</span>
+                            </div>
+                        </div>
+                        <div class="compra-details">
+                            <div class="compra-platos">
+                                <h4>Bistec a la Parrilla + Tiramisú</h4>
+                                <p>4 personas - Mesa 12 - Mañana 20:00</p>
+                            </div>
+                            <div class="compra-precio">
+                                <span class="precio-total">$120</span>
+                                <span class="precio-detalle">$32 + $8 + bebidas</span>
+                            </div>
+                        </div>
+                        <div class="compra-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesCompra('R002')">
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="confirmarReserva('R002')">
+                                Confirmar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="cancelarReserva('R002')">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="compra-item">
+                        <div class="compra-header">
+                            <div class="compra-info">
+                                <h3>Ana Martínez</h3>
+                                <p>ana.martinez@email.com</p>
+                                <span class="compra-id">ID: #R003</span>
+                            </div>
+                            <div class="compra-status">
+                                <span class="status-badge status-activa">Activa</span>
+                            </div>
+                        </div>
+                        <div class="compra-details">
+                            <div class="compra-platos">
+                                <h4>Salmón Teriyaki + Postre</h4>
+                                <p>2 personas - Mesa 8 - Hoy 18:00</p>
+                            </div>
+                            <div class="compra-precio">
+                                <span class="precio-total">$65</span>
+                                <span class="precio-detalle">$24 + $8 + bebidas</span>
+                            </div>
+                        </div>
+                        <div class="compra-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesCompra('R003')">
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="gestionarPedido('R003')">
+                                Gestionar Pedido
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="procesarPago('R003')">
+                                Procesar Pago
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="compra-item">
+                        <div class="compra-header">
+                            <div class="compra-info">
+                                <h3>Luis Fernández</h3>
+                                <p>luis.fernandez@email.com</p>
+                                <span class="compra-id">ID: #R004</span>
+                            </div>
+                            <div class="compra-status">
+                                <span class="status-badge status-completada">Completada</span>
+                            </div>
+                        </div>
+                        <div class="compra-details">
+                            <div class="compra-platos">
+                                <h4>Menú Degustación Completo</h4>
+                                <p>2 personas - Mesa 3 - Ayer 21:00</p>
+                            </div>
+                            <div class="compra-precio">
+                                <span class="precio-total">$85</span>
+                                <span class="precio-detalle">Menú completo + vino</span>
+                            </div>
+                        </div>
+                        <div class="compra-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesCompra('R004')">
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-sm btn-secondary" onclick="verResena('R004')">
+                                Ver Reseña
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="contactarCliente('R004')">
+                                Contactar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="compra-item">
+                        <div class="compra-header">
+                            <div class="compra-info">
+                                <h3>Patricia López</h3>
+                                <p>patricia.lopez@email.com</p>
+                                <span class="compra-id">ID: #R005</span>
+                            </div>
+                            <div class="compra-status">
+                                <span class="status-badge status-cancelada">Cancelada</span>
+                            </div>
+                        </div>
+                        <div class="compra-details">
+                            <div class="compra-platos">
+                                <h4>Reserva para 6 personas</h4>
+                                <p>Cancelada: 10/01/2024</p>
+                            </div>
+                            <div class="compra-precio">
+                                <span class="precio-total">$0</span>
+                                <span class="precio-detalle">Cancelada sin costo</span>
+                            </div>
+                        </div>
+                        <div class="compra-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesCompra('R005')">
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="verRazonCancelacion('R005')">
+                                Ver Razón
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resumen de Ingresos -->
+            <section class="ingresos-section">
+                <h2>Resumen de Ingresos</h2>
+                <div class="ingresos-grid">
+                    <div class="ingreso-card">
+                        <h3>💰 Ingresos del Mes</h3>
+                        <div class="ingreso-amount">$18,230</div>
+                        <div class="ingreso-change positive">+25% vs mes anterior</div>
+                    </div>
+                    <div class="ingreso-card">
+                        <h3>📊 Promedio por Compra</h3>
+                        <div class="ingreso-amount">$117</div>
+                        <div class="ingreso-change positive">+12% vs mes anterior</div>
+                    </div>
+                    <div class="ingreso-card">
+                        <h3>🏆 Plato Más Vendido</h3>
+                        <div class="ingreso-amount">Pasta Carbonara</div>
+                        <div class="ingreso-date">45 ventas este mes</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Análisis de Platos -->
+            <section class="analisis-section">
+                <h2>Análisis de Platos</h2>
+                <div class="analisis-grid">
+                    <div class="analisis-card">
+                        <h3>🍝 Platos Más Populares</h3>
+                        <div class="platos-ranking">
+                            <div class="ranking-item">
+                                <span class="ranking-position">1</span>
+                                <span class="ranking-plato">Pasta Carbonara</span>
+                                <span class="ranking-ventas">45 ventas</span>
+                            </div>
+                            <div class="ranking-item">
+                                <span class="ranking-position">2</span>
+                                <span class="ranking-plato">Bistec a la Parrilla</span>
+                                <span class="ranking-ventas">38 ventas</span>
+                            </div>
+                            <div class="ranking-item">
+                                <span class="ranking-position">3</span>
+                                <span class="ranking-plato">Salmón Teriyaki</span>
+                                <span class="ranking-ventas">42 ventas</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analisis-card">
+                        <h3>⭐ Platos Mejor Calificados</h3>
+                        <div class="platos-ranking">
+                            <div class="ranking-item">
+                                <span class="ranking-position">1</span>
+                                <span class="ranking-plato">Tiramisú</span>
+                                <span class="ranking-rating">⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <div class="ranking-item">
+                                <span class="ranking-position">2</span>
+                                <span class="ranking-plato">Pasta Carbonara</span>
+                                <span class="ranking-rating">⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <div class="ranking-item">
+                                <span class="ranking-position">3</span>
+                                <span class="ranking-plato">Bistec a la Parrilla</span>
+                                <span class="ranking-rating">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal Detalles de Compra -->
+    <div id="detallesCompraModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Detalles de la Compra</h3>
+                <span class="close" onclick="Modal.hide('detallesCompraModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="compra-detalles" id="compraDetalles">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="restaurante-home.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="restaurante-editar.html" class="nav-item">
+                <span class="nav-icon">✏️</span>
+                <span>Editar</span>
+            </a>
+            <a href="restaurante-compras.html" class="nav-item active">
+                <span class="nav-icon">🛒</span>
+                <span>Compras</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showUserMenu()">
+                <span class="nav-icon">👤</span>
+                <span>Mi Cuenta</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-restaurante.js"></script>
+    <script>
+        function filtrarCompras() {
+            const estado = document.getElementById('filtroEstado').value;
+            const fecha = document.getElementById('filtroFecha').value;
+            const plato = document.getElementById('filtroPlato').value;
+            alert(`Filtrando compras: Estado: ${estado}, Fecha: ${fecha}, Plato: ${plato}`);
+        }
+
+        function verDetallesCompra(compraId) {
+            Modal.show('detallesCompraModal');
+            // Aquí cargarías los detalles de la compra
+        }
+
+        function confirmarReserva(compraId) {
+            if (confirm(`¿Confirmar la reserva ${compraId}?`)) {
+                alert(`Reserva ${compraId} confirmada`);
+            }
+        }
+
+        function cancelarReserva(compraId) {
+            if (confirm(`¿Cancelar la reserva ${compraId}?`)) {
+                alert(`Reserva ${compraId} cancelada`);
+            }
+        }
+
+        function confirmarLlegada(compraId) {
+            alert(`Llegada confirmada para ${compraId}`);
+        }
+
+        function procesarPago(compraId) {
+            if (confirm(`¿Procesar pago para ${compraId}?`)) {
+                alert(`Pago procesado para ${compraId}`);
+            }
+        }
+
+        function gestionarPedido(compraId) {
+            alert(`Gestionando pedido para ${compraId}`);
+        }
+
+        function contactarCliente(compraId) {
+            alert(`Contactando cliente de ${compraId}`);
+        }
+
+        function verResena(compraId) {
+            alert(`Viendo reseña de ${compraId}`);
+        }
+
+        function verRazonCancelacion(compraId) {
+            alert(`Viendo razón de cancelación de ${compraId}`);
+        }
+    </script>
+</body>
+</html>

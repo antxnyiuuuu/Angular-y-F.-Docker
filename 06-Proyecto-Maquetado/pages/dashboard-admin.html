@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">TravelApp Admin</h1>
+                    <p class="user-welcome" id="userWelcome">Panel de Administración</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">👨‍💼</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Estadísticas Generales -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <h3 id="totalUsuarios">0</h3>
+                            <p>Usuarios Registrados</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏨</div>
+                        <div class="stat-info">
+                            <h3 id="totalHoteles">0</h3>
+                            <p>Hoteles Activos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🍽️</div>
+                        <div class="stat-info">
+                            <h3 id="totalRestaurantes">0</h3>
+                            <p>Restaurantes Activos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-info">
+                            <h3 id="totalActividades">0</h3>
+                            <p>Actividades Activas</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-info">
+                            <h3 id="pendientesVerificacion">0</h3>
+                            <p>Pendientes Verificación</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <h3 id="ingresosTotales">$0</h3>
+                            <p>Ingresos Totales</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Acciones de Administración -->
+            <section class="actions-section">
+                <h2>Gestión del Sistema</h2>
+                <div class="actions-grid">
+                    <div class="action-card" onclick="showVerificaciones()">
+                        <div class="action-icon">✅</div>
+                        <h3>Verificaciones</h3>
+                        <p>Revisar y aprobar registros</p>
+                    </div>
+                    <div class="action-card" onclick="showUsuarios()">
+                        <div class="action-icon">👥</div>
+                        <h3>Usuarios</h3>
+                        <p>Gestionar cuentas de usuario</p>
+                    </div>
+                    <div class="action-card" onclick="showReportes()">
+                        <div class="action-icon">📊</div>
+                        <h3>Reportes</h3>
+                        <p>Ver estadísticas y análisis</p>
+                    </div>
+                    <div class="action-card" onclick="showConfiguracion()">
+                        <div class="action-icon">⚙️</div>
+                        <h3>Configuración</h3>
+                        <p>Ajustes del sistema</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Actividad Reciente -->
+            <section class="activity-section">
+                <h2>Actividad Reciente del Sistema</h2>
+                <div class="activity-list" id="systemActivityList">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Verificaciones -->
+    <div id="verificacionesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Verificaciones Pendientes</h3>
+                <span class="close" onclick="Modal.hide('verificacionesModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="verificaciones-list" id="verificacionesList">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Usuarios -->
+    <div id="usuariosModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Gestión de Usuarios</h3>
+                <span class="close" onclick="Modal.hide('usuariosModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="usuarios-list" id="usuariosList">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Reportes -->
+    <div id="reportesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Reportes del Sistema</h3>
+                <span class="close" onclick="Modal.hide('reportesModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="reportes-content" id="reportesContent">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Configuración -->
+    <div id="configuracionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Configuración del Sistema</h3>
+                <span class="close" onclick="Modal.hide('configuracionModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="configuracion-content" id="configuracionContent">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="dashboard-admin.html" class="nav-item active">
+                <span class="nav-icon">🏠</span>
+                <span>Inicio</span>
+            </a>
+            <a href="admin-usuarios.html" class="nav-item">
+                <span class="nav-icon">👥</span>
+                <span>Usuarios</span>
+            </a>
+            <a href="admin-paquetes.html" class="nav-item">
+                <span class="nav-icon">📦</span>
+                <span>Paquetes</span>
+            </a>
+            <a href="admin-productos.html" class="nav-item">
+                <span class="nav-icon">🛍️</span>
+                <span>Productos</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-admin.js"></script>
+</body>
+</html>

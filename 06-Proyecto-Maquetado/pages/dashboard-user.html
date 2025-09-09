@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Usuario - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">TravelApp</h1>
+                    <p class="user-welcome" id="userWelcome">¡Hola Usuario!</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">👤</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Estadísticas Rápidas -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-info">
+                            <h3>0</h3>
+                            <p>Viajes Planificados</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-info">
+                            <h3>0</h3>
+                            <p>Reservas Activas</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <h3>$0</h3>
+                            <p>Ahorrado</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Acciones Rápidas -->
+            <section class="actions-section">
+                <h2>¿Qué quieres hacer hoy?</h2>
+                <div class="actions-grid">
+                    <div class="action-card" onclick="Navigation.goTo('destinos.html')">
+                        <div class="action-icon">🌍</div>
+                        <h3>Explorar Destinos</h3>
+                        <p>Descubre nuevos lugares para visitar</p>
+                    </div>
+                    <div class="action-card" onclick="Navigation.goTo('vehiculos.html')">
+                        <div class="action-icon">🚗</div>
+                        <h3>Reservar Transporte</h3>
+                        <p>Encuentra el transporte perfecto</p>
+                    </div>
+                    <div class="action-card" onclick="showReservas()">
+                        <div class="action-icon">📋</div>
+                        <h3>Mis Reservas</h3>
+                        <p>Gestiona tus reservas activas</p>
+                    </div>
+                    <div class="action-card" onclick="showPromociones()">
+                        <div class="action-icon">🔥</div>
+                        <h3>Ofertas Especiales</h3>
+                        <p>No te pierdas las mejores promociones</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Destinos Populares -->
+            <section class="destinos-section">
+                <h2>Destinos Populares</h2>
+                <div class="destinos-grid" id="destinosGrid">
+                    <!-- Se cargarán dinámicamente -->
+                </div>
+            </section>
+
+            <!-- Historial de Actividad -->
+            <section class="activity-section">
+                <h2>Actividad Reciente</h2>
+                <div class="activity-list" id="activityList">
+                    <div class="activity-item">
+                        <div class="activity-icon">🎉</div>
+                        <div class="activity-content">
+                            <h4>¡Bienvenido a TravelApp!</h4>
+                            <p>Tu cuenta ha sido creada exitosamente</p>
+                            <span class="activity-time">Hace unos momentos</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Reservas -->
+    <div id="reservasModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Mis Reservas</h3>
+                <span class="close" onclick="Modal.hide('reservasModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="reservas-list" id="reservasList">
+                    <div class="no-reservas">
+                        <div class="no-reservas-icon">📋</div>
+                        <h4>No tienes reservas aún</h4>
+                        <p>¡Comienza explorando nuestros destinos!</p>
+                        <button class="btn btn-primary" onclick="Modal.hide('reservasModal'); Navigation.goTo('destinos.html')">
+                            Explorar Destinos
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Promociones -->
+    <div id="promocionesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Ofertas Especiales</h3>
+                <span class="close" onclick="Modal.hide('promocionesModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="promociones-list" id="promocionesList">
+                    <!-- Se cargarán dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="user-inicio.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Inicio</span>
+            </a>
+            <a href="user-paquetes.html" class="nav-item">
+                <span class="nav-icon">📦</span>
+                <span>Paquetes</span>
+            </a>
+            <a href="user-transportes.html" class="nav-item">
+                <span class="nav-icon">🚗</span>
+                <span>Transportes</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showUserMenu()">
+                <span class="nav-icon">👤</span>
+                <span>Mi Cuenta</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-user.js"></script>
+</body>
+</html>

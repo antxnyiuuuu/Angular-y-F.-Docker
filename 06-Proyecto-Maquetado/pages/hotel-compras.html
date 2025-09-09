@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compras del Hotel - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/provider.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">Hotel Paradise Resort</h1>
+                    <p class="user-welcome">Compras y Reservas</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">🏨</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Estadísticas de Compras -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🛒</div>
+                        <div class="stat-info">
+                            <h3 id="totalCompras">234</h3>
+                            <p>Compras Totales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-info">
+                            <h3 id="comprasConfirmadas">198</h3>
+                            <p>Confirmadas</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <h3 id="ingresosTotales">$45,230</h3>
+                            <p>Ingresos Totales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-info">
+                            <h3 id="comprasHoy">12</h3>
+                            <p>Compras Hoy</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Filtros de Compras -->
+            <section class="filtros-section">
+                <h2>Filtrar Compras</h2>
+                <div class="filtros-grid">
+                    <div class="filtro-group">
+                        <label for="filtroEstado">Estado</label>
+                        <select id="filtroEstado" class="form-select">
+                            <option value="">Todos los estados</option>
+                            <option value="pendiente">Pendientes</option>
+                            <option value="confirmada">Confirmadas</option>
+                            <option value="cancelada">Canceladas</option>
+                            <option value="completada">Completadas</option>
+                        </select>
+                    </div>
+                    <div class="filtro-group">
+                        <label for="filtroFecha">Fecha</label>
+                        <select id="filtroFecha" class="form-select">
+                            <option value="">Todas las fechas</option>
+                            <option value="hoy">Hoy</option>
+                            <option value="semana">Esta semana</option>
+                            <option value="mes">Este mes</option>
+                            <option value="personalizada">Personalizada</option>
+                        </select>
+                    </div>
+                    <div class="filtro-group">
+                        <label for="filtroHabitacion">Habitación</label>
+                        <select id="filtroHabitacion" class="form-select">
+                            <option value="">Todas las habitaciones</option>
+                            <option value="deluxe">Habitación Deluxe</option>
+                            <option value="presidencial">Suite Presidencial</option>
+                            <option value="bungalow">Bungalow Playa</option>
+                        </select>
+                    </div>
+                    <div class="filtro-group">
+                        <button class="btn btn-primary" onclick="filtrarCompras()">
+                            Filtrar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lista de Compras -->
+            <section class="compras-section">
+                <h2>Compras de Clientes</h2>
+                <div class="compras-list">
+                    <div class="compra-item">
+                        <div class="compra-header">
+                            <div class="compra-info">
+                                <h3>María González</h3>
+                                <p>maria.gonzalez@email.com</p>
+                                <span class="compra-id">ID: #C001</span>
+                            </div>
+                            <div class="compra-status">
+                                <span class="status-badge status-confirmada">Confirmada</span>
+                            </div>
+                        </div>
+                        <div class="compra-details">
+                            <div class="compra-habitacion">
+                                <h4>Habitación Deluxe</h4>
+                                <p>2 noches - Check-in: 15/01/2024</p>
+                            </div>
+                            <div class="compra-precio">
+                                <span class="precio-total">$300</span>
+                                <span class="precio-detalle">$150/noche</span>
+                            </div>
+                        </div>
+                        <div class="compra-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesCompra('C001')">
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="confirmarCheckin('C001')">
+                                Check-in
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="contactarCliente('C001')">
+                                Contactar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="compra-item">
+                        <div class="compra-header">
+                            <div class="compra-info">
+                                <h3>Carlos Rodríguez</h3>
+                                <p>carlos.rodriguez@email.com</p>
+                                <span class="compra-id">ID: #C002</span>
+                            </div>
+                            <div class="compra-status">
+                                <span class="status-badge status-pendiente">Pendiente</span>
+                            </div>
+                        </div>
+                        <div class="compra-details">
+                            <div class="compra-habitacion">
+                                <h4>Suite Presidencial</h4>
+                                <p>3 noches - Check-in: 20/01/2024</p>
+                            </div>
+                            <div class="compra-precio">
+                                <span class="precio-total">$900</span>
+                                <span class="precio-detalle">$300/noche</span>
+                            </div>
+                        </div>
+                        <div class="compra-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesCompra('C002')">
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="confirmarReserva('C002')">
+                                Confirmar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="cancelarReserva('C002')">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="compra-item">
+                        <div class="compra-header">
+                            <div class="compra-info">
+                                <h3>Ana Martínez</h3>
+                                <p>ana.martinez@email.com</p>
+                                <span class="compra-id">ID: #C003</span>
+                            </div>
+                            <div class="compra-status">
+                                <span class="status-badge status-checkin">Check-in</span>
+                            </div>
+                        </div>
+                        <div class="compra-details">
+                            <div class="compra-habitacion">
+                                <h4>Bungalow Playa</h4>
+                                <p>1 noche - Check-in: 14/01/2024</p>
+                            </div>
+                            <div class="compra-precio">
+                                <span class="precio-total">$200</span>
+                                <span class="precio-detalle">$200/noche</span>
+                            </div>
+                        </div>
+                        <div class="compra-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesCompra('C003')">
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="gestionarEstadia('C003')">
+                                Gestionar
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="procesarCheckout('C003')">
+                                Check-out
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="compra-item">
+                        <div class="compra-header">
+                            <div class="compra-info">
+                                <h3>Luis Fernández</h3>
+                                <p>luis.fernandez@email.com</p>
+                                <span class="compra-id">ID: #C004</span>
+                            </div>
+                            <div class="compra-status">
+                                <span class="status-badge status-completada">Completada</span>
+                            </div>
+                        </div>
+                        <div class="compra-details">
+                            <div class="compra-habitacion">
+                                <h4>Habitación Deluxe</h4>
+                                <p>2 noches - Check-out: 12/01/2024</p>
+                            </div>
+                            <div class="compra-precio">
+                                <span class="precio-total">$300</span>
+                                <span class="precio-detalle">$150/noche</span>
+                            </div>
+                        </div>
+                        <div class="compra-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesCompra('C004')">
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-sm btn-secondary" onclick="verResena('C004')">
+                                Ver Reseña
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="contactarCliente('C004')">
+                                Contactar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="compra-item">
+                        <div class="compra-header">
+                            <div class="compra-info">
+                                <h3>Patricia López</h3>
+                                <p>patricia.lopez@email.com</p>
+                                <span class="compra-id">ID: #C005</span>
+                            </div>
+                            <div class="compra-status">
+                                <span class="status-badge status-cancelada">Cancelada</span>
+                            </div>
+                        </div>
+                        <div class="compra-details">
+                            <div class="compra-habitacion">
+                                <h4>Suite Presidencial</h4>
+                                <p>2 noches - Cancelada: 10/01/2024</p>
+                            </div>
+                            <div class="compra-precio">
+                                <span class="precio-total">$600</span>
+                                <span class="precio-detalle">$300/noche</span>
+                            </div>
+                        </div>
+                        <div class="compra-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesCompra('C005')">
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="verRazonCancelacion('C005')">
+                                Ver Razón
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resumen de Ingresos -->
+            <section class="ingresos-section">
+                <h2>Resumen de Ingresos</h2>
+                <div class="ingresos-grid">
+                    <div class="ingreso-card">
+                        <h3>💰 Ingresos del Mes</h3>
+                        <div class="ingreso-amount">$45,230</div>
+                        <div class="ingreso-change positive">+22% vs mes anterior</div>
+                    </div>
+                    <div class="ingreso-card">
+                        <h3>📊 Promedio por Reserva</h3>
+                        <div class="ingreso-amount">$193</div>
+                        <div class="ingreso-change positive">+8% vs mes anterior</div>
+                    </div>
+                    <div class="ingreso-card">
+                        <h3>🏆 Mejor Día</h3>
+                        <div class="ingreso-amount">$3,450</div>
+                        <div class="ingreso-date">15 de Enero</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal Detalles de Compra -->
+    <div id="detallesCompraModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Detalles de la Compra</h3>
+                <span class="close" onclick="Modal.hide('detallesCompraModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="compra-detalles" id="compraDetalles">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="hotel-home.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="hotel-editar.html" class="nav-item">
+                <span class="nav-icon">✏️</span>
+                <span>Editar</span>
+            </a>
+            <a href="hotel-compras.html" class="nav-item active">
+                <span class="nav-icon">🛒</span>
+                <span>Compras</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showUserMenu()">
+                <span class="nav-icon">👤</span>
+                <span>Mi Cuenta</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-hotel.js"></script>
+    <script>
+        function filtrarCompras() {
+            const estado = document.getElementById('filtroEstado').value;
+            const fecha = document.getElementById('filtroFecha').value;
+            const habitacion = document.getElementById('filtroHabitacion').value;
+            alert(`Filtrando compras: Estado: ${estado}, Fecha: ${fecha}, Habitación: ${habitacion}`);
+        }
+
+        function verDetallesCompra(compraId) {
+            Modal.show('detallesCompraModal');
+            // Aquí cargarías los detalles de la compra
+        }
+
+        function confirmarReserva(compraId) {
+            if (confirm(`¿Confirmar la reserva ${compraId}?`)) {
+                alert(`Reserva ${compraId} confirmada`);
+            }
+        }
+
+        function cancelarReserva(compraId) {
+            if (confirm(`¿Cancelar la reserva ${compraId}?`)) {
+                alert(`Reserva ${compraId} cancelada`);
+            }
+        }
+
+        function confirmarCheckin(compraId) {
+            alert(`Check-in confirmado para ${compraId}`);
+        }
+
+        function procesarCheckout(compraId) {
+            if (confirm(`¿Procesar check-out para ${compraId}?`)) {
+                alert(`Check-out procesado para ${compraId}`);
+            }
+        }
+
+        function gestionarEstadia(compraId) {
+            alert(`Gestionando estadía para ${compraId}`);
+        }
+
+        function contactarCliente(compraId) {
+            alert(`Contactando cliente de ${compraId}`);
+        }
+
+        function verResena(compraId) {
+            alert(`Viendo reseña de ${compraId}`);
+        }
+
+        function verRazonCancelacion(compraId) {
+            alert(`Viendo razón de cancelación de ${compraId}`);
+        }
+    </script>
+</body>
+</html>

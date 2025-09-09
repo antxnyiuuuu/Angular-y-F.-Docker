@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Restaurante - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/registro.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">Registro de Restaurante</h1>
+                    <p class="user-welcome">Registra tu restaurante</p>
+                </div>
+                <div class="user-avatar">🍽️</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar form-page">
+        <div class="container">
+            <!-- Formulario de Registro de Restaurante -->
+            <section class="registro-section">
+                <div class="registro-card">
+                    <div class="registro-header">
+                        <h2>Información del Restaurante</h2>
+                        <p>Completa los datos de tu restaurante</p>
+                    </div>
+                    
+                    <form id="registroRestauranteForm" class="registro-form">
+                        <!-- Información Básica -->
+                        <div class="form-section">
+                            <h3>Información Básica</h3>
+                            
+                            <div class="form-group">
+                                <label for="nombreRestaurante">Nombre del Restaurante *</label>
+                                <input type="text" id="nombreRestaurante" name="nombre" required 
+                                       placeholder="Ej: La Casa del Sabor">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="tipoRestaurante">Tipo de Restaurante *</label>
+                                <select id="tipoRestaurante" name="tipo" required>
+                                    <option value="">Selecciona el tipo</option>
+                                    <option value="mexicana">Mexicana</option>
+                                    <option value="internacional">Internacional</option>
+                                    <option value="italiana">Italiana</option>
+                                    <option value="asiatica">Asiática</option>
+                                    <option value="mariscos">Mariscos</option>
+                                    <option value="carnes">Carnes</option>
+                                    <option value="vegetariana">Vegetariana</option>
+                                    <option value="vegana">Vegana</option>
+                                    <option value="cafe">Café</option>
+                                    <option value="bar">Bar</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="descripcionRestaurante">Descripción *</label>
+                                <textarea id="descripcionRestaurante" name="descripcion" required 
+                                          placeholder="Describe tu restaurante, especialidades, ambiente..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="ubicacionRestaurante">Ubicación *</label>
+                                <input type="text" id="ubicacionRestaurante" name="ubicacion" required 
+                                       placeholder="Ej: Playa del Carmen, Quintana Roo">
+                            </div>
+                        </div>
+                        
+                        <!-- Detalles del Restaurante -->
+                        <div class="form-section">
+                            <h3>Detalles del Restaurante</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="capacidadRestaurante">Capacidad *</label>
+                                    <input type="number" id="capacidadRestaurante" name="capacidad" required 
+                                           placeholder="50" min="1">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="precioRangoRestaurante">Rango de Precios *</label>
+                                    <select id="precioRangoRestaurante" name="precio_rango" required>
+                                        <option value="">Selecciona el rango</option>
+                                        <option value="$">$ - Económico</option>
+                                        <option value="$$">$$ - Moderado</option>
+                                        <option value="$$$">$$$ - Caro</option>
+                                        <option value="$$$$">$$$$ - Muy Caro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="especialidadesRestaurante">Especialidades</label>
+                                <textarea id="especialidadesRestaurante" name="especialidades" 
+                                          placeholder="Ej: Tacos al pastor, Ceviche, Mole poblano..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="serviciosRestaurante">Servicios Adicionales</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="servicios" value="wifi">
+                                        <span>WiFi Gratuito</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="servicios" value="estacionamiento">
+                                        <span>Estacionamiento</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="servicios" value="aire_acondicionado">
+                                        <span>Aire Acondicionado</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="servicios" value="terraza">
+                                        <span>Terraza</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="servicios" value="musica_en_vivo">
+                                        <span>Música en Vivo</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="servicios" value="delivery">
+                                        <span>Delivery</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Horarios -->
+                        <div class="form-section">
+                            <h3>Horarios de Atención</h3>
+                            
+                            <div class="form-group">
+                                <label for="horariosRestaurante">Horarios *</label>
+                                <textarea id="horariosRestaurante" name="horarios" required 
+                                          placeholder="Ej: Lunes a Domingo: 7:00 AM - 11:00 PM"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="diasDescansoRestaurante">Días de Descanso</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="dias_descanso" value="lunes">
+                                        <span>Lunes</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="dias_descanso" value="martes">
+                                        <span>Martes</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="dias_descanso" value="miercoles">
+                                        <span>Miércoles</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="dias_descanso" value="jueves">
+                                        <span>Jueves</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="dias_descanso" value="viernes">
+                                        <span>Viernes</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="dias_descanso" value="sabado">
+                                        <span>Sábado</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="dias_descanso" value="domingo">
+                                        <span>Domingo</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Información de Contacto -->
+                        <div class="form-section">
+                            <h3>Información de Contacto</h3>
+                            
+                            <div class="form-group">
+                                <label for="nombrePropietario">Nombre del Propietario/Responsable *</label>
+                                <input type="text" id="nombrePropietario" name="nombrePropietario" required 
+                                       placeholder="Tu nombre completo">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="telefonoRestaurante">Teléfono de Contacto *</label>
+                                <input type="tel" id="telefonoRestaurante" name="telefono" required 
+                                       placeholder="+52 55 1234 5678">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="emailRestaurante">Email de Contacto *</label>
+                                <input type="email" id="emailRestaurante" name="email" required 
+                                       placeholder="restaurante@email.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="experienciaRestaurante">Años de Experiencia</label>
+                                <input type="number" id="experienciaRestaurante" name="experiencia" 
+                                       placeholder="5" min="0">
+                            </div>
+                        </div>
+                        
+                        <!-- Términos y Condiciones -->
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="terminosRestaurante" name="terminos" required>
+                                    <span>Acepto los <a href="#" onclick="showTerminos()">términos y condiciones</a> del servicio *</span>
+                                </label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="verificacionRestaurante" name="verificacion">
+                                    <span>Autorizo la verificación de mi información y establecimiento</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Botones de Acción -->
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="cancelarRegistro()">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                Registrar Restaurante
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Términos y Condiciones -->
+    <div id="terminosModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Términos y Condiciones</h3>
+                <span class="close" onclick="Modal.hide('terminosModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="terminos-content">
+                    <h4>1. Registro de Restaurante</h4>
+                    <p>Al registrar tu restaurante, te comprometes a proporcionar información veraz y actualizada.</p>
+                    
+                    <h4>2. Verificación</h4>
+                    <p>Nos reservamos el derecho de verificar la información y visitar el establecimiento.</p>
+                    
+                    <h4>3. Responsabilidades</h4>
+                    <p>Eres responsable de la calidad de la comida y el servicio al cliente.</p>
+                    
+                    <h4>4. Comisiones</h4>
+                    <p>TravelApp cobra una comisión del 8% por cada reserva exitosa.</p>
+                    
+                    <h4>5. Cancelaciones</h4>
+                    <p>Las cancelaciones deben notificarse con al menos 2 horas de anticipación.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="../index.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Inicio</span>
+                </a>
+            <a href="dashboard-restaurante.html" class="nav-item">
+                <span class="nav-icon">🍽️</span>
+                <span>Restaurante</span>
+            </a>
+            <a href="registro-restaurante.html" class="nav-item active">
+                <span class="nav-icon">➕</span>
+                <span>Registrar</span>
+            </a>
+            <a href="#" class="nav-item" onclick="logout()">
+                <span class="nav-icon">🚪</span>
+                <span>Salir</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/registro-restaurante.js"></script>
+</body>
+</html>

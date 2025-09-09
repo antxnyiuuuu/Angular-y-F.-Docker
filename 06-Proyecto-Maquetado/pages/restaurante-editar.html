@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Restaurante - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/provider.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">Restaurante El Dorado</h1>
+                    <p class="user-welcome">Editar Información</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">🍽️</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Información General del Restaurante -->
+            <section class="info-section">
+                <h2>Información General</h2>
+                <div class="info-card">
+                    <form id="formInfoGeneral" class="restaurante-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nombreRestaurante">Nombre del Restaurante</label>
+                                <input type="text" id="nombreRestaurante" class="form-input" value="Restaurante El Dorado" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="tipoCocina">Tipo de Cocina</label>
+                                <select id="tipoCocina" class="form-select" required>
+                                    <option value="internacional">Internacional</option>
+                                    <option value="italiana" selected>Italiana</option>
+                                    <option value="mexicana">Mexicana</option>
+                                    <option value="asiatica">Asiática</option>
+                                    <option value="mediterranea">Mediterránea</option>
+                                    <option value="gourmet">Gourmet</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="descripcionRestaurante">Descripción</label>
+                            <textarea id="descripcionRestaurante" class="form-textarea" rows="4" required>Restaurante gourmet especializado en cocina italiana con ingredientes frescos y recetas tradicionales.</textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="direccionRestaurante">Dirección</label>
+                                <input type="text" id="direccionRestaurante" class="form-input" value="Av. Principal 456, Centro" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="telefonoRestaurante">Teléfono</label>
+                                <input type="tel" id="telefonoRestaurante" class="form-input" value="+1 555-0456" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="horarioApertura">Horario de Apertura</label>
+                                <input type="time" id="horarioApertura" class="form-input" value="12:00" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="horarioCierre">Horario de Cierre</label>
+                                <input type="time" id="horarioCierre" class="form-input" value="23:00" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailRestaurante">Email</label>
+                            <input type="email" id="emailRestaurante" class="form-input" value="info@eldorado.com" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            Guardar Información
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Gestión de Menú -->
+            <section class="menu-section">
+                <h2>Gestión del Menú</h2>
+                <div class="menu-header">
+                    <button class="btn btn-success" onclick="mostrarModalAgregarPlato()">
+                        + Agregar Plato
+                    </button>
+                </div>
+                
+                <div class="menu-categories">
+                    <div class="category-section">
+                        <h3>🍽️ Platos Principales</h3>
+                        <div class="platos-list">
+                            <div class="plato-item">
+                                <div class="plato-image">🍝</div>
+                                <div class="plato-info">
+                                    <h4>Pasta Carbonara</h4>
+                                    <p>Pasta italiana con panceta y queso parmesano</p>
+                                    <div class="plato-details">
+                                        <span class="plato-precio">$18</span>
+                                        <span class="plato-popularidad">⭐⭐⭐⭐⭐</span>
+                                    </div>
+                                </div>
+                                <div class="plato-actions">
+                                    <button class="btn btn-sm btn-info" onclick="editarPlato(1)">
+                                        Editar
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" onclick="gestionarDisponibilidad(1)">
+                                        Disponibilidad
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="eliminarPlato(1)">
+                                        Eliminar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="plato-item">
+                                <div class="plato-image">🥩</div>
+                                <div class="plato-info">
+                                    <h4>Bistec a la Parrilla</h4>
+                                    <p>Carne premium con guarniciones gourmet</p>
+                                    <div class="plato-details">
+                                        <span class="plato-precio">$32</span>
+                                        <span class="plato-popularidad">⭐⭐⭐⭐⭐</span>
+                                    </div>
+                                </div>
+                                <div class="plato-actions">
+                                    <button class="btn btn-sm btn-info" onclick="editarPlato(2)">
+                                        Editar
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" onclick="gestionarDisponibilidad(2)">
+                                        Disponibilidad
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="eliminarPlato(2)">
+                                        Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category-section">
+                        <h3>🥗 Entradas</h3>
+                        <div class="platos-list">
+                            <div class="plato-item">
+                                <div class="plato-image">🥗</div>
+                                <div class="plato-info">
+                                    <h4>Ensalada César</h4>
+                                    <p>Lechuga fresca con aderezo césar y crutones</p>
+                                    <div class="plato-details">
+                                        <span class="plato-precio">$12</span>
+                                        <span class="plato-popularidad">⭐⭐⭐⭐</span>
+                                    </div>
+                                </div>
+                                <div class="plato-actions">
+                                    <button class="btn btn-sm btn-info" onclick="editarPlato(3)">
+                                        Editar
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" onclick="gestionarDisponibilidad(3)">
+                                        Disponibilidad
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="eliminarPlato(3)">
+                                        Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category-section">
+                        <h3>🍰 Postres</h3>
+                        <div class="platos-list">
+                            <div class="plato-item">
+                                <div class="plato-image">🍰</div>
+                                <div class="plato-info">
+                                    <h4>Tiramisú</h4>
+                                    <p>Postre italiano tradicional con café y mascarpone</p>
+                                    <div class="plato-details">
+                                        <span class="plato-precio">$8</span>
+                                        <span class="plato-popularidad">⭐⭐⭐⭐⭐</span>
+                                    </div>
+                                </div>
+                                <div class="plato-actions">
+                                    <button class="btn btn-sm btn-info" onclick="editarPlato(4)">
+                                        Editar
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" onclick="gestionarDisponibilidad(4)">
+                                        Disponibilidad
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="eliminarPlato(4)">
+                                        Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gestión de Fotos -->
+            <section class="fotos-section">
+                <h2>Fotos del Restaurante</h2>
+                <div class="fotos-header">
+                    <button class="btn btn-primary" onclick="mostrarModalSubirFoto()">
+                        + Subir Fotos
+                    </button>
+                </div>
+                
+                <div class="fotos-grid">
+                    <div class="foto-item">
+                        <div class="foto-preview">📷</div>
+                        <div class="foto-info">
+                            <h4>Vista Principal del Restaurante</h4>
+                            <p>Imagen principal</p>
+                        </div>
+                        <div class="foto-actions">
+                            <button class="btn btn-sm btn-warning" onclick="editarFoto(1)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarFoto(1)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="foto-item">
+                        <div class="foto-preview">📷</div>
+                        <div class="foto-info">
+                            <h4>Interior del Restaurante</h4>
+                            <p>Ambiente y decoración</p>
+                        </div>
+                        <div class="foto-actions">
+                            <button class="btn btn-sm btn-warning" onclick="editarFoto(2)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarFoto(2)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="foto-item">
+                        <div class="foto-preview">📷</div>
+                        <div class="foto-info">
+                            <h4>Platos Destacados</h4>
+                            <p>Galería de platos</p>
+                        </div>
+                        <div class="foto-actions">
+                            <button class="btn btn-sm btn-warning" onclick="editarFoto(3)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarFoto(3)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal Agregar Plato -->
+    <div id="modalAgregarPlato" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Agregar Nuevo Plato</h3>
+                <span class="close" onclick="Modal.hide('modalAgregarPlato')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formAgregarPlato" class="plato-form">
+                    <div class="form-group">
+                        <label for="nombrePlato">Nombre del Plato</label>
+                        <input type="text" id="nombrePlato" class="form-input" placeholder="Ej: Pasta Carbonara" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="precioPlato">Precio</label>
+                        <input type="number" id="precioPlato" class="form-input" min="0" step="0.01" placeholder="0.00" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="detallesPlato">Detalles del Plato</label>
+                        <textarea id="detallesPlato" class="form-textarea" rows="3" placeholder="Descripción detallada del plato, ingredientes, preparación..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="categoriaPlato">Categoría</label>
+                        <select id="categoriaPlato" class="form-select" required>
+                            <option value="">Seleccionar categoría</option>
+                            <option value="entrada">Entrada</option>
+                            <option value="principal">Plato Principal</option>
+                            <option value="postre">Postre</option>
+                            <option value="bebida">Bebida</option>
+                            <option value="especialidad">Especialidad</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="imagenPlato">Imagen del Plato</label>
+                        <input type="file" id="imagenPlato" class="form-input" accept="image/*" required>
+                        <small class="form-help">La imagen es muy importante para mostrar el plato a los clientes</small>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="Modal.hide('modalAgregarPlato')">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            Agregar Plato
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Subir Foto -->
+    <div id="modalSubirFoto" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Subir Foto del Restaurante</h3>
+                <span class="close" onclick="Modal.hide('modalSubirFoto')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formSubirFoto" class="foto-form">
+                    <div class="form-group">
+                        <label for="archivoFoto">Archivo de Foto</label>
+                        <input type="file" id="archivoFoto" class="form-input" accept="image/*" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tituloFoto">Título</label>
+                        <input type="text" id="tituloFoto" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="descripcionFoto">Descripción</label>
+                        <textarea id="descripcionFoto" class="form-textarea" rows="2"></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="Modal.hide('modalSubirFoto')">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            Subir Foto
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="restaurante-home.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="restaurante-editar.html" class="nav-item active">
+                <span class="nav-icon">✏️</span>
+                <span>Editar</span>
+            </a>
+            <a href="restaurante-compras.html" class="nav-item">
+                <span class="nav-icon">🛒</span>
+                <span>Compras</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showUserMenu()">
+                <span class="nav-icon">👤</span>
+                <span>Mi Cuenta</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-restaurante.js"></script>
+    <script>
+        function mostrarModalAgregarPlato() {
+            Modal.show('modalAgregarPlato');
+        }
+
+        function mostrarModalSubirFoto() {
+            Modal.show('modalSubirFoto');
+        }
+
+        function editarPlato(platoId) {
+            alert(`Editando plato ${platoId}`);
+        }
+
+        function gestionarDisponibilidad(platoId) {
+            alert(`Gestionando disponibilidad del plato ${platoId}`);
+        }
+
+        function eliminarPlato(platoId) {
+            if (confirm(`¿Estás seguro de eliminar el plato ${platoId}?`)) {
+                alert(`Plato ${platoId} eliminado`);
+            }
+        }
+
+        function editarFoto(fotoId) {
+            alert(`Editando foto ${fotoId}`);
+        }
+
+        function eliminarFoto(fotoId) {
+            if (confirm(`¿Estás seguro de eliminar esta foto?`)) {
+                alert(`Foto ${fotoId} eliminada`);
+            }
+        }
+
+        // Manejar envío de formularios
+        document.getElementById('formInfoGeneral').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Información del restaurante actualizada');
+        });
+
+        document.getElementById('formAgregarPlato').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Plato agregado exitosamente');
+            Modal.hide('modalAgregarPlato');
+        });
+
+        document.getElementById('formSubirFoto').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Foto subida exitosamente');
+            Modal.hide('modalSubirFoto');
+        });
+    </script>
+</body>
+</html>

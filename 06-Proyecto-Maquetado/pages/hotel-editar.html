@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Hotel - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/provider.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">Hotel Paradise Resort</h1>
+                    <p class="user-welcome">Editar Información</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">🏨</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Información General del Hotel -->
+            <section class="info-section">
+                <h2>Información General</h2>
+                <div class="info-card">
+                    <form id="formInfoGeneral" class="hotel-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nombreHotel">Nombre del Hotel</label>
+                                <input type="text" id="nombreHotel" class="form-input" value="Hotel Paradise Resort" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoriaHotel">Categoría</label>
+                                <select id="categoriaHotel" class="form-select" required>
+                                    <option value="3">3 Estrellas</option>
+                                    <option value="4" selected>4 Estrellas</option>
+                                    <option value="5">5 Estrellas</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="descripcionHotel">Descripción</label>
+                            <textarea id="descripcionHotel" class="form-textarea" rows="4" required>Hotel de lujo ubicado frente al mar con todas las comodidades para una estadía perfecta.</textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="direccionHotel">Dirección</label>
+                                <input type="text" id="direccionHotel" class="form-input" value="Av. del Mar 123, Playa Paradise" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="telefonoHotel">Teléfono</label>
+                                <input type="tel" id="telefonoHotel" class="form-input" value="+1 555-0123" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailHotel">Email</label>
+                            <input type="email" id="emailHotel" class="form-input" value="info@hotelparadise.com" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            Guardar Información
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Gestión de Habitaciones -->
+            <section class="habitaciones-section">
+                <h2>Gestión de Habitaciones</h2>
+                <div class="habitaciones-header">
+                    <button class="btn btn-success" onclick="mostrarModalAgregarHabitacion()">
+                        + Agregar Habitación
+                    </button>
+                </div>
+                
+                <div class="habitaciones-list">
+                    <div class="habitacion-item">
+                        <div class="habitacion-image">🛏️</div>
+                        <div class="habitacion-info">
+                            <h3>Habitación Deluxe</h3>
+                            <p>Vista al mar, 2 personas, WiFi, A/C, TV</p>
+                            <div class="habitacion-details">
+                                <span class="habitacion-precio">$150/noche</span>
+                                <span class="habitacion-disponibles">12 disponibles</span>
+                            </div>
+                        </div>
+                        <div class="habitacion-actions">
+                            <button class="btn btn-sm btn-info" onclick="editarHabitacion(1)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="gestionarDisponibilidad(1)">
+                                Disponibilidad
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarHabitacion(1)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="habitacion-item">
+                        <div class="habitacion-image">🏨</div>
+                        <div class="habitacion-info">
+                            <h3>Suite Presidencial</h3>
+                            <p>Lujo total, 4 personas, Jacuzzi, Bar</p>
+                            <div class="habitacion-details">
+                                <span class="habitacion-precio">$300/noche</span>
+                                <span class="habitacion-disponibles">2 disponibles</span>
+                            </div>
+                        </div>
+                        <div class="habitacion-actions">
+                            <button class="btn btn-sm btn-info" onclick="editarHabitacion(2)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="gestionarDisponibilidad(2)">
+                                Disponibilidad
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarHabitacion(2)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="habitacion-item">
+                        <div class="habitacion-image">🏖️</div>
+                        <div class="habitacion-info">
+                            <h3>Bungalow Playa</h3>
+                            <p>Acceso directo a la playa, 2 personas</p>
+                            <div class="habitacion-details">
+                                <span class="habitacion-precio">$200/noche</span>
+                                <span class="habitacion-disponibles">8 disponibles</span>
+                            </div>
+                        </div>
+                        <div class="habitacion-actions">
+                            <button class="btn btn-sm btn-info" onclick="editarHabitacion(3)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="gestionarDisponibilidad(3)">
+                                Disponibilidad
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarHabitacion(3)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gestión de Espacios -->
+            <section class="espacios-section">
+                <h2>Espacios Disponibles</h2>
+                <div class="espacios-grid">
+                    <div class="espacio-card">
+                        <div class="espacio-icon">🏊</div>
+                        <h3>Piscina</h3>
+                        <p>Piscina principal con vista al mar</p>
+                        <div class="espacio-status">
+                            <span class="status-badge status-activo">Disponible</span>
+                        </div>
+                        <button class="btn btn-sm btn-warning" onclick="editarEspacio('piscina')">
+                            Editar
+                        </button>
+                    </div>
+
+                    <div class="espacio-card">
+                        <div class="espacio-icon">🍽️</div>
+                        <h3>Restaurante</h3>
+                        <p>Restaurante gourmet con terraza</p>
+                        <div class="espacio-status">
+                            <span class="status-badge status-activo">Disponible</span>
+                        </div>
+                        <button class="btn btn-sm btn-warning" onclick="editarEspacio('restaurante')">
+                            Editar
+                        </button>
+                    </div>
+
+                    <div class="espacio-card">
+                        <div class="espacio-icon">🏋️</div>
+                        <h3>Gimnasio</h3>
+                        <p>Gimnasio equipado 24/7</p>
+                        <div class="espacio-status">
+                            <span class="status-badge status-activo">Disponible</span>
+                        </div>
+                        <button class="btn btn-sm btn-warning" onclick="editarEspacio('gimnasio')">
+                            Editar
+                        </button>
+                    </div>
+
+                    <div class="espacio-card">
+                        <div class="espacio-icon">🅿️</div>
+                        <h3>Estacionamiento</h3>
+                        <p>Estacionamiento cubierto</p>
+                        <div class="espacio-status">
+                            <span class="status-badge status-activo">Disponible</span>
+                        </div>
+                        <button class="btn btn-sm btn-warning" onclick="editarEspacio('estacionamiento')">
+                            Editar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gestión de Fotos y Videos -->
+            <section class="multimedia-section">
+                <h2>Fotos y Videos</h2>
+                <div class="multimedia-header">
+                    <button class="btn btn-primary" onclick="mostrarModalSubirMultimedia()">
+                        + Subir Fotos/Videos
+                    </button>
+                </div>
+                
+                <div class="multimedia-grid">
+                    <div class="multimedia-item">
+                        <div class="multimedia-preview">📷</div>
+                        <div class="multimedia-info">
+                            <h4>Vista Principal del Hotel</h4>
+                            <p>Imagen principal</p>
+                        </div>
+                        <div class="multimedia-actions">
+                            <button class="btn btn-sm btn-warning" onclick="editarMultimedia(1)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarMultimedia(1)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="multimedia-item">
+                        <div class="multimedia-preview">🎥</div>
+                        <div class="multimedia-info">
+                            <h4>Tour Virtual del Hotel</h4>
+                            <p>Video promocional</p>
+                        </div>
+                        <div class="multimedia-actions">
+                            <button class="btn btn-sm btn-warning" onclick="editarMultimedia(2)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarMultimedia(2)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="multimedia-item">
+                        <div class="multimedia-preview">📷</div>
+                        <div class="multimedia-info">
+                            <h4>Habitación Deluxe</h4>
+                            <p>Galería de habitaciones</p>
+                        </div>
+                        <div class="multimedia-actions">
+                            <button class="btn btn-sm btn-warning" onclick="editarMultimedia(3)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarMultimedia(3)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal Agregar Habitación -->
+    <div id="modalAgregarHabitacion" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Agregar Nueva Habitación</h3>
+                <span class="close" onclick="Modal.hide('modalAgregarHabitacion')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formAgregarHabitacion" class="habitacion-form">
+                    <div class="form-group">
+                        <label for="tipoHabitacion">Tipo de Habitación</label>
+                        <select id="tipoHabitacion" class="form-select" required>
+                            <option value="">Seleccionar tipo</option>
+                            <option value="standard">Standard</option>
+                            <option value="deluxe">Deluxe</option>
+                            <option value="suite">Suite</option>
+                            <option value="presidencial">Presidencial</option>
+                            <option value="bungalow">Bungalow</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="detalleHabitacion">Detalle de la Habitación</label>
+                        <textarea id="detalleHabitacion" class="form-textarea" rows="3" placeholder="Descripción detallada de la habitación..." required></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="personasHabitacion">Número de Personas</label>
+                            <input type="number" id="personasHabitacion" class="form-input" min="1" max="10" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="precioHabitacion">Precio por Noche</label>
+                            <input type="number" id="precioHabitacion" class="form-input" min="0" step="0.01" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="imagenHabitacion">Imagen de la Habitación</label>
+                        <input type="file" id="imagenHabitacion" class="form-input" accept="image/*" required>
+                        <small class="form-help">La imagen es muy importante para mostrar la habitación a los clientes</small>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="Modal.hide('modalAgregarHabitacion')">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            Agregar Habitación
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Subir Multimedia -->
+    <div id="modalSubirMultimedia" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Subir Fotos y Videos</h3>
+                <span class="close" onclick="Modal.hide('modalSubirMultimedia')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formSubirMultimedia" class="multimedia-form">
+                    <div class="form-group">
+                        <label for="tipoMultimedia">Tipo de Archivo</label>
+                        <select id="tipoMultimedia" class="form-select" required>
+                            <option value="">Seleccionar tipo</option>
+                            <option value="foto">Foto</option>
+                            <option value="video">Video</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="archivoMultimedia">Archivo</label>
+                        <input type="file" id="archivoMultimedia" class="form-input" accept="image/*,video/*" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tituloMultimedia">Título</label>
+                        <input type="text" id="tituloMultimedia" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="descripcionMultimedia">Descripción</label>
+                        <textarea id="descripcionMultimedia" class="form-textarea" rows="2"></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="Modal.hide('modalSubirMultimedia')">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            Subir Archivo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="hotel-home.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="hotel-editar.html" class="nav-item active">
+                <span class="nav-icon">✏️</span>
+                <span>Editar</span>
+            </a>
+            <a href="hotel-compras.html" class="nav-item">
+                <span class="nav-icon">🛒</span>
+                <span>Compras</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showUserMenu()">
+                <span class="nav-icon">👤</span>
+                <span>Mi Cuenta</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-hotel.js"></script>
+    <script>
+        function mostrarModalAgregarHabitacion() {
+            Modal.show('modalAgregarHabitacion');
+        }
+
+        function mostrarModalSubirMultimedia() {
+            Modal.show('modalSubirMultimedia');
+        }
+
+        function editarHabitacion(habitacionId) {
+            alert(`Editando habitación ${habitacionId}`);
+        }
+
+        function gestionarDisponibilidad(habitacionId) {
+            alert(`Gestionando disponibilidad de habitación ${habitacionId}`);
+        }
+
+        function eliminarHabitacion(habitacionId) {
+            if (confirm(`¿Estás seguro de eliminar la habitación ${habitacionId}?`)) {
+                alert(`Habitación ${habitacionId} eliminada`);
+            }
+        }
+
+        function editarEspacio(espacioId) {
+            alert(`Editando espacio ${espacioId}`);
+        }
+
+        function editarMultimedia(multimediaId) {
+            alert(`Editando multimedia ${multimediaId}`);
+        }
+
+        function eliminarMultimedia(multimediaId) {
+            if (confirm(`¿Estás seguro de eliminar este archivo?`)) {
+                alert(`Archivo ${multimediaId} eliminado`);
+            }
+        }
+
+        // Manejar envío de formularios
+        document.getElementById('formInfoGeneral').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Información del hotel actualizada');
+        });
+
+        document.getElementById('formAgregarHabitacion').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Habitación agregada exitosamente');
+            Modal.hide('modalAgregarHabitacion');
+        });
+
+        document.getElementById('formSubirMultimedia').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Archivo subido exitosamente');
+            Modal.hide('modalSubirMultimedia');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viajes México - Agregar Producto</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Agregar Producto</h1>
+            <button class="profile-btn" onclick="logout()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16,17 21,12 16,7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <form id="addProductForm">
+                <!-- Tipo de producto -->
+                <div class="form-group">
+                    <label class="form-label" for="productType">Tipo de Producto</label>
+                    <select id="productType" class="form-input form-select" required onchange="toggleProductFields()">
+                        <option value="">Selecciona un tipo</option>
+                        <option value="hotels">Hotel</option>
+                        <option value="restaurants">Restaurante</option>
+                        <option value="foods">Comida</option>
+                        <option value="activities">Actividad</option>
+                    </select>
+                </div>
+
+                <!-- Información básica -->
+                <div class="form-group">
+                    <label class="form-label" for="productName">Nombre</label>
+                    <input type="text" id="productName" class="form-input" required placeholder="Nombre del producto">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="productDescription">Descripción</label>
+                    <textarea id="productDescription" class="form-input form-textarea" required placeholder="Descripción del producto"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="productImage">URL de Imagen</label>
+                    <input type="url" id="productImage" class="form-input" placeholder="https://ejemplo.com/imagen.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="productLocation">Ubicación</label>
+                    <input type="text" id="productLocation" class="form-input" placeholder="Ciudad, Estado">
+                </div>
+
+                <!-- Campos específicos por tipo -->
+                <div id="hotelFields" class="product-type-fields" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label" for="hotelPrice">Precio por noche (MXN)</label>
+                        <input type="number" id="hotelPrice" class="form-input" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="hotelRating">Calificación (1-5)</label>
+                        <input type="number" id="hotelRating" class="form-input" min="1" max="5" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="hotelAmenities">Servicios (separados por comas)</label>
+                        <input type="text" id="hotelAmenities" class="form-input" placeholder="WiFi, Piscina, Spa, Restaurante">
+                    </div>
+                </div>
+
+                <div id="restaurantFields" class="product-type-fields" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label" for="restaurantRating">Calificación (1-5)</label>
+                        <input type="number" id="restaurantRating" class="form-input" min="1" max="5" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="restaurantDishes">Platos (formato: Nombre|Precio, separados por comas)</label>
+                        <textarea id="restaurantDishes" class="form-input form-textarea" placeholder="Tacos al Pastor|8, Quesadillas|12, Agua Fresca|5"></textarea>
+                    </div>
+                </div>
+
+                <div id="foodFields" class="product-type-fields" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label" for="foodPrice">Precio (MXN)</label>
+                        <input type="number" id="foodPrice" class="form-input" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="foodType">Tipo de Comida</label>
+                        <input type="text" id="foodType" class="form-input" placeholder="Mexicana, Internacional, etc.">
+                    </div>
+                </div>
+
+                <div id="activityFields" class="product-type-fields" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label" for="activityPrice">Precio (MXN)</label>
+                        <input type="number" id="activityPrice" class="form-input" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="activityDuration">Duración</label>
+                        <input type="text" id="activityDuration" class="form-input" placeholder="2 horas, 1 día, etc.">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="activitySchedule">Horario</label>
+                        <input type="text" id="activitySchedule" class="form-input" placeholder="9:00 AM - 5:00 PM">
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn btn-secondary" onclick="navigateTo('admin-home')" style="flex: 1;">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn" style="flex: 1;">
+                        Agregar Producto
+                    </button>
+                </div>
+            </form>
+        </main>
+
+        <!-- Navegación inferior -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item" data-nav="admin-home">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                </svg>
+                <span class="nav-label">Admin</span>
+            </a>
+            <a href="#" class="nav-item active" data-nav="admin-add">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                <span class="nav-label">Agregar</span>
+            </a>
+            <a href="#" class="nav-item" data-nav="admin-packages">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                </svg>
+                <span class="nav-label">Paquetes</span>
+            </a>
+            <a href="#" class="nav-item" data-nav="admin-transport">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3h18v18H3zM9 9h6v6H9z"/>
+                </svg>
+                <span class="nav-label">Transporte</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="../assets/app.js"></script>
+    <script>
+        // Funciones específicas de la página admin add
+        function loadAdminAddContent() {
+            setupAddProductForm();
+        }
+
+        function setupAddProductForm() {
+            const form = document.getElementById('addProductForm');
+            form.addEventListener('submit', handleAddProduct);
+        }
+
+        function toggleProductFields() {
+            const productType = document.getElementById('productType').value;
+            const allFields = document.querySelectorAll('.product-type-fields');
+            
+            // Ocultar todos los campos específicos
+            allFields.forEach(field => {
+                field.style.display = 'none';
+            });
+            
+            // Mostrar campos específicos del tipo seleccionado
+            if (productType) {
+                const specificFields = document.getElementById(productType + 'Fields');
+                if (specificFields) {
+                    specificFields.style.display = 'block';
+                }
+            }
+        }
+
+        function handleAddProduct(e) {
+            e.preventDefault();
+            
+            const productType = document.getElementById('productType').value;
+            const name = document.getElementById('productName').value;
+            const description = document.getElementById('productDescription').value;
+            const image = document.getElementById('productImage').value;
+            const location = document.getElementById('productLocation').value;
+            
+            if (!productType || !name || !description) {
+                showToast('Los campos básicos son requeridos', 'error');
+                return;
+            }
+            
+            // Crear objeto del producto
+            const product = {
+                id: productType + '_' + Date.now(),
+                name: name,
+                description: description,
+                image: image || 'assets/images/placeholder.webp',
+                location: location
+            };
+            
+            // Agregar campos específicos según el tipo
+            switch (productType) {
+                case 'hotels':
+                    product.price = parseFloat(document.getElementById('hotelPrice').value) || 0;
+                    product.rating = parseFloat(document.getElementById('hotelRating').value) || 0;
+                    product.availability = true;
+                    const amenities = document.getElementById('hotelAmenities').value;
+                    product.amenities = amenities ? amenities.split(',').map(a => a.trim()) : [];
+                    break;
+                    
+                case 'restaurants':
+                    product.rating = parseFloat(document.getElementById('restaurantRating').value) || 0;
+                    const dishesText = document.getElementById('restaurantDishes').value;
+                    product.dishes = [];
+                    if (dishesText) {
+                        const dishPairs = dishesText.split(',');
+                        dishPairs.forEach(pair => {
+                            const [name, price] = pair.split('|');
+                            if (name && price) {
+                                product.dishes.push({
+                                    name: name.trim(),
+                                    price: parseFloat(price.trim()) || 0
+                                });
+                            }
+                        });
+                    }
+                    break;
+                    
+                case 'foods':
+                    product.price = parseFloat(document.getElementById('foodPrice').value) || 0;
+                    product.type = document.getElementById('foodType').value || 'General';
+                    break;
+                    
+                case 'activities':
+                    product.price = parseFloat(document.getElementById('activityPrice').value) || 0;
+                    product.duration = document.getElementById('activityDuration').value;
+                    product.schedule = document.getElementById('activitySchedule').value;
+                    break;
+            }
+            
+            // Agregar producto a la lista correspondiente
+            if (!AppState.products[productType]) {
+                AppState.products[productType] = [];
+            }
+            
+            AppState.products[productType].push(product);
+            saveToLocalStorage('products', AppState.products);
+            
+            showToast('Producto agregado exitosamente');
+            
+            // Limpiar formulario
+            document.getElementById('addProductForm').reset();
+            toggleProductFields();
+        }
+
+        // Inicializar página
+        if (AppState.currentPage === 'admin-add') {
+            loadAdminAddContent();
+        }
+    </script>
+</body>
+</html>

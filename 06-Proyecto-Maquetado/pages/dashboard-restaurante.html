@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Restaurante - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/provider.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">TravelApp Restaurante</h1>
+                    <p class="user-welcome" id="userWelcome">Panel de Restaurante</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">🍽️</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Estadísticas del Restaurante -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-info">
+                            <h3 id="totalReservas">0</h3>
+                            <p>Reservas Totales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <h3 id="ingresosTotales">$0</h3>
+                            <p>Ingresos Totales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-info">
+                            <h3 id="calificacionPromedio">0.0</h3>
+                            <p>Calificación</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🍽️</div>
+                        <div class="stat-info">
+                            <h3 id="capacidadTotal">0</h3>
+                            <p>Capacidad Total</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Acciones del Restaurante -->
+            <section class="actions-section">
+                <h2>Gestión del Restaurante</h2>
+                <div class="actions-grid">
+                    <div class="action-card" onclick="showReservas()">
+                        <div class="action-icon">📋</div>
+                        <h3>Reservas</h3>
+                        <p>Gestiona las reservas del restaurante</p>
+                    </div>
+                    <div class="action-card" onclick="showMenu()">
+                        <div class="action-icon">🍽️</div>
+                        <h3>Menú</h3>
+                        <p>Administra el menú y precios</p>
+                    </div>
+                    <div class="action-card" onclick="showHorarios()">
+                        <div class="action-icon">⏰</div>
+                        <h3>Horarios</h3>
+                        <p>Configura horarios de atención</p>
+                    </div>
+                    <div class="action-card" onclick="showPerfil()">
+                        <div class="action-icon">👤</div>
+                        <h3>Perfil</h3>
+                        <p>Edita información del restaurante</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Información del Restaurante -->
+            <section class="restaurante-info-section">
+                <h2>Información del Restaurante</h2>
+                <div class="restaurante-info-card" id="restauranteInfoCard">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Reservas -->
+    <div id="reservasModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Reservas del Restaurante</h3>
+                <span class="close" onclick="Modal.hide('reservasModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="reservas-list" id="reservasList">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Menú -->
+    <div id="menuModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Gestión del Menú</h3>
+                <span class="close" onclick="Modal.hide('menuModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="menu-content" id="menuContent">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Horarios -->
+    <div id="horariosModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Horarios del Restaurante</h3>
+                <span class="close" onclick="Modal.hide('horariosModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="horarios-content" id="horariosContent">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Perfil -->
+    <div id="perfilModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Perfil del Restaurante</h3>
+                <span class="close" onclick="Modal.hide('perfilModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="perfil-content" id="perfilContent">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="restaurante-home.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="restaurante-editar.html" class="nav-item">
+                <span class="nav-icon">✏️</span>
+                <span>Editar</span>
+            </a>
+            <a href="restaurante-compras.html" class="nav-item">
+                <span class="nav-icon">🛒</span>
+                <span>Compras</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showUserMenu()">
+                <span class="nav-icon">👤</span>
+                <span>Mi Cuenta</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-restaurante.js"></script>
+</body>
+</html>

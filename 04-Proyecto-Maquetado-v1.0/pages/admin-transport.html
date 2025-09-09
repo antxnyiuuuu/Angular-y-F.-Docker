@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viajes México - Gestionar Transportes</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Gestionar Transportes</h1>
+            <button class="profile-btn" onclick="logout()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16,17 21,12 16,7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Información del transporte actual -->
+            <section class="section">
+                <h2 class="section-title">Transporte Actual</h2>
+                <div id="currentTransport">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </section>
+
+            <!-- Horarios -->
+            <section class="section">
+                <h2 class="section-title">Horarios y Disponibilidad</h2>
+                <div id="transportSchedule">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </section>
+
+            <!-- Estadísticas -->
+            <section class="section">
+                <h2 class="section-title">Estadísticas de Uso</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div style="background: white; padding: 1.5rem; border-radius: 12px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2rem; font-weight: 700; color: #0ea5e9;" id="totalCapacity">0</div>
+                        <div style="color: #64748b; font-size: 0.875rem;">Capacidad Total</div>
+                    </div>
+                    <div style="background: white; padding: 1.5rem; border-radius: 12px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2rem; font-weight: 700; color: #06b6d4;" id="availableSeats">0</div>
+                        <div style="color: #64748b; font-size: 0.875rem;">Asientos Disponibles</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Navegación inferior -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item" data-nav="admin-home">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                </svg>
+                <span class="nav-label">Admin</span>
+            </a>
+            <a href="#" class="nav-item" data-nav="admin-add">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                <span class="nav-label">Agregar</span>
+            </a>
+            <a href="#" class="nav-item" data-nav="admin-packages">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                </svg>
+                <span class="nav-label">Paquetes</span>
+            </a>
+            <a href="#" class="nav-item active" data-nav="admin-transport">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3h18v18H3zM9 9h6v6H9z"/>
+                </svg>
+                <span class="nav-label">Transporte</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="../assets/app.js"></script>
+    <script>
+        // Funciones específicas de la página admin transport
+        function loadAdminTransportContent() {
+            loadCurrentTransport();
+            loadTransportSchedule();
+            loadTransportStats();
+        }
+
+        function loadCurrentTransport() {
+            const container = document.getElementById('currentTransport');
+            const transports = AppState.products.transports || [];
+            
+            if (transports.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🚌</div>
+                        <div class="empty-state-title">No hay transportes configurados</div>
+                        <div class="empty-state-text">Configura el transporte principal</div>
+                    </div>
+                `;
+            } else {
+                const transport = transports[0]; // Usar el primer transporte
+                container.innerHTML = createTransportCard(transport);
+            }
+        }
+
+        function createTransportCard(transport) {
+            return `
+                <div class="card">
+                    <div style="display: flex; padding: 1.5rem;">
+                        <img src="${transport.image}" alt="${transport.name}" 
+                             style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; margin-right: 1rem;"
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMDY2NjY2Ii8+Cjx0ZXh0IHg9IjQwIiB5PSI0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+VHJhbnNwb3J0ZTwvdGV4dD4KPC9zdmc+Cg=='">
+                        <div style="flex: 1;">
+                            <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">${transport.name}</h3>
+                            <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 0.5rem;">${transport.description}</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.875rem; color: #64748b;">Capacidad: ${transport.capacity} asientos</span>
+                                <button class="btn btn-small" onclick="editTransport('${transport.id}')">
+                                    Editar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadTransportSchedule() {
+            const container = document.getElementById('transportSchedule');
+            const transports = AppState.products.transports || [];
+            
+            if (transports.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📅</div>
+                        <div class="empty-state-title">No hay horarios configurados</div>
+                    </div>
+                `;
+            } else {
+                const transport = transports[0];
+                container.innerHTML = transport.schedule.map(schedule => createScheduleCard(schedule, transport.id)).join('');
+            }
+        }
+
+        function createScheduleCard(schedule, transportId) {
+            const availabilityPercentage = (schedule.availableSeats / schedule.capacity) * 100;
+            const availabilityColor = availabilityPercentage > 50 ? '#10b981' : availabilityPercentage > 25 ? '#f59e0b' : '#ef4444';
+            
+            return `
+                <div class="card" style="margin-bottom: 1rem;">
+                    <div style="padding: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <h3 style="font-size: 1rem; font-weight: 600;">${schedule.day}</h3>
+                            <span style="background: ${availabilityColor}; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">
+                                ${schedule.availableSeats}/${schedule.capacity} disponibles
+                            </span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-size: 0.875rem; color: #64748b;">
+                                <strong>Salida:</strong> ${schedule.departure}
+                            </span>
+                            <span style="font-size: 0.875rem; color: #64748b;">
+                                <strong>Llegada:</strong> ${schedule.arrival}
+                            </span>
+                        </div>
+                        <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 0.5rem;">${schedule.route}</p>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-small" onclick="editSchedule('${transportId}', '${schedule.day}')">
+                                Editar Horario
+                            </button>
+                            <button class="btn btn-small btn-secondary" onclick="updateAvailability('${transportId}', '${schedule.day}')">
+                                Actualizar Disponibilidad
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadTransportStats() {
+            const transports = AppState.products.transports || [];
+            
+            if (transports.length > 0) {
+                const transport = transports[0];
+                const totalCapacity = transport.capacity * transport.schedule.length;
+                const totalAvailable = transport.schedule.reduce((sum, schedule) => sum + schedule.availableSeats, 0);
+                
+                document.getElementById('totalCapacity').textContent = totalCapacity;
+                document.getElementById('availableSeats').textContent = totalAvailable;
+            }
+        }
+
+        function editTransport(transportId) {
+            const transport = AppState.products.transports.find(t => t.id === transportId);
+            if (!transport) return;
+            
+            const modalHTML = `
+                <div class="modal-overlay" id="editTransportModal">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <h2 class="modal-title">Editar Transporte</h2>
+                            <button class="modal-close" data-close-modal>&times;</button>
+                        </div>
+                        <div class="modal-content">
+                            <form id="editTransportForm">
+                                <div class="form-group">
+                                    <label class="form-label" for="editTransportName">Nombre</label>
+                                    <input type="text" id="editTransportName" class="form-input" value="${transport.name}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="editTransportDescription">Descripción</label>
+                                    <textarea id="editTransportDescription" class="form-input form-textarea">${transport.description}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="editTransportCapacity">Capacidad</label>
+                                    <input type="number" id="editTransportCapacity" class="form-input" value="${transport.capacity}" min="1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="editTransportImage">URL de Imagen</label>
+                                    <input type="url" id="editTransportImage" class="form-input" value="${transport.image}">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-close-modal>Cancelar</button>
+                            <button class="btn" onclick="saveTransportEdit('${transportId}')">Guardar Cambios</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        function saveTransportEdit(transportId) {
+            const name = document.getElementById('editTransportName').value;
+            const description = document.getElementById('editTransportDescription').value;
+            const capacity = parseInt(document.getElementById('editTransportCapacity').value);
+            const image = document.getElementById('editTransportImage').value;
+            
+            if (!name.trim() || !capacity) {
+                showToast('Nombre y capacidad son requeridos', 'error');
+                return;
+            }
+            
+            const transportIndex = AppState.products.transports.findIndex(t => t.id === transportId);
+            if (transportIndex > -1) {
+                AppState.products.transports[transportIndex].name = name;
+                AppState.products.transports[transportIndex].description = description;
+                AppState.products.transports[transportIndex].capacity = capacity;
+                AppState.products.transports[transportIndex].image = image;
+                
+                // Actualizar capacidad en todos los horarios
+                AppState.products.transports[transportIndex].schedule.forEach(schedule => {
+                    schedule.capacity = capacity;
+                    if (schedule.availableSeats > capacity) {
+                        schedule.availableSeats = capacity;
+                    }
+                });
+                
+                saveToLocalStorage('products', AppState.products);
+                
+                showToast('Transporte actualizado exitosamente');
+                closeModal();
+                loadCurrentTransport();
+                loadTransportSchedule();
+                loadTransportStats();
+            }
+        }
+
+        function editSchedule(transportId, day) {
+            const transport = AppState.products.transports.find(t => t.id === transportId);
+            if (!transport) return;
+            
+            const schedule = transport.schedule.find(s => s.day === day);
+            if (!schedule) return;
+            
+            const modalHTML = `
+                <div class="modal-overlay" id="editScheduleModal">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <h2 class="modal-title">Editar Horario - ${day}</h2>
+                            <button class="modal-close" data-close-modal>&times;</button>
+                        </div>
+                        <div class="modal-content">
+                            <form id="editScheduleForm">
+                                <div class="form-group">
+                                    <label class="form-label" for="editDeparture">Hora de Salida</label>
+                                    <input type="time" id="editDeparture" class="form-input" value="${schedule.departure}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="editArrival">Hora de Llegada</label>
+                                    <input type="time" id="editArrival" class="form-input" value="${schedule.arrival}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="editRoute">Ruta</label>
+                                    <input type="text" id="editRoute" class="form-input" value="${schedule.route}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="editAvailableSeats">Asientos Disponibles</label>
+                                    <input type="number" id="editAvailableSeats" class="form-input" value="${schedule.availableSeats}" min="0" max="${schedule.capacity}" required>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-close-modal>Cancelar</button>
+                            <button class="btn" onclick="saveScheduleEdit('${transportId}', '${day}')">Guardar Cambios</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        function saveScheduleEdit(transportId, day) {
+            const departure = document.getElementById('editDeparture').value;
+            const arrival = document.getElementById('editArrival').value;
+            const route = document.getElementById('editRoute').value;
+            const availableSeats = parseInt(document.getElementById('editAvailableSeats').value);
+            
+            if (!departure || !arrival || !route.trim()) {
+                showToast('Todos los campos son requeridos', 'error');
+                return;
+            }
+            
+            const transport = AppState.products.transports.find(t => t.id === transportId);
+            if (transport) {
+                const scheduleIndex = transport.schedule.findIndex(s => s.day === day);
+                if (scheduleIndex > -1) {
+                    transport.schedule[scheduleIndex].departure = departure;
+                    transport.schedule[scheduleIndex].arrival = arrival;
+                    transport.schedule[scheduleIndex].route = route;
+                    transport.schedule[scheduleIndex].availableSeats = availableSeats;
+                    
+                    saveToLocalStorage('products', AppState.products);
+                    
+                    showToast('Horario actualizado exitosamente');
+                    closeModal();
+                    loadTransportSchedule();
+                    loadTransportStats();
+                }
+            }
+        }
+
+        function updateAvailability(transportId, day) {
+            const transport = AppState.products.transports.find(t => t.id === transportId);
+            if (!transport) return;
+            
+            const schedule = transport.schedule.find(s => s.day === day);
+            if (!schedule) return;
+            
+            const modalHTML = `
+                <div class="modal-overlay" id="updateAvailabilityModal">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <h2 class="modal-title">Actualizar Disponibilidad - ${day}</h2>
+                            <button class="modal-close" data-close-modal>&times;</button>
+                        </div>
+                        <div class="modal-content">
+                            <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                                <p style="margin-bottom: 0.5rem;"><strong>Capacidad total:</strong> ${schedule.capacity} asientos</p>
+                                <p style="margin-bottom: 0.5rem;"><strong>Disponibles actualmente:</strong> ${schedule.availableSeats} asientos</p>
+                                <p><strong>Ocupados:</strong> ${schedule.capacity - schedule.availableSeats} asientos</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="newAvailableSeats">Nuevos asientos disponibles</label>
+                                <input type="number" id="newAvailableSeats" class="form-input" value="${schedule.availableSeats}" min="0" max="${schedule.capacity}" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-close-modal>Cancelar</button>
+                            <button class="btn" onclick="saveAvailabilityUpdate('${transportId}', '${day}')">Actualizar</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        function saveAvailabilityUpdate(transportId, day) {
+            const newAvailableSeats = parseInt(document.getElementById('newAvailableSeats').value);
+            
+            const transport = AppState.products.transports.find(t => t.id === transportId);
+            if (transport) {
+                const scheduleIndex = transport.schedule.findIndex(s => s.day === day);
+                if (scheduleIndex > -1) {
+                    transport.schedule[scheduleIndex].availableSeats = newAvailableSeats;
+                    
+                    saveToLocalStorage('products', AppState.products);
+                    
+                    showToast('Disponibilidad actualizada exitosamente');
+                    closeModal();
+                    loadTransportSchedule();
+                    loadTransportStats();
+                }
+            }
+        }
+
+        // Inicializar página
+        if (AppState.currentPage === 'admin-transport') {
+            loadAdminTransportContent();
+        }
+    </script>
+</body>
+</html>

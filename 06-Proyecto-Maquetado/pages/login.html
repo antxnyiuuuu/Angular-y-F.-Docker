@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/login.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">TravelApp</h1>
+            <p class="subtitle">Inicia sesión para continuar</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Formulario de Login -->
+            <section class="login-section">
+                <div class="card">
+                    <h2>Iniciar Sesión</h2>
+                    <p class="login-subtitle">Accede a tu cuenta para disfrutar de todos nuestros servicios</p>
+                    
+                    <form id="loginForm" class="login-form">
+                        <div class="form-group">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" id="password" name="password" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="role" class="form-label">Tipo de Usuario</label>
+                            <select id="role" name="role" class="form-select" required>
+                                <option value="">Selecciona tu rol</option>
+                                <option value="usuario">Usuario</option>
+                                <option value="admin">Administrador</option>
+                                <option value="hotel">Hotel</option>
+                                <option value="restaurante">Restaurante</option>
+                                <option value="actividades">Actividades</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">
+                            Iniciar Sesión
+                        </button>
+                    </form>
+                    
+                    <div class="login-divider">
+                        <span>o</span>
+                    </div>
+                    
+                    <!-- Botones de Login Rápido -->
+                    <div class="quick-login">
+                        <h3>Acceso Rápido para Testing</h3>
+                        <p class="quick-login-subtitle">Haz clic en cualquier botón para autocompletar el login</p>
+                        
+                        <div class="quick-login-buttons">
+                            <button class="quick-btn usuario" onclick="quickLogin('usuario')">
+                                <span class="quick-icon">👤</span>
+                                <span class="quick-text">Usuario</span>
+                            </button>
+                            
+                            <button class="quick-btn admin" onclick="quickLogin('admin')">
+                                <span class="quick-icon">👨‍💼</span>
+                                <span class="quick-text">Admin</span>
+                            </button>
+                            
+                            <button class="quick-btn hotel" onclick="quickLogin('hotel')">
+                                <span class="quick-icon">🏨</span>
+                                <span class="quick-text">Hotel</span>
+                            </button>
+                            
+                            <button class="quick-btn restaurante" onclick="quickLogin('restaurante')">
+                                <span class="quick-icon">🍽️</span>
+                                <span class="quick-text">Restaurante</span>
+                            </button>
+                            
+                            <button class="quick-btn actividades" onclick="quickLogin('actividades')">
+                                <span class="quick-icon">🎯</span>
+                                <span class="quick-text">Actividades</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Información adicional -->
+            <section class="info-section">
+                <div class="card">
+                    <h3>¿No tienes cuenta?</h3>
+                    <p>Regístrate como proveedor de servicios para comenzar a ofrecer tus servicios a nuestros usuarios.</p>
+                    
+                    <div class="register-options">
+                        <button class="btn btn-secondary" onclick="showRegisterModal('hotel')">
+                            Registrar Hotel
+                        </button>
+                        <button class="btn btn-secondary" onclick="showRegisterModal('restaurante')">
+                            Registrar Restaurante
+                        </button>
+                        <button class="btn btn-secondary" onclick="showRegisterModal('actividades')">
+                            Registrar Actividades
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Registro -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="registerModalTitle">Registro</h3>
+                <span class="close" onclick="Modal.hide('registerModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm" class="register-form">
+                    <div class="form-group">
+                        <label for="regName" class="form-label">Nombre del Negocio</label>
+                        <input type="text" id="regName" name="name" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regEmail" class="form-label">Correo Electrónico</label>
+                        <input type="email" id="regEmail" name="email" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regPhone" class="form-label">Teléfono</label>
+                        <input type="tel" id="regPhone" name="phone" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regLocation" class="form-label">Ubicación</label>
+                        <input type="text" id="regLocation" name="location" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regPassword" class="form-label">Contraseña</label>
+                        <input type="password" id="regPassword" name="password" class="form-input" required>
+                    </div>
+                    
+                    <input type="hidden" id="regRole" name="role">
+                    
+                    <button type="submit" class="btn btn-success w-100">
+                        Registrar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/login.js"></script>
+</body>
+</html>

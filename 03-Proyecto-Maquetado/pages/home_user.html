@@ -30,6 +30,18 @@
     </button>
   </div>
 
+  <!-- Paquetes Precargados -->
+  <section class="preloaded-packages-section">
+    <div class="section-header">
+      <h2>Paquetes Precargados</h2>
+      <p>Opciones prediseñadas para inspirar tu viaje</p>
+    </div>
+    
+    <div id="preloadedPackagesGrid" class="packages-grid">
+      <!-- Los paquetes precargados se cargarán dinámicamente aquí -->
+    </div>
+  </section>
+
   <!-- Filtro por localidad -->
   <div class="location-filter-section">
     <label for="homeLocationSelect">Filtrar por localidad:</label>
@@ -82,6 +94,8 @@
 
 <!-- El modal se crea dinámicamente desde app.js -->
 
+<link rel="stylesheet" href="../assets/layout-consistency.css">
+<link rel="stylesheet" href="../assets/preloaded-packages.css">
 <script src="../data/products.js"></script>
 
 <script>
@@ -143,6 +157,8 @@ function loadAllProducts() {
     allProducts.push(...products);
   });
 }
+
+// La función loadPreloadedPackages ahora está en app.js
 
 function updateDisplay() {
   let filteredProducts = allProducts;
@@ -288,4 +304,6 @@ async function toggleFavorite(productId) {
 // La función loadUserPackagesForModal ahora está en app.js
 
 // Todas las funciones del modal ahora están en app.js
+
+// Las funciones de paquetes precargados ahora están en app.js
 </script>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Actividades - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/registro.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">Registro de Actividades</h1>
+                    <p class="user-welcome">Registra tus actividades turísticas</p>
+                </div>
+                <div class="user-avatar">🎯</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar form-page">
+        <div class="container">
+            <!-- Formulario de Registro de Actividades -->
+            <section class="registro-section">
+                <div class="registro-card">
+                    <div class="registro-header">
+                        <h2>Información de Actividades</h2>
+                        <p>Completa los datos de tus actividades turísticas</p>
+                    </div>
+                    
+                    <form id="registroActividadesForm" class="registro-form">
+                        <!-- Información Básica -->
+                        <div class="form-section">
+                            <h3>Información Básica</h3>
+                            
+                            <div class="form-group">
+                                <label for="nombreActividad">Nombre de la Actividad *</label>
+                                <input type="text" id="nombreActividad" name="nombre" required 
+                                       placeholder="Ej: Tour Arqueológico de Chichen Itzá">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="tipoActividad">Tipo de Actividad *</label>
+                                <select id="tipoActividad" name="tipo" required>
+                                    <option value="">Selecciona el tipo</option>
+                                    <option value="arqueologico">Arqueológico</option>
+                                    <option value="aventura">Aventura</option>
+                                    <option value="cultural">Cultural</option>
+                                    <option value="naturaleza">Naturaleza</option>
+                                    <option value="gastronomico">Gastronómico</option>
+                                    <option value="deportivo">Deportivo</option>
+                                    <option value="relajacion">Relajación</option>
+                                    <option value="fotografico">Fotográfico</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="descripcionActividad">Descripción *</label>
+                                <textarea id="descripcionActividad" name="descripcion" required 
+                                          placeholder="Describe detalladamente la actividad, qué incluye, qué verán los participantes..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="ubicacionActividad">Ubicación *</label>
+                                <input type="text" id="ubicacionActividad" name="ubicacion" required 
+                                       placeholder="Ej: Chichen Itzá, Yucatán">
+                            </div>
+                        </div>
+                        
+                        <!-- Detalles de la Actividad -->
+                        <div class="form-section">
+                            <h3>Detalles de la Actividad</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="duracionActividad">Duración *</label>
+                                    <input type="text" id="duracionActividad" name="duracion" required 
+                                           placeholder="Ej: 4 horas, 1 día completo">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="precioActividad">Precio por Persona *</label>
+                                    <input type="number" id="precioActividad" name="precio" required 
+                                           placeholder="0" min="0" step="0.01">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="minParticipantes">Mínimo de Participantes</label>
+                                    <input type="number" id="minParticipantes" name="minParticipantes" 
+                                           placeholder="1" min="1">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="maxParticipantes">Máximo de Participantes</label>
+                                    <input type="number" id="maxParticipantes" name="maxParticipantes" 
+                                           placeholder="20" min="1">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="incluyeActividad">¿Qué Incluye?</label>
+                                <textarea id="incluyeActividad" name="incluye" 
+                                          placeholder="Ej: Transporte, guía certificado, entrada al sitio, comida..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="requisitosActividad">Requisitos</label>
+                                <textarea id="requisitosActividad" name="requisitos" 
+                                          placeholder="Ej: Ropa cómoda, zapatos cerrados, cámara..."></textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- Horarios y Disponibilidad -->
+                        <div class="form-section">
+                            <h3>Horarios y Disponibilidad</h3>
+                            
+                            <div class="form-group">
+                                <label for="horariosActividad">Horarios Disponibles *</label>
+                                <textarea id="horariosActividad" name="horarios" required 
+                                          placeholder="Ej: Lunes a Viernes: 8:00 AM, 2:00 PM. Sábados y Domingos: 8:00 AM, 10:00 AM, 2:00 PM"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="temporadaActividad">Temporada de Operación</label>
+                                <select id="temporadaActividad" name="temporada">
+                                    <option value="todo_el_ano">Todo el año</option>
+                                    <option value="temporada_alta">Solo temporada alta</option>
+                                    <option value="temporada_baja">Solo temporada baja</option>
+                                    <option value="personalizada">Personalizada</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="idiomasActividad">Idiomas Disponibles</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="idiomas" value="español" checked>
+                                        <span>Español</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="idiomas" value="inglés">
+                                        <span>Inglés</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="idiomas" value="francés">
+                                        <span>Francés</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="idiomas" value="alemán">
+                                        <span>Alemán</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Información de Contacto -->
+                        <div class="form-section">
+                            <h3>Información de Contacto</h3>
+                            
+                            <div class="form-group">
+                                <label for="nombreGuia">Nombre del Guía/Responsable *</label>
+                                <input type="text" id="nombreGuia" name="nombreGuia" required 
+                                       placeholder="Tu nombre completo">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="telefonoActividad">Teléfono de Contacto *</label>
+                                <input type="tel" id="telefonoActividad" name="telefono" required 
+                                       placeholder="+52 55 1234 5678">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="emailActividad">Email de Contacto *</label>
+                                <input type="email" id="emailActividad" name="email" required 
+                                       placeholder="tu@email.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="experienciaActividad">Años de Experiencia</label>
+                                <input type="number" id="experienciaActividad" name="experiencia" 
+                                       placeholder="5" min="0">
+                            </div>
+                        </div>
+                        
+                        <!-- Términos y Condiciones -->
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="terminosActividad" name="terminos" required>
+                                    <span>Acepto los <a href="#" onclick="showTerminos()">términos y condiciones</a> del servicio *</span>
+                                </label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="verificacionActividad" name="verificacion">
+                                    <span>Autorizo la verificación de mi información y experiencia</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Botones de Acción -->
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="cancelarRegistro()">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                Registrar Actividad
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Términos y Condiciones -->
+    <div id="terminosModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Términos y Condiciones</h3>
+                <span class="close" onclick="Modal.hide('terminosModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="terminos-content">
+                    <h4>1. Registro de Actividades</h4>
+                    <p>Al registrar una actividad, te comprometes a proporcionar información veraz y actualizada sobre tu servicio.</p>
+                    
+                    <h4>2. Verificación</h4>
+                    <p>Nos reservamos el derecho de verificar la información proporcionada y la experiencia del guía.</p>
+                    
+                    <h4>3. Responsabilidades</h4>
+                    <p>Eres responsable de la calidad del servicio y la seguridad de los participantes.</p>
+                    
+                    <h4>4. Comisiones</h4>
+                    <p>TravelApp cobra una comisión del 10% por cada reserva exitosa.</p>
+                    
+                    <h4>5. Cancelaciones</h4>
+                    <p>Las cancelaciones deben notificarse con al menos 24 horas de anticipación.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="../index.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Inicio</span>
+            </a>
+            <a href="dashboard-actividades.html" class="nav-item">
+                <span class="nav-icon">🎯</span>
+                <span>Actividades</span>
+            </a>
+            <a href="registro-actividades.html" class="nav-item active">
+                <span class="nav-icon">➕</span>
+                <span>Registrar</span>
+            </a>
+            <a href="#" class="nav-item" onclick="logout()">
+                <span class="nav-icon">🚪</span>
+                <span>Salir</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/registro-actividades.js"></script>
+</body>
+</html>

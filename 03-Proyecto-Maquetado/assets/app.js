@@ -138,6 +138,10 @@ class TravelApp {
             <i class="fas fa-th"></i>
             <span>Todos</span>
               </button>
+          <button class="category-btn" data-category="paquetes">
+            <i class="fas fa-suitcase-rolling"></i>
+            <span>Paquetes</span>
+              </button>
           <button class="category-btn" data-category="hoteles">
             <i class="fas fa-hotel"></i>
             <span>Hoteles</span>
@@ -152,12 +156,23 @@ class TravelApp {
               </button>
             </div>
 
+        <!-- Paquetes Precargados -->
+        <section class="preloaded-packages-section">
+          <div class="section-header">
+            <h2>Paquetes disponibles</h2>
+            <p>Disfruta tu viaje con estos paquetes especiales</p>
+          </div>
+          
+          <div id="preloadedPackagesGrid" class="packages-grid">
+            <!-- Los paquetes precargados se cargarán dinámicamente aquí -->
+          </div>
+        </section>
           
         <!-- Productos recomendados -->
         <section class="recommended-section">
           <div class="section-header">
-            <h2 id="sectionTitle">Productos Recomendados</h2>
-            <p id="sectionDescription">Descubre las mejores opciones para tu viaje</p>
+            <h2 id="sectionTitle">Recomendaciones para ti</h2>
+            <p id="sectionDescription">Descubre opciones increíbles para tu próximo viaje</p>
             </div>
             
           <div id="productsGrid" class="products-grid">
@@ -273,12 +288,6 @@ class TravelApp {
 
       <main class="main-content">
         <div class="packages-section">
-          <div class="section-header">
-            <h2>Mis Paquetes</h2>
-            <button class="btn btn-primary" onclick="app.loadPage('pages/new-package.html')">
-              <i class="fas fa-plus"></i> Crear Nuevo Paquete
-            </button>
-          </div>
           
           <div id="packagesContainer" class="packages-container">
             <!-- Los paquetes se cargarán dinámicamente aquí -->
@@ -416,7 +425,7 @@ class TravelApp {
         </div>
 
           <div class="favorites-section">
-            <h3>Trasnportes Dsiponibles</h3>
+            <h3>Transportes Disponibles</h3>
             <div id="userTransportCard" class="admin-transport-item"></div>
       </div>
         </div>
@@ -458,17 +467,14 @@ class TravelApp {
           <div class="package-steps">
             <div class="step active" data-step="1">
               <span class="step-number">1</span>
-              <span class="step-title">Seleccionar Transporte</span>
-              </div>
+            </div>
             <div class="step" data-step="2">
               <span class="step-number">2</span>
-              <span class="step-title">Agregar Productos</span>
-          </div>
+            </div>
             <div class="step" data-step="3">
               <span class="step-number">3</span>
-              <span class="step-title">Confirmar Paquete</span>
-          </div>
             </div>
+          </div>
             
           <div id="stepContent" class="step-content">
             <!-- El contenido del paso se cargará dinámicamente -->
@@ -723,6 +729,7 @@ class TravelApp {
     console.log('Configurando página de inicio usuario');
     this.inPackageCreationFlow = false;
     this.loadHomeProductsDirectly();
+    this.loadPreloadedPackages();
     this.setupHomeFilterButtons();
     this.setupLocationFilter();
     this.setupUserNavigation();
@@ -751,45 +758,74 @@ class TravelApp {
     this.inPackageCreationFlow = false;
     this.setupUserNavigation();
     this.setupProfileActions();
-    try { this.renderUserTransport(); } catch (e) { console.warn('No se pudo renderizar transporte:', e); }
+    // Renderizar transportes disponibles
+    this.renderAdminSingleTransport();
   }
 
-  renderUserTransport() {
-    const card = document.getElementById('userTransportCard');
-    if (!card) return;
-    const list = getTransportes() || [];
-    if (!list.length) {
-      card.innerHTML = '<p class="no-products">No hay transportes disponibles</p>';
-      return;
-    }
-    card.innerHTML = list.map(t => `
-      <div class="admin-transport-item">
-        <div class="admin-item-info">
-          <h4>${t.nombre}</h4>
-          <p>${t.empresa || ''} • $${t.precio || 0}</p>
-          <p>${t.localidad_origen || ''} → ${t.localidad_destino || ''}</p>
-          <p>Horario: ${t.horario || ''} • Duración: ${t.duracion || ''}</p>
-        </div>
-      </div>
-    `).join('');
-  }
 
   // Configurar flujo de creación de paquetes
   setupPackageCreationFlow() {
     console.log('Configurando flujo de creación de paquetes');
     this.inPackageCreationFlow = true;
     
-    // Inicializar estado del paquete
-    this.currentPackage = {
-      id: Date.now(),
-      nombre: '',
-      descripcion: '',
-      localidad: '',
-      productos: [],
-      precioTotal: 0,
-      fechaCreacion: new Date().toISOString(),
-      usuarioId: this.currentUser ? this.currentUser.id : 1
-    };
+    // Verificar si hay un paquete precargado para editar
+    const preloadedPackageData = localStorage.getItem('editingPreloadedPackage');
+    
+    if (preloadedPackageData) {
+      // Cargar paquete precargado
+      const preloadedPackage = JSON.parse(preloadedPackageData);
+      console.log('Cargando paquete precargado:', preloadedPackage);
+      
+      // Separar productos de transporte
+      const productos = preloadedPackage.productos.filter(p => p.categoria !== 'transporte');
+      const transporte = preloadedPackage.productos.find(p => p.categoria === 'transporte');
+      
+      // Inicializar estado del paquete con datos precargados
+      this.currentPackage = {
+        id: Date.now(),
+        nombre: preloadedPackage.nombre,
+        descripcion: preloadedPackage.descripcion,
+        localidad: preloadedPackage.localidad,
+        productos: [...productos], // Solo productos, no transporte
+        precioTotal: preloadedPackage.precio_total,
+        fechaCreacion: new Date().toISOString(),
+        usuarioId: this.currentUser ? this.currentUser.id : 1
+      };
+      
+      // Si hay transporte en el paquete precargado, configurarlo
+      if (transporte) {
+        // Buscar un transporte real que coincida con la localidad
+        const transportes = getTransportes();
+        const matchingTransport = transportes.find(t => 
+          t.localidad_destino === preloadedPackage.localidad || 
+          t.localidad_destino.toLowerCase().includes(preloadedPackage.localidad.toLowerCase())
+        );
+        
+        if (matchingTransport) {
+          this.currentPackage.transporteId = matchingTransport.id;
+          console.log('Transporte configurado automáticamente:', matchingTransport);
+        }
+      }
+      
+      // Limpiar el paquete precargado del localStorage
+      localStorage.removeItem('editingPreloadedPackage');
+      
+      // Mostrar mensaje de confirmación
+      alert(`¡Perfecto! Has cargado el paquete "${preloadedPackage.nombre}" como base. Ahora puedes modificar los productos según tus preferencias.`);
+      
+    } else {
+      // Inicializar estado del paquete vacío
+      this.currentPackage = {
+        id: Date.now(),
+        nombre: '',
+        descripcion: '',
+        localidad: '',
+        productos: [],
+        precioTotal: 0,
+        fechaCreacion: new Date().toISOString(),
+        usuarioId: this.currentUser ? this.currentUser.id : 1
+      };
+    }
     
     // Mostrar primer paso
     this.showPackageStep(1);
@@ -922,11 +958,22 @@ class TravelApp {
     if (this.currentPackage.productos.length === 0) {
       return `
         <div class="step-content-inner">
-          <p>Debes agregar al menos un producto a tu paquete</p>
-          <button class="btn btn-secondary" onclick="app.showPackageStep(2)">Volver al paso 2</button>
+          <div class="empty-state">
+            <div class="empty-icon">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3>Paquete incompleto</h3>
+            <p>Debes agregar al menos un producto a tu paquete antes de continuar</p>
+            <button class="btn btn-secondary" onclick="app.showPackageStep(2)">
+              <i class="fas fa-arrow-left"></i> Volver al paso 2
+            </button>
+          </div>
         </div>
       `;
     }
+    
+    const transporte = this.getTransporteById(this.currentPackage.transporteId);
+    const transporteInfo = transporte ? `${transporte.nombre} - $${transporte.precio}` : 'No especificado';
     
     return `
       <div class="step-content-inner">
@@ -935,27 +982,37 @@ class TravelApp {
         <div class="package-final-summary">
           <div class="package-summary-grid">
             <div class="package-details-column">
-              <h4>Detalles del paquete</h4>
+              <h4><i class="fas fa-info-circle"></i> Detalles del paquete</h4>
               <div class="package-details">
-                <p><strong>Destino:</strong> ${this.currentPackage.localidad}</p>
-                <p><strong>Transporte:</strong> ${this.getTransporteById(this.currentPackage.transporteId)?.nombre || 'No especificado'}</p>
-                <p><strong>Productos incluidos:</strong> ${this.currentPackage.productos.length}</p>
-                <p><strong>Precio total:</strong> $${this.currentPackage.precioTotal}</p>
+                <p><strong>Destino:</strong> ${this.currentPackage.localidad || 'No especificado'}</p>
+                <p><strong>Transporte:</strong> ${transporteInfo}</p>
+                <p><strong>Productos incluidos:</strong> ${this.currentPackage.productos.length} productos</p>
+                <p><strong>Duración:</strong> ${this.currentPackage.duracion || 'No especificada'}</p>
+                <p><strong>Dificultad:</strong> ${this.currentPackage.dificultad || 'No especificada'}</p>
               </div>
             </div>
             
             <div class="package-products-column">
-              <h5>Productos seleccionados:</h5>
+              <h5><i class="fas fa-list"></i> Productos seleccionados</h5>
               <div id="finalProductsList">
-                <!-- Lista final de productos -->
+                <!-- Lista final de productos se cargará dinámicamente -->
               </div>
+            </div>
+            
+            <div class="package-total-summary">
+              <h4><i class="fas fa-calculator"></i> Resumen de costos</h4>
+              <div class="total-amount">$${this.currentPackage.precioTotal || 0}</div>
             </div>
           </div>
         </div>
         
         <div class="step-actions">
-          <button class="btn btn-secondary" onclick="app.showPackageStep(2)">Anterior</button>
-          <button class="btn btn-primary" id="createPackage">Crear Paquete</button>
+          <button class="btn btn-secondary" onclick="app.showPackageStep(2)">
+            <i class="fas fa-arrow-left"></i> Anterior
+          </button>
+          <button class="btn btn-primary" id="createPackage">
+            <i class="fas fa-check"></i> Crear Paquete
+          </button>
         </div>
       </div>
     `;
@@ -995,6 +1052,9 @@ class TravelApp {
           localidad: this.currentPackage.localidad,
           transporteId: this.currentPackage.transporteId
         });
+        
+        // Actualizar resumen inmediatamente cuando se selecciona transporte
+        this.updatePackageSummary();
       });
       
       nextButton.addEventListener('click', () => {
@@ -1193,9 +1253,11 @@ class TravelApp {
         if (transporte) {
           productsHtml += `
             <div class="package-product-item package-transporte-item">
-              <span>🚌 ${transporte.nombre}</span>
-              <span>$${transporte.precio}</span>
-              <span class="transporte-info">Transporte</span>
+              <div class="product-name">${transporte.nombre}</div>
+              <div class="product-details">
+                <span class="product-category">Transporte</span>
+                <span class="product-price">$${transporte.precio}</span>
+              </div>
             </div>
           `;
         }
@@ -1203,20 +1265,21 @@ class TravelApp {
       
       // Agregar productos
       productsHtml += this.currentPackage.productos.map(product => {
+        const categoryIcon = this.getProductIcon(product.categoria);
+        const categoryName = this.getCategoryDisplayName(product.categoria);
+        
         // Si es un restaurante con comidas seleccionadas, mostrar detalles
         if (product.categoria === 'restaurantes' && product.comidasSeleccionadas && product.comidasSeleccionadas.length > 0) {
           const comidasHtml = product.comidasSeleccionadas.map(comida => 
-            `<div class="meal-detail">• ${comida.nombre} ($${comida.precio})</div>`
+            `<div class="meal-detail">• ${comida.nombre} - $${comida.precio}</div>`
           ).join('');
           
           return `
-            <div class="package-product-item restaurant-item">
-              <div class="restaurant-main">
-                <span>🍽️ ${product.nombre}</span>
-                <span>$${product.precioTotal || product.precio}</span>
-                <button class="btn btn-danger btn-small" onclick="travelApp.removeProductFromPackage(${product.id})">
-                  <i class="fas fa-trash"></i>
-                </button>
+            <div class="package-product-item">
+              <div class="product-name">${categoryIcon} ${product.nombre}</div>
+              <div class="product-details">
+                <span class="product-category">${categoryName}</span>
+                <span class="product-price">$${product.precioTotal || product.precio}</span>
               </div>
               <div class="restaurant-meals">
                 ${comidasHtml}
@@ -1227,11 +1290,11 @@ class TravelApp {
           // Producto normal
           return `
             <div class="package-product-item">
-              <span>${this.getProductIcon(product.categoria)} ${product.nombre}</span>
-              <span>$${product.precioTotal || product.precio}</span>
-              <button class="btn btn-danger btn-small" onclick="travelApp.removeProductFromPackage(${product.id})">
-                <i class="fas fa-trash"></i>
-              </button>
+              <div class="product-name">${categoryIcon} ${product.nombre}</div>
+              <div class="product-details">
+                <span class="product-category">${categoryName}</span>
+                <span class="product-price">$${product.precioTotal || product.precio}</span>
+              </div>
             </div>
           `;
         }
@@ -1261,33 +1324,49 @@ class TravelApp {
   updateFinalPackageSummary() {
     const finalProductsList = document.getElementById('finalProductsList');
     if (finalProductsList) {
+      if (this.currentPackage.productos.length === 0) {
+        finalProductsList.innerHTML = `
+          <div class="empty-state">
+            <p>No hay productos agregados al paquete</p>
+          </div>
+        `;
+        return;
+      }
+
       finalProductsList.innerHTML = this.currentPackage.productos.map(product => {
+        const categoryIcon = this.getProductIcon(product.categoria);
+        const categoryName = this.getCategoryDisplayName(product.categoria);
+        
         // Si es un restaurante con comidas seleccionadas, mostrar detalles
         if (product.categoria === 'restaurantes' && product.comidasSeleccionadas && product.comidasSeleccionadas.length > 0) {
           const comidasHtml = product.comidasSeleccionadas.map(comida => 
-            `<div class="final-meal-detail">• ${comida.nombre} ($${comida.precio})</div>`
+            `<div class="meal-detail">• ${comida.nombre} - $${comida.precio}</div>`
           ).join('');
           
           return `
-            <div class="final-product-item final-restaurant-item">
-              <div class="final-restaurant-main">
-                <span>🍽️ ${product.nombre}</span>
-                <span>$${product.precioTotal || product.precio}</span>
+            <div class="final-product-item">
+              <div class="product-name">${categoryIcon} ${product.nombre}</div>
+              <div class="product-details">
+                <span class="product-category">${categoryName}</span>
+                <span class="product-price">$${product.precioTotal || product.precio}</span>
               </div>
-              <div class="final-restaurant-meals">
+              <div class="restaurant-meals">
                 ${comidasHtml}
               </div>
             </div>
           `;
-        } else {
+        }
+        
           // Producto normal
           return `
             <div class="final-product-item">
-              <span>${this.getProductIcon(product.categoria)} ${product.nombre}</span>
-              <span>$${product.precioTotal || product.precio}</span>
+            <div class="product-name">${categoryIcon} ${product.nombre}</div>
+            <div class="product-details">
+              <span class="product-category">${categoryName}</span>
+              <span class="product-price">$${product.precioTotal || product.precio}</span>
+            </div>
             </div>
           `;
-        }
       }).join('');
     }
   }
@@ -1728,8 +1807,8 @@ class TravelApp {
           <p>${p.localidad || 'Sin localidad'} • $${p.precio}</p>
         </div>
         <div class="admin-item-actions">
-          <button class="btn btn-secondary btn-sm" data-id="${p.id}">Editar</button>
-          <button class="btn btn-danger btn-sm" data-id="${p.id}">Eliminar</button>
+          <button class="btn btn-secondary btn-sm" data-id="${p.id}"><i class="fas fa-edit"></i> Editar</button>
+          <button class="btn btn-danger btn-sm" data-id="${p.id}"><i class="fas fa-trash"></i> Eliminar</button>
         </div>
       </div>
     `).join('');
@@ -1745,62 +1824,80 @@ class TravelApp {
 
   // Formulario de edición de producto
   showAdminProductEditForm(category, product) {
-    let container = document.getElementById('adminFormContainer');
-    if (!container) {
-      const parent = document.querySelector('.admin-section') || document.querySelector('.main-content');
-      container = document.createElement('div');
-      container.id = 'adminFormContainer';
-      parent?.insertBefore(container, parent.firstChild);
-    }
-    container.innerHTML = `
-      <div class="admin-form">
-        <h3>Editar ${this.getCategoryDisplayName(category)}</h3>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Nombre</label>
-            <input id="af_nombre" type="text" class="form-input" placeholder="Nombre" value="${product.nombre || ''}" />
+    // Crear modal de edición como en user
+    const modalHTML = `
+      <div id="editAdminProductModal" class="modal-overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <h3 class="modal-title">Editar ${this.getCategoryDisplayName(category)}</h3>
+            <button class="modal-close" onclick="app.closeEditAdminProductModal()">&times;</button>
           </div>
-          <div class="form-group">
-            <label>Descripción</label>
-            <textarea id="af_desc" class="form-input" placeholder="Descripción">${product.descripcion || ''}</textarea>
+          
+          <div class="modal-content">
+            <div class="form-group">
+              <label class="form-label">Nombre</label>
+              <input id="af_nombre" type="text" class="form-input" placeholder="Nombre" value="${product.nombre || ''}" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Descripción</label>
+              <textarea id="af_desc" class="form-input" placeholder="Descripción">${product.descripcion || ''}</textarea>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Precio</label>
+              <input id="af_precio" type="number" class="form-input" placeholder="0" value="${product.precio || 0}" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Localidad</label>
+              <input id="af_localidad" type="text" class="form-input" placeholder="Quito, Baños..." value="${product.localidad || ''}" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Creador/Proveedor</label>
+              <input id="af_creador" type="text" class="form-input" placeholder="Proveedor" value="${product.creador || 'Admin'}" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">URL de imagen</label>
+              <input id="af_imagen" type="text" class="form-input" placeholder="https://..." value="${product.imagen || ''}" />
+            </div>
+            
+            <div class="modal-actions">
+              <button class="btn btn-secondary" onclick="app.closeEditAdminProductModal()">Cancelar</button>
+              <button class="btn btn-primary" onclick="app.updateAdminProductFromModal('${category}', ${product.id})">Actualizar</button>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Precio</label>
-            <input id="af_precio" type="number" class="form-input" placeholder="0" value="${product.precio || 0}" />
-          </div>
-          <div class="form-group">
-            <label>Localidad</label>
-            <input id="af_localidad" type="text" class="form-input" placeholder="Quito, Baños..." value="${product.localidad || ''}" />
-          </div>
-          <div class="form-group">
-            <label>Creador/Proveedor</label>
-            <input id="af_creador" type="text" class="form-input" placeholder="Proveedor" value="${product.creador || 'Admin'}" />
-          </div>
-          <div class="form-group">
-            <label>URL de imagen</label>
-            <input id="af_imagen" type="text" class="form-input" placeholder="https://..." value="${product.imagen || ''}" />
-          </div>
-        </div>
-        <div class="step-actions">
-          <button class="btn btn-secondary" id="af_cancel">Cancelar</button>
-          <button class="btn btn-primary" id="af_update">Actualizar</button>
         </div>
       </div>
     `;
-    document.getElementById('af_cancel').onclick = () => container.innerHTML = '';
-    document.getElementById('af_update').onclick = () => {
-      const data = {
-        nombre: document.getElementById('af_nombre').value.trim(),
-        descripcion: document.getElementById('af_desc').value.trim(),
-        precio: parseFloat(document.getElementById('af_precio').value) || 0,
-        localidad: document.getElementById('af_localidad').value.trim(),
-        creador: document.getElementById('af_creador').value.trim() || 'Admin',
-        imagen: document.getElementById('af_imagen').value.trim() || product.imagen || ''
-      };
-      this.updateAdminProduct(category, product.id, data);
-      container.innerHTML = '';
-      this.renderAdminProducts(category);
+    
+    // Agregar modal al body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+  }
+  
+  // Cerrar modal de edición de producto admin
+  closeEditAdminProductModal() {
+    const modal = document.getElementById('editAdminProductModal');
+    if (modal) {
+      modal.remove();
+    }
+  }
+  
+  // Actualizar producto desde modal
+  updateAdminProductFromModal(category, productId) {
+    const data = {
+      nombre: document.getElementById('af_nombre').value.trim(),
+      descripcion: document.getElementById('af_desc').value.trim(),
+      precio: parseFloat(document.getElementById('af_precio').value) || 0,
+      localidad: document.getElementById('af_localidad').value.trim(),
+      creador: document.getElementById('af_creador').value.trim() || 'Admin',
+      imagen: document.getElementById('af_imagen').value.trim() || ''
     };
+    this.updateAdminProduct(category, productId, data);
+    this.closeEditAdminProductModal();
+    this.renderAdminProducts(category);
   }
 
   // Actualizar producto en memoria y localStorage
@@ -1842,65 +1939,80 @@ class TravelApp {
   }
 
   showAdminProductForm(category) {
-    let container = document.getElementById('adminFormContainer');
-    if (!container) {
-      const parent = document.querySelector('.admin-section') || document.querySelector('.main-content');
-      container = document.createElement('div');
-      container.id = 'adminFormContainer';
-      parent?.insertBefore(container, parent.firstChild);
-    }
-    container.innerHTML = `
-      <div class="admin-form">
-        <h3>Agregar ${this.getCategoryDisplayName(category)}</h3>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Nombre</label>
-            <input id="af_nombre" type="text" class="form-input" placeholder="Nombre" />
+    // Crear modal de agregar producto como en user
+    const modalHTML = `
+      <div id="addAdminProductModal" class="modal-overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <h3 class="modal-title">Agregar ${this.getCategoryDisplayName(category)}</h3>
+            <button class="modal-close" onclick="app.closeAddAdminProductModal()">&times;</button>
           </div>
-          <div class="form-group">
-            <label>Descripción</label>
-            <textarea id="af_desc" class="form-input" placeholder="Descripción"></textarea>
+          
+          <div class="modal-content">
+            <div class="form-group">
+              <label class="form-label">Nombre</label>
+              <input id="af_nombre" type="text" class="form-input" placeholder="Nombre" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Descripción</label>
+              <textarea id="af_desc" class="form-input" placeholder="Descripción"></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Precio</label>
+              <input id="af_precio" type="number" class="form-input" placeholder="0" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Localidad</label>
+              <input id="af_localidad" type="text" class="form-input" placeholder="Quito, Baños..." />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Creador/Proveedor</label>
+              <input id="af_creador" type="text" class="form-input" placeholder="Proveedor" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">URL de imagen</label>
+              <input id="af_imagen" type="text" class="form-input" placeholder="https://..." />
+            </div>
+            
+            <div class="modal-actions">
+              <button class="btn btn-secondary" onclick="app.closeAddAdminProductModal()">Cancelar</button>
+              <button class="btn btn-primary" onclick="app.addAdminProductFromModal('${category}')">Guardar</button>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Precio</label>
-            <input id="af_precio" type="number" class="form-input" placeholder="0" />
-          </div>
-          <div class="form-group">
-            <label>Localidad</label>
-            <input id="af_localidad" type="text" class="form-input" placeholder="Quito, Baños..." />
-          </div>
-          <div class="form-group">
-            <label>Creador/Proveedor</label>
-            <input id="af_creador" type="text" class="form-input" placeholder="Proveedor" />
-          </div>
-          <div class="form-group">
-            <label>URL de imagen</label>
-            <input id="af_imagen" type="text" class="form-input" placeholder="https://..." />
-          </div>
-        </div>
-        <div class="step-actions">
-          <button class="btn btn-secondary" id="af_cancel">Cancelar</button>
-          <button class="btn btn-primary" id="af_save">Guardar</button>
         </div>
       </div>
     `;
-
-    document.getElementById('af_cancel').onclick = () => {
-      container.innerHTML = '';
+    
+    // Agregar modal al body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+  }
+  
+  // Cerrar modal de agregar producto admin
+  closeAddAdminProductModal() {
+    const modal = document.getElementById('addAdminProductModal');
+    if (modal) {
+      modal.remove();
+    }
+  }
+  
+  // Agregar producto desde modal
+  addAdminProductFromModal(category) {
+    const data = {
+      nombre: document.getElementById('af_nombre').value.trim(),
+      descripcion: document.getElementById('af_desc').value.trim(),
+      precio: parseFloat(document.getElementById('af_precio').value) || 0,
+      localidad: document.getElementById('af_localidad').value.trim(),
+      creador: document.getElementById('af_creador').value.trim() || 'Admin',
+      imagen: document.getElementById('af_imagen').value.trim() || 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&h=200&fit=crop',
     };
-    document.getElementById('af_save').onclick = () => {
-      const data = {
-        nombre: document.getElementById('af_nombre').value.trim(),
-        descripcion: document.getElementById('af_desc').value.trim(),
-        precio: parseFloat(document.getElementById('af_precio').value) || 0,
-        localidad: document.getElementById('af_localidad').value.trim(),
-        creador: document.getElementById('af_creador').value.trim() || 'Admin',
-        imagen: document.getElementById('af_imagen').value.trim() || 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&h=200&fit=crop',
-      };
-      this.addAdminProduct(category, data);
-      container.innerHTML = '';
-      this.renderAdminProducts(category);
-    };
+    this.addAdminProduct(category, data);
+    this.closeAddAdminProductModal();
+    this.renderAdminProducts(category);
   }
 
   addAdminProduct(category, data) {
@@ -1979,8 +2091,8 @@ class TravelApp {
           <p>${pkg.localidad || 'Sin localidad'} • $${pkg.precio_total || pkg.precio || 0}</p>
           </div>
         <div class="admin-item-actions">
-          <button class="btn btn-secondary btn-sm" data-id="${pkg.id}">Editar</button>
-          <button class="btn btn-danger btn-sm" data-id="${pkg.id}">Eliminar</button>
+          <button class="btn btn-secondary btn-sm" data-id="${pkg.id}"><i class="fas fa-edit"></i> Editar</button>
+          <button class="btn btn-danger btn-sm" data-id="${pkg.id}"><i class="fas fa-trash"></i> Eliminar</button>
         </div>
       </div>
     `).join('');
@@ -1995,53 +2107,73 @@ class TravelApp {
   }
 
   showAdminPackageEditForm(pkg) {
-    let container = document.getElementById('adminFormContainer');
-    if (!container) {
-      const parent = document.querySelector('.admin-section') || document.querySelector('.main-content');
-      container = document.createElement('div');
-      container.id = 'adminFormContainer';
-      parent?.insertBefore(container, parent.firstChild);
-    }
-    container.innerHTML = `
-      <div class="admin-form">
-        <h3>Editar Paquete</h3>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Nombre</label>
-            <input id="apk_nombre" type="text" class="form-input" placeholder="Nombre del paquete" value="${pkg.nombre || ''}" />
+    // Crear modal de edición como en user
+    const modalHTML = `
+      <div id="editAdminPackageModal" class="modal-overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <h3 class="modal-title">Editar Paquete</h3>
+            <button class="modal-close" onclick="app.closeEditAdminPackageModal()">&times;</button>
           </div>
-          <div class="form-group">
-            <label>Descripción</label>
-            <textarea id="apk_desc" class="form-input" placeholder="Descripción">${pkg.descripcion || ''}</textarea>
+          
+          <div class="modal-content">
+            <div class="form-group">
+              <label class="form-label">Nombre del Paquete</label>
+              <input id="apk_nombre" type="text" class="form-input" placeholder="Nombre del paquete" value="${pkg.nombre || ''}" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Descripción</label>
+              <textarea id="apk_desc" class="form-input" placeholder="Descripción">${pkg.descripcion || ''}</textarea>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Localidad</label>
+              <input id="apk_localidad" type="text" class="form-input" placeholder="Quito, Baños..." value="${pkg.localidad || ''}" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Precio base</label>
+              <input id="apk_precio" type="number" class="form-input" placeholder="0" value="${pkg.precio_total || pkg.precio || 0}" />
+            </div>
+            
+            <div class="modal-actions">
+              <button class="btn btn-secondary" onclick="app.closeEditAdminPackageModal()">Cancelar</button>
+              <button class="btn btn-primary" onclick="app.updateAdminPackageFromModal(${pkg.id})">Actualizar</button>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Localidad</label>
-            <input id="apk_localidad" type="text" class="form-input" placeholder="Quito, Baños..." value="${pkg.localidad || ''}" />
-          </div>
-          <div class="form-group">
-            <label>Precio base</label>
-            <input id="apk_precio" type="number" class="form-input" placeholder="0" value="${pkg.precio_total || pkg.precio || 0}" />
-          </div>
-        </div>
-        <div class="step-actions">
-          <button class="btn btn-secondary" id="apk_cancel">Cancelar</button>
-          <button class="btn btn-primary" id="apk_update">Actualizar</button>
         </div>
       </div>
     `;
-    document.getElementById('apk_cancel').onclick = () => container.innerHTML = '';
-    document.getElementById('apk_update').onclick = () => {
-      const updated = {
-        ...pkg,
-        nombre: document.getElementById('apk_nombre').value.trim() || pkg.nombre,
-        descripcion: document.getElementById('apk_desc').value.trim() || pkg.descripcion,
-        localidad: document.getElementById('apk_localidad').value.trim() || pkg.localidad,
-        precio_total: parseFloat(document.getElementById('apk_precio').value) || pkg.precio_total || pkg.precio || 0
-      };
-      this.updateAdminPackage(updated);
-      container.innerHTML = '';
-      this.renderAdminPackages();
+    
+    // Agregar modal al body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+  }
+  
+  // Cerrar modal de edición de paquete admin
+  closeEditAdminPackageModal() {
+    const modal = document.getElementById('editAdminPackageModal');
+    if (modal) {
+      modal.remove();
+    }
+  }
+  
+  // Actualizar paquete desde modal
+  updateAdminPackageFromModal(packageId) {
+    const items = this.getAllAdminPackages();
+    const pkg = items.find(p => p.id === packageId);
+    if (!pkg) return;
+    
+    const updated = {
+      ...pkg,
+      nombre: document.getElementById('apk_nombre').value.trim() || pkg.nombre,
+      descripcion: document.getElementById('apk_desc').value.trim() || pkg.descripcion,
+      localidad: document.getElementById('apk_localidad').value.trim() || pkg.localidad,
+      precio_total: parseFloat(document.getElementById('apk_precio').value) || pkg.precio_total || pkg.precio || 0
     };
+    this.updateAdminPackage(updated);
+    this.closeEditAdminPackageModal();
+    this.renderAdminPackages();
   }
 
   updateAdminPackage(pkg) {
@@ -2075,56 +2207,72 @@ class TravelApp {
   }
 
   showAdminPackageForm() {
-    let container = document.getElementById('adminFormContainer');
-    if (!container) {
-      const parent = document.querySelector('.admin-section') || document.querySelector('.main-content');
-      container = document.createElement('div');
-      container.id = 'adminFormContainer';
-      parent?.insertBefore(container, parent.firstChild);
-    }
-    container.innerHTML = `
-      <div class="admin-form">
-        <h3>Crear Paquete</h3>
-        <div class="form-grid">
-              <div class="form-group">
-            <label>Nombre</label>
-            <input id="apk_nombre" type="text" class="form-input" placeholder="Nombre del paquete" />
-              </div>
-                <div class="form-group">
-            <label>Descripción</label>
-            <textarea id="apk_desc" class="form-input" placeholder="Descripción"></textarea>
-                </div>
-                <div class="form-group">
-            <label>Localidad</label>
-            <input id="apk_localidad" type="text" class="form-input" placeholder="Quito, Baños..." />
-                </div>
-                <div class="form-group">
-            <label>Precio base</label>
-            <input id="apk_precio" type="number" class="form-input" placeholder="0" />
-                </div>
-              </div>
-        <div class="step-actions">
-          <button class="btn btn-secondary" id="apk_cancel">Cancelar</button>
-          <button class="btn btn-primary" id="apk_save">Guardar</button>
+    // Crear modal de creación como en user
+    const modalHTML = `
+      <div id="createAdminPackageModal" class="modal-overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <h3 class="modal-title">Crear Paquete</h3>
+            <button class="modal-close" onclick="app.closeCreateAdminPackageModal()">&times;</button>
+          </div>
+          
+          <div class="modal-content">
+            <div class="form-group">
+              <label class="form-label">Nombre del Paquete</label>
+              <input id="apk_nombre" type="text" class="form-input" placeholder="Nombre del paquete" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Descripción</label>
+              <textarea id="apk_desc" class="form-input" placeholder="Descripción"></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Localidad</label>
+              <input id="apk_localidad" type="text" class="form-input" placeholder="Quito, Baños..." />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Precio base</label>
+              <input id="apk_precio" type="number" class="form-input" placeholder="0" />
+            </div>
+            
+            <div class="modal-actions">
+              <button class="btn btn-secondary" onclick="app.closeCreateAdminPackageModal()">Cancelar</button>
+              <button class="btn btn-primary" onclick="app.createAdminPackageFromModal()">Crear Paquete</button>
+            </div>
+          </div>
         </div>
       </div>
     `;
-    document.getElementById('apk_cancel').onclick = () => container.innerHTML = '';
-    document.getElementById('apk_save').onclick = () => {
-      const pkg = {
-        id: Date.now(),
-        nombre: document.getElementById('apk_nombre').value.trim() || 'Nuevo paquete',
-        descripcion: document.getElementById('apk_desc').value.trim() || 'Paquete creado por admin',
-        localidad: document.getElementById('apk_localidad').value.trim() || '',
-        precio_total: parseFloat(document.getElementById('apk_precio').value) || 0,
-        creador: 'admin',
-        productos: [],
-        imagen: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&h=400&fit=crop'
-      };
-      this.addAdminPackage(pkg);
-      container.innerHTML = '';
-      this.renderAdminPackages();
+    
+    // Agregar modal al body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+  }
+  
+  // Cerrar modal de creación de paquete admin
+  closeCreateAdminPackageModal() {
+    const modal = document.getElementById('createAdminPackageModal');
+    if (modal) {
+      modal.remove();
+    }
+  }
+  
+  // Crear paquete desde modal
+  createAdminPackageFromModal() {
+    const pkg = {
+      id: Date.now(),
+      nombre: document.getElementById('apk_nombre').value.trim() || 'Nuevo paquete',
+      descripcion: document.getElementById('apk_desc').value.trim() || 'Paquete creado por admin',
+      localidad: document.getElementById('apk_localidad').value.trim() || '',
+      precio_total: parseFloat(document.getElementById('apk_precio').value) || 0,
+      creador: 'admin',
+      productos: [],
+      imagen: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&h=400&fit=crop'
     };
+    this.addAdminPackage(pkg);
+    this.closeCreateAdminPackageModal();
+    this.renderAdminPackages();
   }
 
   getAllAdminPackages() {
@@ -2159,70 +2307,150 @@ class TravelApp {
   }
 
   renderAdminSingleTransport() {
-    const list = document.getElementById('adminTransportList');
-    if (!list) return;
-    const ts = getTransportes() || [];
-    if (!ts.length) {
-      list.innerHTML = '<p class="no-products">No hay transportes configurados</p>';
-      return;
+    // Renderizar en admin
+    const adminList = document.getElementById('adminTransportList');
+    if (adminList) {
+      const ts = getTransportes() || [];
+      if (!ts.length) {
+        adminList.innerHTML = '<p class="no-products">No hay transportes configurados</p>';
+      } else {
+        adminList.innerHTML = ts.map(t => `
+          <div class="admin-transport-item">
+            <div class="admin-item-info">
+              <h4>${t.nombre}</h4>
+              <p>${t.empresa || ''} • $${t.precio || 0}</p>
+              <p>${t.localidad_origen || ''} → ${t.localidad_destino || ''}</p>
+              <p>Horario: ${t.horario || ''} • Duración: ${t.duracion || ''}</p>
+            </div>
+            <div class="admin-item-actions">
+              <button class="btn btn-secondary btn-sm" data-edit-transport-id="${t.id}"><i class="fas fa-edit"></i> Editar</button>
+              <button class="btn btn-danger btn-sm" data-delete-transport-id="${t.id}"><i class="fas fa-trash"></i> Eliminar</button>
+            </div>
+          </div>
+        `).join('');
+      }
     }
-    list.innerHTML = ts.map(t => `
-      <div class="admin-transport-item">
-        <div class="admin-item-info">
-          <h4>${t.nombre}</h4>
-          <p>${t.empresa || ''} • $${t.precio || 0}</p>
-          <p>${t.localidad_origen || ''} → ${t.localidad_destino || ''}</p>
-          <p>Horario: ${t.horario || ''} • Duración: ${t.duracion || ''}</p>
-        </div>
-        <div class="admin-item-actions">
-          <button class="btn btn-secondary btn-sm" data-edit-transport-id="${t.id}"><i class="fas fa-edit"></i> Editar</button>
-        </div>
-      </div>
-    `).join('');
-    // Delegación para editar transporte (abre formulario precargado con el primero por simplicidad)
-    list.addEventListener('click', (e) => {
-      const btn = e.target.closest('[data-edit-transport-id]');
-      if (!btn) return;
-      this.showAdminTransportForm();
-    });
+
+    // Renderizar en user (sin botones de acción)
+    const userCard = document.getElementById('userTransportCard');
+    if (userCard) {
+      const ts = getTransportes() || [];
+      if (!ts.length) {
+        userCard.innerHTML = '<p class="no-products">No hay transportes disponibles</p>';
+      } else {
+        userCard.innerHTML = ts.map(t => `
+          <div class="admin-transport-item">
+            <div class="admin-item-info">
+              <h4>${t.nombre}</h4>
+              <p>${t.empresa || ''} • $${t.precio || 0}</p>
+              <p>${t.localidad_origen || ''} → ${t.localidad_destino || ''}</p>
+              <p>Horario: ${t.horario || ''} • Duración: ${t.duracion || ''}</p>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Delegación para editar transporte (solo en admin)
+    if (adminList) {
+      adminList.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-edit-transport-id]');
+        if (!btn) return;
+        this.showAdminTransportForm();
+      });
+    }
   }
 
   showAdminTransportForm() {
-    let container = document.getElementById('adminFormContainer');
-    if (!container) {
-      const parent = document.querySelector('.admin-section') || document.querySelector('.main-content');
-      container = document.createElement('div');
-      container.id = 'adminFormContainer';
-      parent?.insertBefore(container, parent.firstChild);
-    }
+    // Crear modal de editar transporte como en user
     const t = (getTransportes() || [])[0] || {};
-    container.innerHTML = `
-      <div class="admin-form">
-        <h3>Editar Transporte</h3>
-        <div class="form-grid">
-          <div class="form-group"><label>Nombre</label>
-            <input id="tr_nombre" class="form-input" value="${t.nombre || ''}"></div>
-          <div class="form-group"><label>Empresa</label>
-            <input id="tr_empresa" class="form-input" value="${t.empresa || ''}"></div>
-          <div class="form-group"><label>Precio</label>
-            <input id="tr_precio" type="number" class="form-input" value="${t.precio || 0}"></div>
-          <div class="form-group"><label>Origen</label>
-            <input id="tr_origen" class="form-input" value="${t.localidad_origen || ''}"></div>
-          <div class="form-group"><label>Destino</label>
-            <input id="tr_destino" class="form-input" value="${t.localidad_destino || ''}"></div>
-          <div class="form-group"><label>Horario</label>
-            <input id="tr_horario" class="form-input" value="${t.horario || ''}"></div>
-          <div class="form-group"><label>Duración</label>
-            <input id="tr_duracion" class="form-input" value="${t.duracion || ''}"></div>
-        </div>
-        <div class="step-actions">
-          <button class="btn btn-secondary" id="tr_cancel">Cancelar</button>
-          <button class="btn btn-primary" id="tr_save">Guardar</button>
+    const modalHTML = `
+      <div id="editAdminTransportModal" class="modal-overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <h3 class="modal-title">Editar Transporte</h3>
+            <button class="modal-close" onclick="app.closeEditAdminTransportModal()">&times;</button>
+          </div>
+          
+          <div class="modal-content">
+            <div class="form-group">
+              <label class="form-label">Nombre</label>
+              <input id="tr_nombre" class="form-input" value="${t.nombre || ''}" placeholder="Nombre del transporte" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Empresa</label>
+              <input id="tr_empresa" class="form-input" value="${t.empresa || ''}" placeholder="Empresa de transporte" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Precio</label>
+              <input id="tr_precio" type="number" class="form-input" value="${t.precio || 0}" placeholder="0" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Origen</label>
+              <input id="tr_origen" class="form-input" value="${t.localidad_origen || ''}" placeholder="Ciudad de origen" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Destino</label>
+              <input id="tr_destino" class="form-input" value="${t.localidad_destino || ''}" placeholder="Ciudad de destino" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Horario</label>
+              <input id="tr_horario" class="form-input" value="${t.horario || ''}" placeholder="Horario de salida" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Duración</label>
+              <input id="tr_duracion" class="form-input" value="${t.duracion || ''}" placeholder="Duración del viaje" />
+            </div>
+            
+            <div class="modal-actions">
+              <button class="btn btn-secondary" onclick="app.closeEditAdminTransportModal()">Cancelar</button>
+              <button class="btn btn-primary" onclick="app.saveAdminTransportFromModal()">Guardar</button>
+            </div>
+          </div>
         </div>
       </div>
     `;
-    document.getElementById('tr_cancel').onclick = () => container.innerHTML = '';
-    document.getElementById('tr_save').onclick = () => this.saveSingleTransport(container);
+    
+    // Agregar modal al body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+  }
+  
+  // Cerrar modal de editar transporte admin
+  closeEditAdminTransportModal() {
+    const modal = document.getElementById('editAdminTransportModal');
+    if (modal) {
+      modal.remove();
+    }
+  }
+  
+  // Guardar transporte desde modal
+  saveAdminTransportFromModal() {
+    const updated = {
+      id: 1,
+      nombre: (document.getElementById('tr_nombre').value || '').trim(),
+      empresa: (document.getElementById('tr_empresa').value || '').trim(),
+      precio: parseFloat(document.getElementById('tr_precio').value) || 0,
+      localidad_origen: (document.getElementById('tr_origen').value || '').trim(),
+      localidad_destino: (document.getElementById('tr_destino').value || '').trim(),
+      horario: (document.getElementById('tr_horario').value || '').trim(),
+      duracion: (document.getElementById('tr_duracion').value || '').trim(),
+    };
+    try {
+      localStorage.setItem('single_transport', JSON.stringify(updated));
+      this.closeEditAdminTransportModal();
+      this.renderAdminSingleTransport();
+      // Transporte se actualiza automáticamente
+      alert('Transporte actualizado');
+    } catch (e) {
+      console.error('Error guardando transporte', e);
+      alert('Error guardando transporte');
+    }
   }
 
   saveSingleTransport(container) {
@@ -2240,8 +2468,7 @@ class TravelApp {
       localStorage.setItem('single_transport', JSON.stringify(updated));
       container.innerHTML = '';
       this.renderAdminSingleTransport();
-      // Si estamos en perfil de usuario abierto simultáneamente, intentamos actualizar
-      try { this.renderUserTransport(); } catch (e) {}
+      // Transporte se actualiza automáticamente
       alert('Transporte actualizado');
     } catch (e) {
       console.error('Error guardando transporte', e);
@@ -2272,79 +2499,236 @@ class TravelApp {
     this.renderAdminTrips();
   }
 
-  showAdminTripForm() {
-    let container = document.getElementById('adminFormContainer');
-    if (!container) {
-      const parent = document.querySelector('.admin-section') || document.querySelector('.main-content');
-      container = document.createElement('div');
-      container.id = 'adminFormContainer';
-      parent?.insertBefore(container, parent.firstChild);
-    }
-    container.innerHTML = `
-      <div class="admin-form">
-        <h3>Agregar Viaje</h3>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Origen</label>
-            <input id="trip_origen" class="form-input" placeholder="Quito" />
+  editAdminTrip(id) {
+    const trips = this.getAdminTrips();
+    const trip = trips.find(t => t.id === id);
+    if (!trip) { alert('Viaje no encontrado'); return; }
+    this.showAdminTripEditForm(trip);
+  }
+
+  showAdminTripEditForm(trip) {
+    // Crear modal de editar viaje con listas de opciones
+    const modalHTML = `
+      <div id="editAdminTripModal" class="modal-overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <h3 class="modal-title">Editar Viaje</h3>
+            <button class="modal-close" onclick="app.closeEditAdminTripModal()">&times;</button>
           </div>
-          <div class="form-group">
-            <label>Destino</label>
-            <input id="trip_destino" class="form-input" placeholder="Guayaquil" />
+          
+          <div class="modal-content">
+            <div class="form-group">
+              <label class="form-label">Origen</label>
+              <select id="edit_trip_origen" class="form-input">
+                <option value="">Seleccionar origen</option>
+                <option value="Quito" ${trip.origen === 'Quito' ? 'selected' : ''}>Quito</option>
+                <option value="Guayaquil" ${trip.origen === 'Guayaquil' ? 'selected' : ''}>Guayaquil</option>
+                <option value="Cuenca" ${trip.origen === 'Cuenca' ? 'selected' : ''}>Cuenca</option>
+                <option value="Ambato" ${trip.origen === 'Ambato' ? 'selected' : ''}>Ambato</option>
+                <option value="Riobamba" ${trip.origen === 'Riobamba' ? 'selected' : ''}>Riobamba</option>
+                <option value="Loja" ${trip.origen === 'Loja' ? 'selected' : ''}>Loja</option>
+                <option value="Manta" ${trip.origen === 'Manta' ? 'selected' : ''}>Manta</option>
+                <option value="Esmeraldas" ${trip.origen === 'Esmeraldas' ? 'selected' : ''}>Esmeraldas</option>
+                <option value="Machala" ${trip.origen === 'Machala' ? 'selected' : ''}>Machala</option>
+                <option value="Portoviejo" ${trip.origen === 'Portoviejo' ? 'selected' : ''}>Portoviejo</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Destino</label>
+              <select id="edit_trip_destino" class="form-input">
+                <option value="">Seleccionar destino</option>
+                <option value="Quito" ${trip.destino === 'Quito' ? 'selected' : ''}>Quito</option>
+                <option value="Guayaquil" ${trip.destino === 'Guayaquil' ? 'selected' : ''}>Guayaquil</option>
+                <option value="Cuenca" ${trip.destino === 'Cuenca' ? 'selected' : ''}>Cuenca</option>
+                <option value="Ambato" ${trip.destino === 'Ambato' ? 'selected' : ''}>Ambato</option>
+                <option value="Riobamba" ${trip.destino === 'Riobamba' ? 'selected' : ''}>Riobamba</option>
+                <option value="Loja" ${trip.destino === 'Loja' ? 'selected' : ''}>Loja</option>
+                <option value="Manta" ${trip.destino === 'Manta' ? 'selected' : ''}>Manta</option>
+                <option value="Esmeraldas" ${trip.destino === 'Esmeraldas' ? 'selected' : ''}>Esmeraldas</option>
+                <option value="Machala" ${trip.destino === 'Machala' ? 'selected' : ''}>Machala</option>
+                <option value="Portoviejo" ${trip.destino === 'Portoviejo' ? 'selected' : ''}>Portoviejo</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Fecha</label>
+              <input id="edit_trip_fecha" type="date" class="form-input" value="${trip.fecha || ''}" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Capacidad</label>
+              <input id="edit_trip_capacidad" type="number" min="1" class="form-input" placeholder="40" value="${trip.capacidad || ''}" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Precio</label>
+              <input id="edit_trip_precio" type="number" min="0" class="form-input" placeholder="25" value="${trip.precio || ''}" />
+            </div>
+            
+            <div class="modal-actions">
+              <button class="btn btn-secondary" onclick="app.closeEditAdminTripModal()">Cancelar</button>
+              <button class="btn btn-primary" onclick="app.updateAdminTripFromModal(${trip.id})">Actualizar</button>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Fecha</label>
-            <input id="trip_fecha" type="date" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label>Hora</label>
-            <input id="trip_hora" type="time" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label>Capacidad</label>
-            <input id="trip_capacidad" type="number" min="1" class="form-input" placeholder="40" />
-          </div>
-          <div class="form-group">
-            <label>Precio</label>
-            <input id="trip_precio" type="number" min="0" class="form-input" placeholder="25" />
-          </div>
-        </div>
-        <div class="step-actions">
-          <button class="btn btn-secondary" id="trip_cancel">Cancelar</button>
-          <button class="btn btn-primary" id="trip_save">Guardar</button>
         </div>
       </div>
     `;
+    
+    // Agregar modal al body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+  }
+  
+  // Cerrar modal de editar viaje admin
+  closeEditAdminTripModal() {
+    const modal = document.getElementById('editAdminTripModal');
+    if (modal) {
+      modal.remove();
+    }
+  }
+  
+  // Actualizar viaje desde modal
+  updateAdminTripFromModal(tripId) {
+    const origen = (document.getElementById('edit_trip_origen').value || '').trim();
+    const destino = (document.getElementById('edit_trip_destino').value || '').trim();
+    const fecha = (document.getElementById('edit_trip_fecha').value || '').trim();
+    const capacidad = parseInt(document.getElementById('edit_trip_capacidad').value, 10) || 0;
+    const precio = parseFloat(document.getElementById('edit_trip_precio').value) || 0;
 
-    document.getElementById('trip_cancel').onclick = () => (container.innerHTML = '');
-    document.getElementById('trip_save').onclick = () => {
-      const origen = (document.getElementById('trip_origen').value || '').trim();
-      const destino = (document.getElementById('trip_destino').value || '').trim();
-      const fecha = (document.getElementById('trip_fecha').value || '').trim();
-      const hora = (document.getElementById('trip_hora').value || '').trim();
-      const capacidad = parseInt(document.getElementById('trip_capacidad').value, 10) || 0;
-      const precio = parseFloat(document.getElementById('trip_precio').value) || 0;
+    if (!origen || !destino || !fecha || capacidad <= 0 || precio < 0) {
+      alert('Completa todos los campos correctamente');
+      return;
+    }
 
-      if (!origen || !destino || !fecha || !hora || capacidad <= 0 || precio < 0) {
-        alert('Completa todos los campos correctamente');
-        return;
-      }
+    const trips = this.getAdminTrips();
+    const tripIndex = trips.findIndex(t => t.id === tripId);
+    if (tripIndex === -1) {
+      alert('Viaje no encontrado');
+      return;
+    }
 
-      const trip = {
-        id: Date.now(),
-        origen,
-        destino,
-        fecha,
-        hora,
-        capacidad,
-        precio,
-      };
-
-      this.addAdminTrip(trip);
-      container.innerHTML = '';
-      this.renderAdminTrips();
-      alert('Viaje agregado');
+    trips[tripIndex] = {
+      ...trips[tripIndex],
+      origen,
+      destino,
+      fecha,
+      capacidad,
+      precio,
     };
+
+    localStorage.setItem('admin_trips', JSON.stringify(trips));
+    this.closeEditAdminTripModal();
+    this.renderAdminTrips();
+    alert('Viaje actualizado');
+  }
+
+  showAdminTripForm() {
+    // Crear modal de agregar viaje como en user
+    const modalHTML = `
+      <div id="addAdminTripModal" class="modal-overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <h3 class="modal-title">Agregar Viaje</h3>
+            <button class="modal-close" onclick="app.closeAddAdminTripModal()">&times;</button>
+          </div>
+          
+          <div class="modal-content">
+            <div class="form-group">
+              <label class="form-label">Origen</label>
+              <select id="trip_origen" class="form-input">
+                <option value="">Seleccionar origen</option>
+                <option value="Quito">Quito</option>
+                <option value="Guayaquil">Guayaquil</option>
+                <option value="Cuenca">Cuenca</option>
+                <option value="Ambato">Ambato</option>
+                <option value="Riobamba">Riobamba</option>
+                <option value="Loja">Loja</option>
+                <option value="Manta">Manta</option>
+                <option value="Esmeraldas">Esmeraldas</option>
+                <option value="Machala">Machala</option>
+                <option value="Portoviejo">Portoviejo</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Destino</label>
+              <select id="trip_destino" class="form-input">
+                <option value="">Seleccionar destino</option>
+                <option value="Quito">Quito</option>
+                <option value="Guayaquil">Guayaquil</option>
+                <option value="Cuenca">Cuenca</option>
+                <option value="Ambato">Ambato</option>
+                <option value="Riobamba">Riobamba</option>
+                <option value="Loja">Loja</option>
+                <option value="Manta">Manta</option>
+                <option value="Esmeraldas">Esmeraldas</option>
+                <option value="Machala">Machala</option>
+                <option value="Portoviejo">Portoviejo</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Fecha</label>
+              <input id="trip_fecha" type="date" class="form-input" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Capacidad</label>
+              <input id="trip_capacidad" type="number" min="1" class="form-input" placeholder="40" />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Precio</label>
+              <input id="trip_precio" type="number" min="0" class="form-input" placeholder="25" />
+            </div>
+            
+            <div class="modal-actions">
+              <button class="btn btn-secondary" onclick="app.closeAddAdminTripModal()">Cancelar</button>
+              <button class="btn btn-primary" onclick="app.addAdminTripFromModal()">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    // Agregar modal al body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+  }
+  
+  // Cerrar modal de agregar viaje admin
+  closeAddAdminTripModal() {
+    const modal = document.getElementById('addAdminTripModal');
+    if (modal) {
+      modal.remove();
+    }
+  }
+  
+  // Agregar viaje desde modal
+  addAdminTripFromModal() {
+    const origen = (document.getElementById('trip_origen').value || '').trim();
+    const destino = (document.getElementById('trip_destino').value || '').trim();
+    const fecha = (document.getElementById('trip_fecha').value || '').trim();
+    const capacidad = parseInt(document.getElementById('trip_capacidad').value, 10) || 0;
+    const precio = parseFloat(document.getElementById('trip_precio').value) || 0;
+
+    if (!origen || !destino || !fecha || capacidad <= 0 || precio < 0) {
+      alert('Completa todos los campos correctamente');
+      return;
+    }
+
+    const trip = {
+      id: Date.now(),
+      origen,
+      destino,
+      fecha,
+      capacidad,
+      precio,
+    };
+
+    this.addAdminTrip(trip);
+    this.closeAddAdminTripModal();
+    this.renderAdminTrips();
+    alert('Viaje agregado');
   }
 
   renderAdminTrips() {
@@ -2363,7 +2747,8 @@ class TravelApp {
           <p>Capacidad: ${t.capacidad} • $${t.precio}</p>
         </div>
         <div class="admin-item-actions">
-          <button class="btn btn-danger btn-small" data-del-trip="${t.id}"><i class="fas fa-trash"></i> Eliminar</button>
+          <button class="btn btn-secondary btn-sm" data-edit-trip="${t.id}"><i class="fas fa-edit"></i> Editar</button>
+          <button class="btn btn-danger btn-sm" data-del-trip="${t.id}"><i class="fas fa-trash"></i> Eliminar</button>
         </div>
       </div>
     `).join('');
@@ -2373,6 +2758,14 @@ class TravelApp {
       btn.addEventListener('click', () => {
         const id = parseInt(btn.getAttribute('data-del-trip'), 10);
         this.deleteAdminTrip(id);
+      });
+    });
+
+    // Bind edit buttons
+    list.querySelectorAll('[data-edit-trip]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.getAttribute('data-edit-trip'), 10);
+        this.editAdminTrip(id);
       });
     });
   }
@@ -2678,9 +3071,37 @@ class TravelApp {
   async loadHomeProductsDirectly(category = 'all') {
     console.log('Cargando productos para categoría:', category);
     const productGrid = document.getElementById('productsGrid');
+    const preloadedPackagesSection = document.querySelector('.preloaded-packages-section');
+    
     if (!productGrid) {
       console.error('No se encontró el grid de productos');
       return;
+    }
+    
+    // Si es la categoría "paquetes", mostrar solo paquetes precargados
+    if (category === 'paquetes') {
+      // Ocultar productos y mostrar paquetes precargados
+      productGrid.style.display = 'none';
+      if (preloadedPackagesSection) {
+        preloadedPackagesSection.style.display = 'block';
+      }
+      // Cargar todos los paquetes precargados para la categoría "Paquetes"
+      this.loadPreloadedPackages();
+      return;
+    } else if (category === 'all') {
+      // Para "Todos", mostrar productos y algunos paquetes precargados
+      productGrid.style.display = 'grid';
+      if (preloadedPackagesSection) {
+        preloadedPackagesSection.style.display = 'block';
+      }
+      // Cargar solo 3 paquetes precargados para la categoría "Todos"
+      this.loadPreloadedPackages(3);
+    } else {
+      // Para otras categorías, mostrar productos y ocultar paquetes precargados
+      productGrid.style.display = 'grid';
+      if (preloadedPackagesSection) {
+        preloadedPackagesSection.style.display = 'none';
+      }
     }
     
     // Obtener productos según la categoría
@@ -2751,7 +3172,8 @@ class TravelApp {
     
     if (sectionTitle) {
       const categoryNames = {
-        'all': 'Productos Recomendados',
+        'all': 'Recomendaciones para ti',
+        'paquetes': 'Paquetes disponibles',
         'hoteles': 'Hoteles Disponibles',
         'restaurantes': 'Restaurantes Disponibles',
         'actividades': 'Actividades Disponibles'
@@ -2761,7 +3183,8 @@ class TravelApp {
     
     if (sectionDescription) {
       const categoryDescriptions = {
-        'all': 'Descubre las mejores opciones para tu viaje',
+        'all': 'Descubre opciones increíbles para tu próximo viaje',
+        'paquetes': 'Disfruta tu viaje con estos paquetes especiales',
         'hoteles': 'Encuentra el alojamiento perfecto para tu estadía',
         'restaurantes': 'Disfruta de la mejor gastronomía local',
         'actividades': 'Explora emocionantes actividades y aventuras'
@@ -2774,21 +3197,315 @@ class TravelApp {
   getCategoryDisplayName(category) {
     const categoryNames = {
       'all': 'Todas las categorías',
-        'hoteles': 'Hoteles',
-        'restaurantes': 'Restaurantes',
+      'paquetes': 'Paquetes',
+      'hoteles': 'Hoteles',
+      'restaurantes': 'Restaurantes',
       'actividades': 'Actividades'
     };
     return categoryNames[category] || 'Productos';
   }
+
+  // Cargar paquetes precargados
+  loadPreloadedPackages(limit = null) {
+    const packagesGrid = document.getElementById('preloadedPackagesGrid');
+    if (!packagesGrid) return;
+
+    // Paquetes precargados predeterminados
+    const preloadedPackages = [
+      {
+        id: 'preloaded-1',
+        nombre: 'Aventura en Baños',
+        descripcion: 'Descubre las cascadas y aguas termales de Baños de Agua Santa',
+        localidad: 'Baños',
+        precio_total: 180,
+        duracion: '2 días',
+        imagen: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop',
+        productos: [
+          { id: 1, nombre: 'Hotel Monte Selva', categoria: 'hoteles', precio: 80 },
+          { id: 2, nombre: 'Restaurante Casa Hood', categoria: 'restaurantes', precio: 25 },
+          { id: 3, nombre: 'Cascada del Pailón del Diablo', categoria: 'actividades', precio: 15 },
+          { id: 4, nombre: 'Aguas Termales', categoria: 'actividades', precio: 20 },
+          { id: 5, nombre: 'Transporte Quito-Baños', categoria: 'transporte', precio: 40 }
+        ],
+        fechaCreacion: '2024-01-01T00:00:00.000Z',
+        usuarioId: 'preloaded',
+        isPreloaded: true
+      },
+      {
+        id: 'preloaded-2',
+        nombre: 'Costa del Pacífico',
+        descripcion: 'Relájate en las hermosas playas de la costa ecuatoriana',
+        localidad: 'Manta',
+        precio_total: 220,
+        duracion: '3 días',
+        imagen: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop',
+        productos: [
+          { id: 6, nombre: 'Hotel Oro Verde', categoria: 'hoteles', precio: 120 },
+          { id: 7, nombre: 'Restaurante Mar y Tierra', categoria: 'restaurantes', precio: 35 },
+          { id: 8, nombre: 'Tour de Avistamiento de Ballenas', categoria: 'actividades', precio: 45 },
+          { id: 9, nombre: 'Playa de Murciélago', categoria: 'actividades', precio: 10 },
+          { id: 10, nombre: 'Transporte Quito-Manta', categoria: 'transporte', precio: 10 }
+        ],
+        fechaCreacion: '2024-01-01T00:00:00.000Z',
+        usuarioId: 'preloaded',
+        isPreloaded: true
+      },
+      {
+        id: 'preloaded-3',
+        nombre: 'Valle de los Lagos',
+        descripcion: 'Descubre la belleza natural del valle de Otavalo y sus lagos',
+        localidad: 'Otavalo',
+        precio_total: 169,
+        duracion: '4 días',
+        imagen: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop',
+        productos: [
+          { id: 11, nombre: 'Hotel Otavalo', categoria: 'hoteles', precio: 65 },
+          { id: 12, nombre: 'Restaurante La Terraza', categoria: 'restaurantes', precio: 48 },
+          { id: 13, nombre: 'Kayak en Laguna', categoria: 'actividades', precio: 35 },
+          { id: 14, nombre: 'Mercado Artesanal', categoria: 'actividades', precio: 15 },
+          { id: 15, nombre: 'Transporte Quito-Otavalo', categoria: 'transporte', precio: 6 }
+        ],
+        fechaCreacion: '2024-01-01T00:00:00.000Z',
+        usuarioId: 'preloaded',
+        isPreloaded: true
+      },
+      {
+        id: 'preloaded-4',
+        nombre: 'Ciudad Colonial',
+        descripcion: 'Recorre la historia colonial de Quito y sus alrededores',
+        localidad: 'Quito',
+        precio_total: 160,
+        duracion: '2 días',
+        imagen: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop',
+        productos: [
+          { id: 16, nombre: 'Hotel Plaza Grande', categoria: 'hoteles', precio: 90 },
+          { id: 17, nombre: 'Restaurante Zazu', categoria: 'restaurantes', precio: 30 },
+          { id: 18, nombre: 'Centro Histórico de Quito', categoria: 'actividades', precio: 20 },
+          { id: 19, nombre: 'Mitad del Mundo', categoria: 'actividades', precio: 20 }
+        ],
+        fechaCreacion: '2024-01-01T00:00:00.000Z',
+        usuarioId: 'preloaded',
+        isPreloaded: true
+      },
+      {
+        id: 'preloaded-5',
+        nombre: 'Bosque Nublado',
+        descripcion: 'Explora el bosque nublado de Mindo y su biodiversidad única',
+        localidad: 'Mindo',
+        precio_total: 198,
+        duracion: '3 días',
+        imagen: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop',
+        productos: [
+          { id: 20, nombre: 'Hotel Mindo', categoria: 'hoteles', precio: 90 },
+          { id: 21, nombre: 'Restaurante El Mirador', categoria: 'restaurantes', precio: 55 },
+          { id: 22, nombre: 'Senderismo Ecológico', categoria: 'actividades', precio: 28 },
+          { id: 23, nombre: 'Avistamiento de Aves', categoria: 'actividades', precio: 25 }
+        ],
+        fechaCreacion: '2024-01-01T00:00:00.000Z',
+        usuarioId: 'preloaded',
+        isPreloaded: true
+      },
+    ];
+
+    // Aplicar límite si se especifica
+    const packagesToShow = limit ? preloadedPackages.slice(0, limit) : preloadedPackages;
+
+    packagesGrid.innerHTML = packagesToShow.map(pkg => `
+      <div class="package-card preloaded-package" data-package-id="${pkg.id}">
+        <div class="package-image">
+          <img src="${pkg.imagen}" alt="${pkg.nombre}">
+          <div class="package-badge">
+            <i class="fas fa-star"></i>
+            Precargado
+          </div>
+        </div>
+        
+        <div class="package-content">
+          <h3 class="package-title">${pkg.nombre}</h3>
+          <p class="package-description">${pkg.descripcion}</p>
+          
+          <div class="package-meta">
+            <span class="package-location">
+              <i class="fas fa-map-marker-alt"></i>
+              ${pkg.localidad}
+            </span>
+            
+            <span class="package-duration">
+              <i class="fas fa-clock"></i>
+              ${pkg.duracion}
+            </span>
+            
+            <span class="package-price">
+              <i class="fas fa-dollar-sign"></i>
+              $${pkg.precio_total}
+            </span>
+          </div>
+          
+          <div class="package-products-preview">
+            <h4>Incluye:</h4>
+            <div class="products-list">
+              ${pkg.productos.slice(0, 3).map(prod => `
+                <span class="product-item">
+                  <i class="fas fa-${this.getProductIcon(prod.categoria)}"></i>
+                  ${prod.nombre}
+                </span>
+              `).join('')}
+              ${pkg.productos.length > 3 ? `<span class="more-items">+${pkg.productos.length - 3} más</span>` : ''}
+            </div>
+          </div>
+          
+          <div class="package-actions">
+            <button class="btn btn-primary btn-small edit-preloaded-btn" data-package-id="${pkg.id}" style="position: relative; z-index: 10;">
+              <i class="fas fa-edit"></i> Editar este paquete
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    // Agregar event listeners para los botones de editar
+    packagesGrid.addEventListener('click', (e) => {
+      const editBtn = e.target.closest('.edit-preloaded-btn');
+      if (editBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const packageId = editBtn.getAttribute('data-package-id');
+        this.editPreloadedPackage(packageId);
+      }
+    });
+  }
+
+  // Obtener icono para categoría de producto
+  getProductIcon(category) {
+    const icons = {
+      'hoteles': 'bed',
+      'restaurantes': 'utensils',
+      'actividades': 'hiking',
+      'transporte': 'bus'
+    };
+    return icons[category] || 'tag';
+  }
+
+  // Editar paquete precargado
+  editPreloadedPackage(packageId) {
+    // Redirigir directamente a la página de paquetes
+    this.navigateToPage('packages');
+  }
+
 
   // Cargar paquetes del usuario
   async loadUserPackages() {
     if (!this.currentUser) return;
     
     const userId = this.currentUser.id;
-    const packages = await loadUserPackages(userId);
+    const userPackages = await loadUserPackages(userId);
     
-    this.renderUserPackages(packages);
+    // Agregar paquetes precargados
+    const preloadedPackages = this.getPreloadedPackages();
+    
+    // Combinar paquetes del usuario con paquetes precargados
+    const allPackages = [...preloadedPackages, ...userPackages];
+    
+    this.renderUserPackages(allPackages);
+  }
+
+  // Obtener paquetes precargados
+  getPreloadedPackages() {
+    return [
+      {
+        id: 'preloaded-1',
+        nombre: 'Aventura en Baños',
+        descripcion: 'Descubre las cascadas y aguas termales de Baños de Agua Santa',
+        localidad: 'Baños',
+        precio_total: 180,
+        duracion: '2 días',
+        imagen: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop',
+        productos: [
+          { id: 1, nombre: 'Hotel Monte Selva', categoria: 'hoteles', precio: 80 },
+          { id: 2, nombre: 'Restaurante Casa Hood', categoria: 'restaurantes', precio: 25 },
+          { id: 3, nombre: 'Cascada del Pailón del Diablo', categoria: 'actividades', precio: 15 },
+          { id: 4, nombre: 'Aguas Termales', categoria: 'actividades', precio: 20 },
+          { id: 5, nombre: 'Transporte Quito-Baños', categoria: 'transporte', precio: 40 }
+        ],
+        fechaCreacion: '2024-01-01T00:00:00.000Z',
+        usuarioId: 'preloaded',
+        isPreloaded: true
+      },
+      {
+        id: 'preloaded-2',
+        nombre: 'Costa del Pacífico',
+        descripcion: 'Relájate en las hermosas playas de la costa ecuatoriana',
+        localidad: 'Manta',
+        precio_total: 220,
+        duracion: '3 días',
+        imagen: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop',
+        productos: [
+          { id: 6, nombre: 'Hotel Oro Verde', categoria: 'hoteles', precio: 120 },
+          { id: 7, nombre: 'Restaurante Mar y Tierra', categoria: 'restaurantes', precio: 35 },
+          { id: 8, nombre: 'Tour de Avistamiento de Ballenas', categoria: 'actividades', precio: 45 },
+          { id: 9, nombre: 'Playa de Murciélago', categoria: 'actividades', precio: 10 },
+          { id: 10, nombre: 'Transporte Quito-Manta', categoria: 'transporte', precio: 10 }
+        ],
+        fechaCreacion: '2024-01-01T00:00:00.000Z',
+        usuarioId: 'preloaded',
+        isPreloaded: true
+      },
+      {
+        id: 'preloaded-3',
+        nombre: 'Valle de los Lagos',
+        descripcion: 'Descubre la belleza natural del valle de Otavalo y sus lagos',
+        localidad: 'Otavalo',
+        precio_total: 169,
+        duracion: '4 días',
+        imagen: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop',
+        productos: [
+          { id: 11, nombre: 'Hotel Otavalo', categoria: 'hoteles', precio: 65 },
+          { id: 12, nombre: 'Restaurante La Terraza', categoria: 'restaurantes', precio: 48 },
+          { id: 13, nombre: 'Kayak en Laguna', categoria: 'actividades', precio: 35 },
+          { id: 14, nombre: 'Mercado Artesanal', categoria: 'actividades', precio: 15 },
+          { id: 15, nombre: 'Transporte Quito-Otavalo', categoria: 'transporte', precio: 6 }
+        ],
+        fechaCreacion: '2024-01-01T00:00:00.000Z',
+        usuarioId: 'preloaded',
+        isPreloaded: true
+      },
+      {
+        id: 'preloaded-4',
+        nombre: 'Ciudad Colonial',
+        descripcion: 'Recorre la historia colonial de Quito y sus alrededores',
+        localidad: 'Quito',
+        precio_total: 160,
+        duracion: '2 días',
+        imagen: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop',
+        productos: [
+          { id: 16, nombre: 'Hotel Plaza Grande', categoria: 'hoteles', precio: 90 },
+          { id: 17, nombre: 'Restaurante Zazu', categoria: 'restaurantes', precio: 30 },
+          { id: 18, nombre: 'Centro Histórico de Quito', categoria: 'actividades', precio: 20 },
+          { id: 19, nombre: 'Mitad del Mundo', categoria: 'actividades', precio: 20 }
+        ],
+        fechaCreacion: '2024-01-01T00:00:00.000Z',
+        usuarioId: 'preloaded',
+        isPreloaded: true
+      },
+      {
+        id: 'preloaded-5',
+        nombre: 'Bosque Nublado',
+        descripcion: 'Explora el bosque nublado de Mindo y su biodiversidad única',
+        localidad: 'Mindo',
+        precio_total: 198,
+        duracion: '3 días',
+        imagen: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop',
+        productos: [
+          { id: 20, nombre: 'Hotel Mindo', categoria: 'hoteles', precio: 90 },
+          { id: 21, nombre: 'Restaurante El Mirador', categoria: 'restaurantes', precio: 55 },
+          { id: 22, nombre: 'Senderismo Ecológico', categoria: 'actividades', precio: 28 },
+          { id: 23, nombre: 'Avistamiento de Aves', categoria: 'actividades', precio: 25 }
+        ],
+        fechaCreacion: '2024-01-01T00:00:00.000Z',
+        usuarioId: 'preloaded',
+        isPreloaded: true
+      },
+    ];
   }
 
   // Renderizar paquetes del usuario
@@ -2812,9 +3529,15 @@ class TravelApp {
     container.style.display = 'grid';
     
     container.innerHTML = packages.map(pkg => `
-      <div class="package-card" data-id="${pkg.id}">
+      <div class="package-card ${pkg.isPreloaded ? 'preloaded-package' : ''}" data-id="${pkg.id}">
         <div class="package-image">
-          <img src="https://placehold.co/600x300/1e3a8a/FFFFFF?text=Paquete" alt="${pkg.nombre}" style="object-fit:cover;pointer-events:none;user-select:none;">
+          <img src="${pkg.imagen || 'https://placehold.co/600x300/1e3a8a/FFFFFF?text=Paquete'}" alt="${pkg.nombre}" style="object-fit:cover;pointer-events:none;user-select:none;">
+          ${pkg.isPreloaded ? `
+            <div class="package-badge preloaded-badge">
+              <i class="fas fa-star"></i>
+              Precargado
+            </div>
+          ` : ''}
         </div>
         <div class="package-content">
           <h3 class="package-title">${pkg.nombre}</h3>
@@ -2853,20 +3576,37 @@ class TravelApp {
             </div>
             
             <div class="package-actions">
-              <button class="btn btn-primary btn-sm" onclick="app.showPurchaseModal(${pkg.id})">
-                <i class="fas fa-credit-card"></i> Realizar Compra
-              </button>
-              <button class="btn btn-secondary btn-sm" onclick="app.editPackage(${pkg.id})">
+              <button class="btn btn-secondary btn-sm edit-package-btn" data-package-id="${pkg.id}" style="position: relative; z-index: 10;">
                 <i class="fas fa-edit"></i> Editar
               </button>
-              <button class="btn btn-danger btn-sm" onclick="app.deletePackage(${pkg.id})">
-                <i class="fas fa-trash"></i> Eliminar
-              </button>
+              ${!pkg.isPreloaded ? `
+                <button class="btn btn-danger btn-sm delete-package-btn" data-package-id="${pkg.id}" style="position: relative; z-index: 10;">
+                  <i class="fas fa-trash"></i> Eliminar
+                </button>
+              ` : ''}
             </div>
           </div>
         </div>
       </div>
     `).join('');
+
+    // Agregar event listeners para los botones de editar y eliminar
+    container.addEventListener('click', (e) => {
+      const editBtn = e.target.closest('.edit-package-btn');
+      const deleteBtn = e.target.closest('.delete-package-btn');
+      
+      if (editBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const packageId = editBtn.getAttribute('data-package-id');
+        this.editPackage(packageId);
+      } else if (deleteBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const packageId = parseInt(deleteBtn.getAttribute('data-package-id'));
+        this.deletePackage(packageId);
+      }
+    });
   }
 
   // Obtener ícono del producto según la categoría
@@ -2877,6 +3617,114 @@ class TravelApp {
       'actividades': 'hiking'
     };
     return icons[category] || 'tag';
+  }
+
+  // Obtener transportes disponibles
+  getTransportes() {
+    try {
+      // Intentar cargar desde localStorage primero
+      const stored = localStorage.getItem('transportes');
+      if (stored) {
+        return JSON.parse(stored);
+      }
+    } catch (e) {
+      console.log('Error cargando transportes desde localStorage');
+    }
+    
+    // Fallback a datos por defecto
+    return [
+      {
+        id: 1,
+        nombre: "Bus Quito - Guayaquil",
+        descripcion: "Servicio directo entre las principales ciudades del Ecuador",
+        empresa: "Transportes Ecuador",
+        horario: "08:00 - 12:00",
+        precio: 25,
+        imagen: "https://images.unsplash.com/photo-1544620347-c4fd4a3d7117?w=300&h=200&fit=crop",
+        disponible: true,
+        localidad_origen: "Quito",
+        localidad_destino: "Guayaquil",
+        duracion: "4 horas"
+      },
+      {
+        id: 2,
+        nombre: "Bus Guayaquil - Cuenca",
+        descripcion: "Conexión directa a la ciudad patrimonio de la humanidad",
+        empresa: "Transportes Andes",
+        horario: "14:00 - 18:00",
+        precio: 18,
+        imagen: "https://images.unsplash.com/photo-1544620347-c4fd4a3d7117?w=300&h=200&fit=crop",
+        disponible: true,
+        localidad_origen: "Guayaquil",
+        localidad_destino: "Cuenca",
+        duracion: "4 horas"
+      },
+      {
+        id: 3,
+        nombre: "Bus Quito - Baños",
+        descripcion: "Ruta hacia la puerta del oriente ecuatoriano",
+        empresa: "Transportes Sierra",
+        horario: "09:00 - 11:30",
+        precio: 12,
+        imagen: "https://images.unsplash.com/photo-1544620347-c4fd4a3d7117?w=300&h=200&fit=crop",
+        disponible: true,
+        localidad_origen: "Quito",
+        localidad_destino: "Baños",
+        duracion: "2.5 horas"
+      },
+      {
+        id: 4,
+        nombre: "Bus Cuenca - Guayaquil",
+        descripcion: "Retorno desde la ciudad patrimonio",
+        empresa: "Transportes Andes",
+        horario: "16:00 - 20:00",
+        precio: 18,
+        imagen: "https://images.unsplash.com/photo-1544620347-c4fd4a3d7117?w=300&h=200&fit=crop",
+        disponible: true,
+        localidad_origen: "Cuenca",
+        localidad_destino: "Guayaquil",
+        duracion: "4 horas"
+      },
+      {
+        id: 5,
+        nombre: "Bus Quito - Otavalo",
+        descripcion: "Ruta hacia el mercado artesanal más famoso",
+        empresa: "Transportes Sierra",
+        horario: "07:30 - 09:00",
+        precio: 8,
+        imagen: "https://images.unsplash.com/photo-1544620347-c4fd4a3d7117?w=300&h=200&fit=crop",
+        disponible: true,
+        localidad_origen: "Quito",
+        localidad_destino: "Otavalo",
+        duracion: "1.5 horas"
+      },
+      {
+        id: 6,
+        nombre: "Bus Quito - Baños (Express)",
+        descripcion: "Servicio expreso hacia Baños con menor tiempo de viaje",
+        empresa: "Transportes Express",
+        horario: "06:30 - 09:00",
+        precio: 13,
+        imagen: "https://images.unsplash.com/photo-1544620347-c4fd4a3d7117?w=300&h=200&fit=crop",
+        disponible: true,
+        localidad_origen: "Quito",
+        localidad_destino: "Baños",
+        duracion: "2.5 horas"
+      },
+      {
+        id: 7,
+        nombre: "Bus Quito - Mindo",
+        descripcion: "Ruta hacia el bosque nublado de Mindo",
+        empresa: "Transportes Noroccidente",
+        horario: "08:00 - 10:00",
+        precio: 9,
+        imagen: "https://images.unsplash.com/photo-1544620347-c4fd4a3d7117?w=300&h=200&fit=crop",
+        disponible: true,
+        localidad_origen: "Quito",
+        localidad_destino: "Mindo",
+        duracion: "2 horas"
+      }
+    ];
   }
 
   // Editar paquete
@@ -2898,8 +3746,20 @@ class TravelApp {
       console.log('Error cargando paquetes');
     }
     
-    const pkg = packages.find(p => p.id === packageId);
+    // Convertir packageId a número si es posible, sino mantener como string
+    const numericId = !isNaN(packageId) ? parseInt(packageId) : packageId;
+    
+    // Buscar en paquetes del usuario (comparar tanto como número como string)
+    let pkg = packages.find(p => p.id === packageId || p.id === numericId);
+    
+    // Si no se encuentra, buscar en paquetes precargados
     if (!pkg) {
+      const preloadedPackages = this.getPreloadedPackages();
+      pkg = preloadedPackages.find(p => p.id === packageId || p.id === numericId);
+    }
+    
+    if (!pkg) {
+      console.log('Paquete no encontrado. ID buscado:', packageId, 'Tipo:', typeof packageId);
       this.showError('Paquete no encontrado');
       return;
     }
@@ -2909,13 +3769,18 @@ class TravelApp {
 
   // Mostrar formulario de edición para paquetes de usuario
   showUserPackageEditForm(pkg, userId) {
+    // Establecer variables globales para el flujo de edición
+    window.editingPackageId = pkg.id;
+    window.editingPackageUserId = userId;
+    window.inEditPackageFlow = true;
+    
     // Crear modal de edición
     const modalHTML = `
       <div id="editPackageModal" class="modal-overlay">
         <div class="modal">
           <div class="modal-header">
             <h3 class="modal-title">Editar Paquete</h3>
-            <button class="modal-close" onclick="app.closeEditPackageModal()">&times;</button>
+            <button class="modal-close close-edit-modal-btn">&times;</button>
           </div>
           
           <div class="modal-content">
@@ -2954,22 +3819,22 @@ class TravelApp {
                       <div class="edit-product-item">
                         <span>${product.nombre}</span>
                         <span>$${product.precio}</span>
-                        <button class="btn btn-danger btn-sm" onclick="app.removeProductFromEditPackage(${product.id}, ${pkg.id})">
+                        <button class="btn btn-danger btn-sm remove-product-btn" data-product-id="${product.id}" data-package-id="${pkg.id}">
                           <i class="fas fa-trash"></i>
                         </button>
                       </div>
                     `).join('') : '<p>No hay productos agregados</p>'}
                   </div>
                 </div>
-                <button class="btn btn-outline btn-full" onclick="app.openAddProductsToEditPackage(${pkg.id}, ${userId})">
+                <button class="btn btn-outline btn-full add-products-btn" data-package-id="${pkg.id}" data-user-id="${userId}">
                   <i class="fas fa-plus"></i> Agregar
                 </button>
               </div>
             </div>
             
             <div class="modal-actions">
-              <button class="btn btn-secondary" onclick="app.closeEditPackageModal()">Cancelar</button>
-              <button class="btn btn-primary" onclick="app.updateUserPackage(${pkg.id}, ${userId})">Guardar Cambios</button>
+              <button class="btn btn-secondary close-edit-modal-btn">Cancelar</button>
+              <button class="btn btn-primary save-edit-modal-btn" data-package-id="${pkg.id}" data-user-id="${userId}">Guardar Cambios</button>
             </div>
           </div>
         </div>
@@ -2984,6 +3849,41 @@ class TravelApp {
     
     // Insertar nuevo modal
     document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Agregar event listeners para botones del modal
+    const modal = document.getElementById('editPackageModal');
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        const removeBtn = e.target.closest('.remove-product-btn');
+        const addBtn = e.target.closest('.add-products-btn');
+        const closeBtn = e.target.closest('.close-edit-modal-btn');
+        const saveBtn = e.target.closest('.save-edit-modal-btn');
+        
+        if (removeBtn) {
+          e.preventDefault();
+          e.stopPropagation();
+          const productId = parseInt(removeBtn.getAttribute('data-product-id'));
+          const packageId = removeBtn.getAttribute('data-package-id');
+          this.removeProductFromEditPackage(productId, packageId);
+        } else if (addBtn) {
+          e.preventDefault();
+          e.stopPropagation();
+          const packageId = addBtn.getAttribute('data-package-id');
+          const userId = addBtn.getAttribute('data-user-id');
+          this.openAddProductsToEditPackage(packageId, userId);
+        } else if (closeBtn) {
+          e.preventDefault();
+          e.stopPropagation();
+          this.closeEditPackageModal();
+        } else if (saveBtn) {
+          e.preventDefault();
+          e.stopPropagation();
+          const packageId = saveBtn.getAttribute('data-package-id');
+          const userId = saveBtn.getAttribute('data-user-id');
+          this.updateUserPackage(packageId, userId);
+        }
+      });
+    }
   }
 
   // Cerrar modal de edición
@@ -3165,7 +4065,20 @@ class TravelApp {
     console.log('ID del producto recibido:', productId);
     console.log('Tipo de ID:', typeof productId);
     
-    const product = this.findProductById(productId);
+    let product = this.findProductById(productId);
+    
+    // Si no se encuentra en productos normales, buscar en paquetes precargados
+    if (!product) {
+      const preloadedPackages = this.getPreloadedPackages();
+      for (const pkg of preloadedPackages) {
+        const foundProduct = pkg.productos.find(p => p.id === productId);
+        if (foundProduct) {
+          product = foundProduct;
+          break;
+        }
+      }
+    }
+    
     if (!product) {
       console.error('❌ No se pudo encontrar el producto con ID:', productId);
       this.showError('Producto no encontrado');
@@ -3218,12 +4131,25 @@ class TravelApp {
     }
     
     try {
-      // Cargar paquetes del usuario
       const userId = window.editingPackageUserId;
+      const packageId = window.editingPackageId;
+      
+      // Verificar si es un paquete precargado
+      const preloadedPackages = this.getPreloadedPackages();
+      const isPreloadedPackage = preloadedPackages.some(p => p.id === packageId);
+      
+      if (isPreloadedPackage) {
+        // Para paquetes precargados, mostrar mensaje informativo
+        this.showError('No se pueden agregar productos a paquetes precargados. Crea una copia del paquete para editarlo.');
+        return;
+      }
+      
+      // Cargar paquetes del usuario
       const packages = await loadUserPackages(userId);
       
       // Encontrar el paquete
-      const packageIndex = packages.findIndex(pkg => pkg.id === window.editingPackageId);
+      const numericId = !isNaN(packageId) ? parseInt(packageId) : packageId;
+      const packageIndex = packages.findIndex(pkg => pkg.id === packageId || pkg.id === numericId);
       if (packageIndex === -1) {
         this.showError('Paquete no encontrado');
         return;
@@ -3252,7 +4178,7 @@ class TravelApp {
       this.showSuccess('Producto agregado al paquete');
       
       // Regresar al modal de edición
-      this.returnToEditPackageModal(window.editingPackageId, userId);
+      this.returnToEditPackageModal(packageId, userId);
       
       // Limpiar flags de edición
       window.inEditPackageFlow = false;
@@ -3274,7 +4200,8 @@ class TravelApp {
       const userId = this.currentUser.id;
       const packages = await loadUserPackages(userId);
       
-      const packageIndex = packages.findIndex(pkg => pkg.id === packageId);
+      const numericId = !isNaN(packageId) ? parseInt(packageId) : packageId;
+      const packageIndex = packages.findIndex(pkg => pkg.id === packageId || pkg.id === numericId);
       if (packageIndex === -1) {
         this.showError('Paquete no encontrado');
         return;
@@ -3325,11 +4252,23 @@ class TravelApp {
       console.log('packageId:', packageId);
       console.log('userId:', userId);
       
+      // Primero buscar en paquetes del usuario
       const packages = await loadUserPackages(userId);
       console.log('packages cargados:', packages);
       
-      const pkg = packages.find(p => p.id === packageId);
-      console.log('paquete encontrado:', pkg);
+      // Convertir packageId a número si es posible para comparación
+      const numericId = !isNaN(packageId) ? parseInt(packageId) : packageId;
+      
+      let pkg = packages.find(p => p.id === packageId || p.id === numericId);
+      console.log('paquete encontrado en usuario:', pkg);
+      
+      // Si no se encuentra, buscar en paquetes precargados
+      if (!pkg) {
+        const preloadedPackages = this.getPreloadedPackages();
+        console.log('buscando en paquetes precargados:', preloadedPackages);
+        pkg = preloadedPackages.find(p => p.id === packageId || p.id === numericId);
+        console.log('paquete encontrado en precargados:', pkg);
+      }
       
       if (pkg) {
         console.log('localidad del paquete:', pkg.localidad);
@@ -3486,7 +4425,8 @@ class TravelApp {
       }
       
       // Encontrar y actualizar el paquete
-      const packageIndex = packages.findIndex(p => p.id === packageId);
+      const numericId = !isNaN(packageId) ? parseInt(packageId) : packageId;
+      const packageIndex = packages.findIndex(p => p.id === packageId || p.id === numericId);
       if (packageIndex === -1) {
         this.showError('Paquete no encontrado');
         return;
@@ -4704,8 +5644,8 @@ class TravelApp {
             </div>
             
             <div class="form-group">
-              <label class="form-label">Número de Noches</label>
-              <input type="number" id="hotel_noches" class="form-input" value="${transportInfo?.noches || 1}" min="1" max="30">
+              <label class="form-label">Número de Noches (Calculado automáticamente)</label>
+              <input type="number" id="hotel_noches" class="form-input" value="${transportInfo?.noches || 1}" min="1" max="30" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
             </div>
             
             <div class="hotel-summary">
@@ -4740,11 +5680,58 @@ class TravelApp {
   setupHotelModalEvents(hotel) {
     const nochesInput = document.getElementById('hotel_noches');
     const personasSelect = document.getElementById('hotel_personas');
+    const fechaLlegadaInput = document.getElementById('hotel_fecha_llegada');
+    const fechaSalidaInput = document.getElementById('hotel_fecha_salida');
     
-    if (nochesInput) {
-      nochesInput.addEventListener('input', () => {
+    // Función para calcular noches automáticamente
+    const calculateNights = () => {
+      const fechaLlegada = fechaLlegadaInput?.value;
+      const fechaSalida = fechaSalidaInput?.value;
+      
+      if (fechaLlegada && fechaSalida) {
+        const llegada = new Date(fechaLlegada);
+        const salida = new Date(fechaSalida);
+        
+        // Validar que la fecha de salida sea posterior a la de llegada
+        if (salida <= llegada) {
+          this.showError('La fecha de salida debe ser posterior a la fecha de llegada');
+          if (nochesInput) {
+            nochesInput.value = 1;
+          }
+          this.updateHotelPrice(hotel.precio);
+          return;
+        }
+        
+        // Calcular diferencia en días
+        const diffTime = salida - llegada;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        // Actualizar el campo de noches
+        if (nochesInput) {
+          nochesInput.value = diffDays;
+        }
+        
+        // Actualizar el precio
         this.updateHotelPrice(hotel.precio);
+      }
+    };
+    
+    // Event listeners para las fechas
+    if (fechaLlegadaInput) {
+      fechaLlegadaInput.addEventListener('change', () => {
+        // Si hay una fecha de llegada, ajustar la fecha mínima de salida
+        const fechaLlegada = fechaLlegadaInput.value;
+        if (fechaSalidaInput && fechaLlegada) {
+          const llegada = new Date(fechaLlegada);
+          llegada.setDate(llegada.getDate() + 1); // Mínimo 1 día después
+          fechaSalidaInput.min = llegada.toISOString().split('T')[0];
+        }
+        calculateNights();
       });
+    }
+    
+    if (fechaSalidaInput) {
+      fechaSalidaInput.addEventListener('change', calculateNights);
     }
     
     if (personasSelect) {
@@ -5398,142 +6385,14 @@ class TravelApp {
     this.closeAddToPackageModal();
     
     // Actualizar vista del paquete en construcción si estamos en esa página
-    if (window.location.hash.includes('new-package')) {
+    if (window.location.hash.includes('new-package') || window.inPackageCreationFlow) {
       this.updatePackageSummary();
     }
-  }
-
-  // Mostrar modal de compra
-  async showPurchaseModal(packageId) {
-    const packageData = await this.getPackageById(packageId);
-    if (!packageData) {
-      this.showError('Paquete no encontrado');
-      return;
-    }
-
-    const modalHTML = `
-      <div id="purchaseModal" class="purchase-modal">
-        <div class="purchase-modal-content">
-          <h3>💳 Realizar Compra</h3>
-          <p><strong>Paquete:</strong> ${packageData.nombre}</p>
-          <p><strong>Precio Total:</strong> $${packageData.precio_total || packageData.precio || 0}</p>
-          
-          <form class="purchase-form">
-            <input type="text" placeholder="Número de tarjeta" maxlength="19" id="cardNumber">
-            <div class="purchase-form-row">
-              <input type="text" placeholder="MM/AA" maxlength="5" id="expiryDate">
-              <input type="text" placeholder="CVV" maxlength="4" id="cvv">
-            </div>
-            <input type="text" placeholder="Nombre del titular" id="cardName">
-          </form>
-          
-          <div class="purchase-actions">
-            <button class="btn btn-secondary" onclick="app.closePurchaseModal()">
-              <i class="fas fa-times"></i> Cancelar
-            </button>
-            <button class="btn btn-primary" onclick="app.processPurchase(${packageId})">
-              <i class="fas fa-credit-card"></i> Pagar
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-
-    // Remover modal existente si hay uno
-    const existingModal = document.getElementById('purchaseModal');
-    if (existingModal) {
-      existingModal.remove();
-    }
-
-    // Insertar nuevo modal
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-
-    // Configurar eventos para formatear inputs
-    this.setupPurchaseFormEvents();
-  }
-
-  // Configurar eventos del formulario de compra
-  setupPurchaseFormEvents() {
-    const cardNumber = document.getElementById('cardNumber');
-    const expiryDate = document.getElementById('expiryDate');
-
-    if (cardNumber) {
-      cardNumber.addEventListener('input', (e) => {
-        let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
-        let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
-        e.target.value = formattedValue;
-      });
-    }
-
-    if (expiryDate) {
-      expiryDate.addEventListener('input', (e) => {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length >= 2) {
-          value = value.substring(0, 2) + '/' + value.substring(2, 4);
-        }
-        e.target.value = value;
-      });
-    }
-  }
-
-  // Cerrar modal de compra
-  closePurchaseModal() {
-    const modal = document.getElementById('purchaseModal');
-    if (modal) {
-      modal.remove();
-    }
-  }
-
-  // Procesar compra
-  processPurchase(packageId) {
-    const cardNumber = document.getElementById('cardNumber')?.value;
-    const expiryDate = document.getElementById('expiryDate')?.value;
-    const cvv = document.getElementById('cvv')?.value;
-    const cardName = document.getElementById('cardName')?.value;
-
-    // Validación básica
-    if (!cardNumber || !expiryDate || !cvv || !cardName) {
-      this.showError('Por favor completa todos los campos');
-      return;
-    }
-
-    if (cardNumber.replace(/\s/g, '').length < 16) {
-      this.showError('Número de tarjeta inválido');
-      return;
-    }
-
-    // Cerrar modal de compra
-    this.closePurchaseModal();
-
-    // Mostrar animación de éxito
-    this.showSuccessAnimation();
-  }
-
-  // Mostrar animación de éxito
-  showSuccessAnimation() {
-    const successHTML = `
-      <div id="successOverlay" class="success-overlay">
-        <div class="gp-success">
-          <div class="gp-ripple"></div>
-          <svg class="gp-icon" viewBox="0 0 100 100">
-            <circle class="gp-circle" cx="50" cy="50" r="30"/>
-            <path class="gp-check" d="M25 50l15 15 25-25"/>
-          </svg>
-          <div class="gp-label">¡Compra realizada con éxito!</div>
-        </div>
-      </div>
-    `;
-
-    // Insertar overlay de éxito
-    document.body.insertAdjacentHTML('beforeend', successHTML);
-
-    // Remover overlay después de 3 segundos
+    
+    // Asegurar que el resumen se actualice siempre
     setTimeout(() => {
-      const overlay = document.getElementById('successOverlay');
-      if (overlay) {
-        overlay.remove();
-      }
-    }, 3000);
+      this.updatePackageSummary();
+    }, 100);
   }
 
   // Obtener paquete por ID (función auxiliar)

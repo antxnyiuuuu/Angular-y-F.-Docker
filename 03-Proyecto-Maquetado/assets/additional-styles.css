@@ -318,17 +318,76 @@ body {
   box-shadow: var(--shadow-xl);
 }
 
+/* Layout horizontal para el modal de agregar productos */
+#addProductsList .product-card {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+#addProductsList .product-image {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  border-radius: 8px;
+}
+
+#addProductsList .product-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#addProductsList .product-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--secondary-color);
+}
+
+#addProductsList .product-creator {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+}
+
+#addProductsList .product-description {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.4;
+}
+
+#addProductsList .product-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+#addProductsList .product-actions {
+  margin-top: 0.5rem;
+}
+
 .product-image {
   width: 100%;
   height: 200px;
   overflow: hidden;
   position: relative;
+  object-position: center;
+
 }
 
 .product-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: transform 0.3s ease;
 }
 
@@ -987,7 +1046,7 @@ body {
   }
   
   .package-steps {
-    flex-direction: column;
+    flex-direction: row;
     gap: 1rem;
     max-width: 100%;
   }

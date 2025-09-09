@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viajes México - Buscar</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Buscar</h1>
+            <button class="profile-btn" onclick="navigateTo('profile')">
+                <img src="../assets/images/avatar-user.webp" alt="Perfil" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIwIDIxdi0yYTQgNCAwIDAgMC00LTRIOGE0IDQgMCAwIDAtNCA0djIiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjciIHI9IjQiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K'">
+            </button>
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Barra de búsqueda -->
+            <div class="form-group">
+                <input type="text" id="searchInput" class="form-input" placeholder="Buscar hoteles, restaurantes, actividades...">
+            </div>
+
+            <!-- Menú principal de búsqueda -->
+            <section class="section">
+                <div class="search-grid">
+                    <a href="#" class="search-item" onclick="showCategoryResults('foods')">
+                        <h3>🍽️ Comidas</h3>
+                        <p>Platos tradicionales</p>
+                    </a>
+                    <a href="#" class="search-item" onclick="showCategoryResults('hotels')">
+                        <h3>🏨 Hoteles</h3>
+                        <p>Alojamiento</p>
+                    </a>
+                    <a href="#" class="search-item" onclick="showCategoryResults('restaurants')">
+                        <h3>🍴 Restaurantes</h3>
+                        <p>Gastronomía</p>
+                    </a>
+                    <a href="#" class="search-item" onclick="showCategoryResults('activities')">
+                        <h3>🎯 Actividades</h3>
+                        <p>Experiencias</p>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Resultados de búsqueda -->
+            <section class="section" id="searchResults" style="display: none;">
+                <h2 class="section-title" id="searchResultsTitle">Resultados</h2>
+                <div id="searchResultsContainer">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </section>
+
+            <!-- Paquetes recomendados -->
+            <section class="section">
+                <h2 class="section-title">Paquetes recomendados</h2>
+                <div class="horizontal-scroll" id="recommendedPackages">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Navegación inferior -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item" data-nav="home">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9,22 9,12 15,12 15,22"/>
+                </svg>
+                <span class="nav-label">Inicio</span>
+            </a>
+            <a href="#" class="nav-item active" data-nav="search">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <span class="nav-label">Buscar</span>
+            </a>
+            <a href="#" class="nav-item" data-nav="mypackages">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                    <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
+                    <line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+                <span class="nav-label">Mis Paquetes</span>
+            </a>
+            <a href="#" class="nav-item" data-nav="profile">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span class="nav-label">Perfil</span>
+            </a>
+        </nav>
+
+        <!-- Botón flotante -->
+        <button class="floating-btn" data-modal="createPackageModal">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+        </button>
+    </div>
+
+    <script src="../assets/app.js"></script>
+    <script>
+        // Funciones específicas de la página de búsqueda
+        function loadSearchContent() {
+            loadRecommendedPackages();
+            setupSearchInput();
+        }
+
+        function loadRecommendedPackages() {
+            const container = document.getElementById('recommendedPackages');
+            const packages = AppState.packages.filter(pkg => pkg.createdBy === 'admin');
+            
+            container.innerHTML = packages.map(pkg => createPackageCard(pkg)).join('');
+        }
+
+        function createPackageCard(pkg) {
+            return `
+                <div class="card card-wide" onclick="showPackageDetail('${pkg.id}')">
+                    <img src="${pkg.image}" alt="${pkg.name}" class="card-image" 
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDI4MCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyODAiIGhlaWdodD0iMTIwIiBmaWxsPSIjMDY2NjY2Ii8+Cjx0ZXh0IHg9IjE0MCIgeT0iNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlbiBubyBkaXNwb25pYmxlPC90ZXh0Pgo8L3N2Zz4K'">
+                    <div class="card-content">
+                        <h3 class="card-title">${pkg.name}</h3>
+                        <p class="card-subtitle">${pkg.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="card-price">$${pkg.price} MXN</span>
+                            <span style="font-size: 0.875rem; color: #64748b;">${pkg.duration}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function setupSearchInput() {
+            const searchInput = document.getElementById('searchInput');
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                const query = this.value.trim();
+                
+                if (query.length > 2) {
+                    searchTimeout = setTimeout(() => {
+                        performSearch(query);
+                    }, 300);
+                } else if (query.length === 0) {
+                    hideSearchResults();
+                }
+            });
+        }
+
+        function performSearch(query) {
+            const results = [];
+            const products = AppState.products;
+            
+            // Buscar en todos los tipos de productos
+            for (const type in products) {
+                products[type].forEach(product => {
+                    if (product.name.toLowerCase().includes(query.toLowerCase()) ||
+                        product.description.toLowerCase().includes(query.toLowerCase()) ||
+                        (product.location && product.location.toLowerCase().includes(query.toLowerCase()))) {
+                        results.push({...product, type});
+                    }
+                });
+            }
+            
+            displaySearchResults(results, query);
+        }
+
+        function displaySearchResults(results, query) {
+            const resultsSection = document.getElementById('searchResults');
+            const resultsTitle = document.getElementById('searchResultsTitle');
+            const resultsContainer = document.getElementById('searchResultsContainer');
+            
+            resultsTitle.textContent = `Resultados para "${query}" (${results.length})`;
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔍</div>
+                        <div class="empty-state-title">No se encontraron resultados</div>
+                        <div class="empty-state-text">Intenta con otros términos de búsqueda</div>
+                    </div>
+                `;
+            } else {
+                resultsContainer.innerHTML = results.map(result => createSearchResultCard(result)).join('');
+            }
+            
+            resultsSection.style.display = 'block';
+        }
+
+        function createSearchResultCard(result) {
+            const isFavorite = AppState.favorites.includes(result.id);
+            const favoriteIcon = isFavorite ? '❤️' : '🤍';
+            
+            return `
+                <div class="card" style="margin-bottom: 1rem;" onclick="showProductDetail('${result.id}', '${result.type}')">
+                    <div style="display: flex; padding: 1rem;">
+                        <img src="${result.image}" alt="${result.name}" 
+                             style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; margin-right: 1rem;"
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMDY2NjY2Ii8+Cjx0ZXh0IHg9IjQwIiB5PSI0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SW1hZ2VuIG5vIGRpc3BvbmlibGU8L3RleHQ+Cjwvc3ZnPgo='">
+                        <div style="flex: 1;">
+                            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;">${result.name}</h3>
+                            <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 0.5rem;">${result.location || result.type || ''}</p>
+                            ${result.rating ? `
+                                <div style="display: flex; align-items: center; gap: 0.25rem; margin-bottom: 0.5rem;">
+                                    <span style="color: #fbbf24; font-size: 0.875rem;">★★★★★</span>
+                                    <span style="font-size: 0.875rem; color: #64748b;">${result.rating}</span>
+                                </div>
+                            ` : ''}
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: 700; color: #0ea5e9;">$${result.price || 'N/A'}</span>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button class="btn btn-small" data-add-to-package="${result.id}" 
+                                            onclick="event.stopPropagation(); showAddToPackageModal('${result.id}')">
+                                        Agregar
+                                    </button>
+                                    <button class="btn btn-small" data-favorite="${result.id}" 
+                                            onclick="event.stopPropagation(); toggleFavorite('${result.id}')"
+                                            style="background: transparent; color: ${isFavorite ? '#ef4444' : '#94a3b8'}; padding: 4px;">
+                                        ${favoriteIcon}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function hideSearchResults() {
+            const resultsSection = document.getElementById('searchResults');
+            resultsSection.style.display = 'none';
+        }
+
+        function showCategoryResults(category) {
+            const products = AppState.products[category] || [];
+            displaySearchResults(products.map(p => ({...p, type: category})), category);
+        }
+
+        function showPackageDetail(packageId) {
+            const pkg = AppState.packages.find(p => p.id === packageId);
+            if (!pkg) return;
+            
+            const modalHTML = `
+                <div class="modal-overlay" id="packageDetailModal">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <h2 class="modal-title">${pkg.name}</h2>
+                            <button class="modal-close" data-close-modal>&times;</button>
+                        </div>
+                        <div class="modal-content">
+                            <img src="${pkg.image}" alt="${pkg.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;"
+                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMDY2NjY2Ii8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZGlzcG9uaWJsZTwvdGV4dD4KPC9zdmc+Cg=='">
+                            <p style="margin-bottom: 1rem; line-height: 1.6;">${pkg.description}</p>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                <span><strong>Duración:</strong> ${pkg.duration}</span>
+                                <span><strong>Precio:</strong> $${pkg.price} MXN</span>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <strong>Incluye:</strong>
+                                <ul style="margin-top: 0.5rem; padding-left: 1rem;">
+                                    ${pkg.items.map(item => {
+                                        const product = findProductById(item.id);
+                                        return `<li>${product ? product.name : 'Item'}</li>`;
+                                    }).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-close-modal>Cerrar</button>
+                            <button class="btn" onclick="addPackageToMyPackages('${pkg.id}')">
+                                Agregar a Mis Paquetes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        function addPackageToMyPackages(packageId) {
+            const originalPackage = AppState.packages.find(p => p.id === packageId);
+            if (!originalPackage) return;
+            
+            // Crear una copia personalizada del paquete
+            const newPackage = {
+                ...originalPackage,
+                id: 'pkg_' + Date.now(),
+                createdBy: AppState.currentUser.id,
+                createdAt: new Date().toISOString()
+            };
+            
+            AppState.packages.push(newPackage);
+            saveToLocalStorage('packages', AppState.packages);
+            
+            showToast('Paquete agregado a Mis Paquetes');
+            closeModal();
+        }
+
+        // Inicializar página
+        if (AppState.currentPage === 'search') {
+            loadSearchContent();
+        }
+    </script>
+</body>
+</html>

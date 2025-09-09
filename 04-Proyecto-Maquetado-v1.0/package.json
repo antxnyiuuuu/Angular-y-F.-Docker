@@ -1,0 +1,36 @@
+{
+  "name": "viajes-mexico-app",
+  "version": "1.0.0",
+  "description": "Prototipo de app móvil para gestión de viajes y paquetes turísticos",
+  "main": "pages/index.html",
+  "scripts": {
+    "start": "http-server pages -p 3000 -o",
+    "dev": "http-server pages -p 3000 -o -c-1",
+    "build": "echo 'No build process needed for static files'",
+    "serve": "http-server . -p 3000 -o",
+    "clean": "echo 'Clearing localStorage data...' && echo 'Open browser console and run: localStorage.clear()'"
+  },
+  "keywords": [
+    "travel",
+    "mobile",
+    "prototype",
+    "html",
+    "css",
+    "javascript",
+    "tourism",
+    "mexico"
+  ],
+  "author": "David Jima",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "homepage": ".",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

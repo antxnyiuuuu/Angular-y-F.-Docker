@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Actividades - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/provider.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">Eco Tours Adventure</h1>
+                    <p class="user-welcome">Editar Actividades</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">🎯</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Información General de la Empresa -->
+            <section class="info-section">
+                <h2>Información General</h2>
+                <div class="info-card">
+                    <form id="formInfoGeneral" class="actividades-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nombreEmpresa">Nombre de la Empresa</label>
+                                <input type="text" id="nombreEmpresa" class="form-input" value="Eco Tours Adventure" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="tipoActividades">Tipo de Actividades</label>
+                                <select id="tipoActividades" class="form-select" required>
+                                    <option value="aventura" selected>Aventura</option>
+                                    <option value="naturaleza">Naturaleza</option>
+                                    <option value="cultural">Cultural</option>
+                                    <option value="deportiva">Deportiva</option>
+                                    <option value="ecoturismo">Ecoturismo</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="descripcionEmpresa">Descripción</label>
+                            <textarea id="descripcionEmpresa" class="form-textarea" rows="4" required>Empresa especializada en tours de aventura y ecoturismo, ofreciendo experiencias únicas en contacto con la naturaleza.</textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="direccionEmpresa">Dirección</label>
+                                <input type="text" id="direccionEmpresa" class="form-input" value="Av. Aventura 789, Zona Eco" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="telefonoEmpresa">Teléfono</label>
+                                <input type="tel" id="telefonoEmpresa" class="form-input" value="+1 555-0789" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emailEmpresa">Email</label>
+                            <input type="email" id="emailEmpresa" class="form-input" value="info@ecotours.com" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            Guardar Información
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Gestión de Actividades -->
+            <section class="actividades-section">
+                <h2>Gestión de Actividades</h2>
+                <div class="actividades-header">
+                    <button class="btn btn-success" onclick="mostrarModalAgregarActividad()">
+                        + Agregar Actividad
+                    </button>
+                </div>
+                
+                <div class="actividades-list">
+                    <div class="actividad-item">
+                        <div class="actividad-image">🌿</div>
+                        <div class="actividad-info">
+                            <h3>Tour Selva Tropical</h3>
+                            <p>6 horas de aventura en la selva tropical</p>
+                            <div class="actividad-details">
+                                <span class="actividad-precio">$80/persona</span>
+                                <span class="actividad-capacidad">15 personas</span>
+                                <span class="actividad-dia">Lunes, Miércoles, Viernes</span>
+                            </div>
+                        </div>
+                        <div class="actividad-actions">
+                            <button class="btn btn-sm btn-info" onclick="editarActividad(1)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="gestionarHorarios(1)">
+                                Horarios
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarActividad(1)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="actividad-item">
+                        <div class="actividad-image">🏔️</div>
+                        <div class="actividad-info">
+                            <h3>Senderismo Montaña</h3>
+                            <p>4 horas de trekking por la sierra</p>
+                            <div class="actividad-details">
+                                <span class="actividad-precio">$60/persona</span>
+                                <span class="actividad-capacidad">12 personas</span>
+                                <span class="actividad-dia">Martes, Jueves, Sábado</span>
+                            </div>
+                        </div>
+                        <div class="actividad-actions">
+                            <button class="btn btn-sm btn-info" onclick="editarActividad(2)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="gestionarHorarios(2)">
+                                Horarios
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarActividad(2)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="actividad-item">
+                        <div class="actividad-image">🚣</div>
+                        <div class="actividad-info">
+                            <h3>Kayak en Río</h3>
+                            <p>3 horas de kayak por el río</p>
+                            <div class="actividad-details">
+                                <span class="actividad-precio">$45/persona</span>
+                                <span class="actividad-capacidad">8 personas</span>
+                                <span class="actividad-dia">Todos los días</span>
+                            </div>
+                        </div>
+                        <div class="actividad-actions">
+                            <button class="btn btn-sm btn-info" onclick="editarActividad(3)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="gestionarHorarios(3)">
+                                Horarios
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarActividad(3)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="actividad-item">
+                        <div class="actividad-image">🦋</div>
+                        <div class="actividad-info">
+                            <h3>Observación de Aves</h3>
+                            <p>2 horas de observación de aves exóticas</p>
+                            <div class="actividad-details">
+                                <span class="actividad-precio">$35/persona</span>
+                                <span class="actividad-capacidad">10 personas</span>
+                                <span class="actividad-dia">Domingos</span>
+                            </div>
+                        </div>
+                        <div class="actividad-actions">
+                            <button class="btn btn-sm btn-info" onclick="editarActividad(4)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="gestionarHorarios(4)">
+                                Horarios
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarActividad(4)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gestión de Fotos -->
+            <section class="fotos-section">
+                <h2>Fotos de Actividades</h2>
+                <div class="fotos-header">
+                    <button class="btn btn-primary" onclick="mostrarModalSubirFoto()">
+                        + Subir Fotos
+                    </button>
+                </div>
+                
+                <div class="fotos-grid">
+                    <div class="foto-item">
+                        <div class="foto-preview">📷</div>
+                        <div class="foto-info">
+                            <h4>Tour Selva Tropical</h4>
+                            <p>Galería de fotos</p>
+                        </div>
+                        <div class="foto-actions">
+                            <button class="btn btn-sm btn-warning" onclick="editarFoto(1)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarFoto(1)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="foto-item">
+                        <div class="foto-preview">📷</div>
+                        <div class="foto-info">
+                            <h4>Senderismo Montaña</h4>
+                            <p>Galería de fotos</p>
+                        </div>
+                        <div class="foto-actions">
+                            <button class="btn btn-sm btn-warning" onclick="editarFoto(2)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarFoto(2)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="foto-item">
+                        <div class="foto-preview">📷</div>
+                        <div class="foto-info">
+                            <h4>Kayak en Río</h4>
+                            <p>Galería de fotos</p>
+                        </div>
+                        <div class="foto-actions">
+                            <button class="btn btn-sm btn-warning" onclick="editarFoto(3)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarFoto(3)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="foto-item">
+                        <div class="foto-preview">📷</div>
+                        <div class="foto-info">
+                            <h4>Observación de Aves</h4>
+                            <p>Galería de fotos</p>
+                        </div>
+                        <div class="foto-actions">
+                            <button class="btn btn-sm btn-warning" onclick="editarFoto(4)">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarFoto(4)">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gestión de Guías -->
+            <section class="guias-section">
+                <h2>Guías Disponibles</h2>
+                <div class="guias-grid">
+                    <div class="guia-card">
+                        <div class="guia-avatar">👨‍🦱</div>
+                        <div class="guia-info">
+                            <h3>Carlos Mendoza</h3>
+                            <p>Especialista en selva tropical</p>
+                            <div class="guia-stats">
+                                <span class="guia-experiencia">5 años</span>
+                                <span class="guia-rating">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                        <div class="guia-actions">
+                            <button class="btn btn-sm btn-warning" onclick="editarGuia(1)">
+                                Editar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="guia-card">
+                        <div class="guia-avatar">👩‍🦰</div>
+                        <div class="guia-info">
+                            <h3>Ana Rodríguez</h3>
+                            <p>Especialista en senderismo</p>
+                            <div class="guia-stats">
+                                <span class="guia-experiencia">3 años</span>
+                                <span class="guia-rating">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                        <div class="guia-actions">
+                            <button class="btn btn-sm btn-warning" onclick="editarGuia(2)">
+                                Editar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="guia-card">
+                        <div class="guia-avatar">👨‍🦲</div>
+                        <div class="guia-info">
+                            <h3>Luis Fernández</h3>
+                            <p>Especialista en kayak</p>
+                            <div class="guia-stats">
+                                <span class="guia-experiencia">4 años</span>
+                                <span class="guia-rating">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                        <div class="guia-actions">
+                            <button class="btn btn-sm btn-warning" onclick="editarGuia(3)">
+                                Editar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal Agregar Actividad -->
+    <div id="modalAgregarActividad" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Agregar Nueva Actividad</h3>
+                <span class="close" onclick="Modal.hide('modalAgregarActividad')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formAgregarActividad" class="actividad-form">
+                    <div class="form-group">
+                        <label for="nombreActividad">Nombre de la Actividad</label>
+                        <input type="text" id="nombreActividad" class="form-input" placeholder="Ej: Tour Aventura Selva" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="diaActividad">Día de la Semana</label>
+                            <select id="diaActividad" class="form-select" required>
+                                <option value="">Seleccionar día</option>
+                                <option value="lunes">Lunes</option>
+                                <option value="martes">Martes</option>
+                                <option value="miercoles">Miércoles</option>
+                                <option value="jueves">Jueves</option>
+                                <option value="viernes">Viernes</option>
+                                <option value="sabado">Sábado</option>
+                                <option value="domingo">Domingo</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="horaActividad">Hora de Inicio</label>
+                            <input type="time" id="horaActividad" class="form-input" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="personasActividad">Número de Personas</label>
+                            <input type="number" id="personasActividad" class="form-input" min="1" max="50" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="precioActividad">Precio por Persona</label>
+                            <input type="number" id="precioActividad" class="form-input" min="0" step="0.01" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="imagenActividad">Imagen de la Actividad</label>
+                        <input type="file" id="imagenActividad" class="form-input" accept="image/*" required>
+                        <small class="form-help">La imagen es muy importante para mostrar la actividad a los clientes</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="descripcionActividad">Descripción de la Actividad</label>
+                        <textarea id="descripcionActividad" class="form-textarea" rows="3" placeholder="Descripción detallada de la actividad, qué incluye, duración, dificultad..." required></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="Modal.hide('modalAgregarActividad')">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            Agregar Actividad
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Subir Foto -->
+    <div id="modalSubirFoto" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Subir Foto de Actividad</h3>
+                <span class="close" onclick="Modal.hide('modalSubirFoto')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formSubirFoto" class="foto-form">
+                    <div class="form-group">
+                        <label for="actividadFoto">Actividad</label>
+                        <select id="actividadFoto" class="form-select" required>
+                            <option value="">Seleccionar actividad</option>
+                            <option value="selva">Tour Selva Tropical</option>
+                            <option value="senderismo">Senderismo Montaña</option>
+                            <option value="kayak">Kayak en Río</option>
+                            <option value="aves">Observación de Aves</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="archivoFoto">Archivo de Foto</label>
+                        <input type="file" id="archivoFoto" class="form-input" accept="image/*" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tituloFoto">Título</label>
+                        <input type="text" id="tituloFoto" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="descripcionFoto">Descripción</label>
+                        <textarea id="descripcionFoto" class="form-textarea" rows="2"></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="Modal.hide('modalSubirFoto')">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            Subir Foto
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="actividades-home.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="actividades-editar.html" class="nav-item active">
+                <span class="nav-icon">✏️</span>
+                <span>Editar</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showUserMenu()">
+                <span class="nav-icon">👤</span>
+                <span>Mi Cuenta</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-actividades.js"></script>
+    <script>
+        function mostrarModalAgregarActividad() {
+            Modal.show('modalAgregarActividad');
+        }
+
+        function mostrarModalSubirFoto() {
+            Modal.show('modalSubirFoto');
+        }
+
+        function editarActividad(actividadId) {
+            alert(`Editando actividad ${actividadId}`);
+        }
+
+        function gestionarHorarios(actividadId) {
+            alert(`Gestionando horarios de actividad ${actividadId}`);
+        }
+
+        function eliminarActividad(actividadId) {
+            if (confirm(`¿Estás seguro de eliminar la actividad ${actividadId}?`)) {
+                alert(`Actividad ${actividadId} eliminada`);
+            }
+        }
+
+        function editarFoto(fotoId) {
+            alert(`Editando foto ${fotoId}`);
+        }
+
+        function eliminarFoto(fotoId) {
+            if (confirm(`¿Estás seguro de eliminar esta foto?`)) {
+                alert(`Foto ${fotoId} eliminada`);
+            }
+        }
+
+        function editarGuia(guiaId) {
+            alert(`Editando guía ${guiaId}`);
+        }
+
+        // Manejar envío de formularios
+        document.getElementById('formInfoGeneral').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Información de la empresa actualizada');
+        });
+
+        document.getElementById('formAgregarActividad').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Actividad agregada exitosamente');
+            Modal.hide('modalAgregarActividad');
+        });
+
+        document.getElementById('formSubirFoto').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Foto subida exitosamente');
+            Modal.hide('modalSubirFoto');
+        });
+    </script>
+</body>
+</html>

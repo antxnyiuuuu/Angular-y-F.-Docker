@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transporte - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/vehiculos.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">TravelApp</h1>
+            <p class="subtitle">Reserva tu transporte ideal</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Filtros de Búsqueda -->
+            <section class="filters-section">
+                <div class="card">
+                    <h2>¿Cómo quieres viajar?</h2>
+                    <form id="transportForm" class="transport-form">
+                        <div class="form-group">
+                            <label for="passengers" class="form-label">Número de Personas</label>
+                            <select id="passengers" name="passengers" class="form-select" required>
+                                <option value="">Selecciona el número de personas</option>
+                                <option value="1">1 persona</option>
+                                <option value="2">2 personas</option>
+                                <option value="3-4">3-4 personas</option>
+                                <option value="5-8">5-8 personas</option>
+                                <option value="9-15">9-15 personas</option>
+                                <option value="16-50">16-50 personas</option>
+                                <option value="50+">Más de 50 personas</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="transportType" class="form-label">Tipo de Transporte</label>
+                            <select id="transportType" name="transportType" class="form-select" required>
+                                <option value="">Selecciona el tipo de transporte</option>
+                                <option value="automovil">Automóvil</option>
+                                <option value="van">Van</option>
+                                <option value="autobus">Autobús</option>
+                                <option value="limusina">Limusina</option>
+                                <option value="motocicleta">Motocicleta</option>
+                                <option value="bicicleta">Bicicleta</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">¿Tienes transporte propio?</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="ownTransport" value="no" checked>
+                                    <span class="radio-text">No, necesito rentar</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="ownTransport" value="yes">
+                                    <span class="radio-text">Sí, viajaré con mi transporte</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">
+                            Buscar Transporte
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Resultados de Búsqueda -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <h2>Opciones de Transporte Disponibles</h2>
+                <div class="vehiculos-grid" id="vehiculosGrid">
+                    <!-- Se cargarán dinámicamente -->
+                </div>
+            </section>
+
+            <!-- Transporte Propio -->
+            <section class="own-transport-section" id="ownTransportSection" style="display: none;">
+                <div class="card">
+                    <h2>¡Perfecto! Viajarás con tu propio transporte</h2>
+                    <p>Te ayudamos a planificar tu viaje con información útil:</p>
+                    
+                    <div class="own-transport-info">
+                        <div class="info-item">
+                            <div class="info-icon">🗺️</div>
+                            <div class="info-content">
+                                <h3>Rutas Recomendadas</h3>
+                                <p>Te sugerimos las mejores rutas para tu destino</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">⛽</div>
+                            <div class="info-content">
+                                <h3>Estaciones de Servicio</h3>
+                                <p>Ubicaciones de gasolineras en tu ruta</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">🍽️</div>
+                            <div class="info-content">
+                                <h3>Restaurantes en Ruta</h3>
+                                <p>Lugares para comer durante tu viaje</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">🏨</div>
+                            <div class="info-content">
+                                <h3>Hoteles en Destino</h3>
+                                <p>Reserva tu hospedaje en el destino</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="own-transport-actions">
+                        <button class="btn btn-primary" onclick="Navigation.goTo('destinos.html')">
+                            Continuar al Destino
+                        </button>
+                        <button class="btn btn-secondary" onclick="showRutas()">
+                            Ver Rutas
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Detalles del Vehículo -->
+    <div id="vehiculoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="vehiculoModalTitle">Detalles del Vehículo</h3>
+                <span class="close" onclick="Modal.hide('vehiculoModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="vehiculo-details" id="vehiculoDetails">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Rutas -->
+    <div id="rutasModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Rutas Recomendadas</h3>
+                <span class="close" onclick="Modal.hide('rutasModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="rutas-content" id="rutasContent">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="../index.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Inicio</span>
+            </a>
+            <a href="login.html" class="nav-item">
+                <span class="nav-icon">🔐</span>
+                <span>Login</span>
+            </a>
+            <a href="destinos.html" class="nav-item">
+                <span class="nav-icon">🌍</span>
+                <span>Destinos</span>
+            </a>
+            <a href="vehiculos.html" class="nav-item active">
+                <span class="nav-icon">🚗</span>
+                <span>Transporte</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/vehiculos.js"></script>
+</body>
+</html>

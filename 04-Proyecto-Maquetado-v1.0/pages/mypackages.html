@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viajes México - Mis Paquetes</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Mis Paquetes</h1>
+            <button class="profile-btn" onclick="navigateTo('profile')">
+                <img src="../assets/images/avatar-user.webp" alt="Perfil" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIwIDIxdi0yYTQgNCAwIDAgMC00LTRIOGE0IDQgMCAwIDAtNCA0djIiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjciIHI9IjQiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K'">
+            </button>
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Botón crear paquete -->
+            <div style="margin-bottom: 1.5rem;">
+                <button class="btn btn-large" onclick="showCreatePackageModal()" style="width: 100%;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Crear Nuevo Paquete
+                </button>
+            </div>
+
+            <!-- Lista de paquetes -->
+            <section class="section">
+                <div class="package-list" id="myPackagesList">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </section>
+
+            <!-- Estado vacío -->
+            <div class="empty-state hidden" id="emptyState">
+                <div class="empty-state-icon">📦</div>
+                <div class="empty-state-title">No tienes paquetes creados</div>
+                <div class="empty-state-text">Crea tu primer paquete de viaje personalizado</div>
+                <button class="btn" onclick="showCreatePackageModal()" style="margin-top: 1rem;">
+                    Crear Mi Primer Paquete
+                </button>
+            </div>
+        </main>
+
+        <!-- Navegación inferior -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item" data-nav="home">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9,22 9,12 15,12 15,22"/>
+                </svg>
+                <span class="nav-label">Inicio</span>
+            </a>
+            <a href="#" class="nav-item" data-nav="search">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <span class="nav-label">Buscar</span>
+            </a>
+            <a href="#" class="nav-item active" data-nav="mypackages">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                    <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
+                    <line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+                <span class="nav-label">Mis Paquetes</span>
+            </a>
+            <a href="#" class="nav-item" data-nav="profile">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span class="nav-label">Perfil</span>
+            </a>
+        </nav>
+
+        <!-- Botón flotante -->
+        <button class="floating-btn" data-modal="createPackageModal">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+        </button>
+    </div>
+
+    <script src="../assets/app.js"></script>
+    <script>
+        // Funciones específicas de la página de mis paquetes
+        function loadMyPackagesContent() {
+            loadMyPackages();
+        }
+
+        function loadMyPackages() {
+            const container = document.getElementById('myPackagesList');
+            const emptyState = document.getElementById('emptyState');
+            const userPackages = AppState.packages.filter(pkg => pkg.createdBy === AppState.currentUser.id);
+            
+            if (userPackages.length === 0) {
+                container.style.display = 'none';
+                emptyState.classList.remove('hidden');
+            } else {
+                container.style.display = 'block';
+                emptyState.classList.add('hidden');
+                
+                container.innerHTML = userPackages.map(pkg => createMyPackageCard(pkg)).join('');
+            }
+        }
+
+        function createMyPackageCard(pkg) {
+            const totalPrice = calculatePackagePrice(pkg);
+            const itemCount = pkg.items.length;
+            
+            return `
+                <div class="package-card" onclick="showMyPackageDetail('${pkg.id}')">
+                    <img src="${generatePackageCover(pkg.id)}" alt="${pkg.name}" class="package-image" 
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDQwMCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMTUwIiBmaWxsPSIjMDY2NjY2Ii8+Cjx0ZXh0IHg9IjIwMCIgeT0iNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlbiBubyBkaXNwb25pYmxlPC90ZXh0Pgo8L3N2Zz4K'">
+                    <div class="package-info">
+                        <h3 class="package-title">${pkg.name}</h3>
+                        <p class="package-description">${pkg.description}</p>
+                        <div class="package-meta">
+                            <span class="package-duration">${itemCount} items</span>
+                            <span class="package-price">$${totalPrice} MXN</span>
+                        </div>
+                        <div class="package-actions">
+                            <button class="btn btn-small" onclick="event.stopPropagation(); addItemsToPackage('${pkg.id}')">
+                                Agregar Items
+                            </button>
+                            <button class="btn btn-small btn-secondary" onclick="event.stopPropagation(); editPackage('${pkg.id}')">
+                                Editar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function calculatePackagePrice(pkg) {
+            let totalPrice = 0;
+            
+            pkg.items.forEach(item => {
+                const product = findProductById(item.id);
+                if (product) {
+                    if (item.type === 'restaurants') {
+                        item.details.dishes.forEach(dish => {
+                            const menuItem = product.dishes.find(d => d.name === dish.name);
+                            if (menuItem) {
+                                totalPrice += menuItem.price * dish.quantity;
+                            }
+                        });
+                    } else {
+                        totalPrice += product.price || 0;
+                    }
+                }
+            });
+            
+            // Agregar transporte si existe
+            if (pkg.transport) {
+                totalPrice += 50;
+            }
+            
+            return totalPrice;
+        }
+
+        function showMyPackageDetail(packageId) {
+            const pkg = AppState.packages.find(p => p.id === packageId);
+            if (!pkg) return;
+            
+            const totalPrice = calculatePackagePrice(pkg);
+            
+            const modalHTML = `
+                <div class="modal-overlay" id="myPackageDetailModal">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <h2 class="modal-title">${pkg.name}</h2>
+                            <button class="modal-close" data-close-modal>&times;</button>
+                        </div>
+                        <div class="modal-content">
+                            <img src="${generatePackageCover(pkg.id)}" alt="${pkg.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;"
+                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMDY2NjY2Ii8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZGlzcG9uaWJsZTwvdGV4dD4KPC9zdmc+Cg=='">
+                            <p style="margin-bottom: 1rem; line-height: 1.6;">${pkg.description}</p>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                <span><strong>Items:</strong> ${pkg.items.length}</span>
+                                <span><strong>Precio Total:</strong> $${totalPrice} MXN</span>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <strong>Incluye:</strong>
+                                <div style="margin-top: 0.5rem;">
+                                    ${pkg.items.map(item => {
+                                        const product = findProductById(item.id);
+                                        return `
+                                            <div style="padding: 0.5rem; background: #f8fafc; border-radius: 4px; margin-bottom: 0.5rem;">
+                                                <div style="font-weight: 600;">${product ? product.name : 'Item'}</div>
+                                                ${item.details.guests ? `<div style="font-size: 0.875rem; color: #64748b;">${item.details.guests} personas</div>` : ''}
+                                                ${item.details.checkIn ? `<div style="font-size: 0.875rem; color: #64748b;">${item.details.checkIn} - ${item.details.checkOut}</div>` : ''}
+                                                ${item.details.dishes ? `
+                                                    <div style="font-size: 0.875rem; color: #64748b;">
+                                                        ${item.details.dishes.map(dish => `${dish.name} (${dish.quantity})`).join(', ')}
+                                                    </div>
+                                                ` : ''}
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" onclick="addItemsToPackage('${pkg.id}')">
+                                Agregar Items
+                            </button>
+                            <button class="btn" onclick="simulatePayment('${pkg.id}')">
+                                Pagar $${totalPrice} MXN
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        function addItemsToPackage(packageId) {
+            const modalHTML = `
+                <div class="modal-overlay" id="addItemsModal">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <h2 class="modal-title">Agregar Items al Paquete</h2>
+                            <button class="modal-close" data-close-modal>&times;</button>
+                        </div>
+                        <div class="modal-content">
+                            <div class="form-group">
+                                <label class="form-label">Buscar productos:</label>
+                                <input type="text" id="itemSearchInput" class="form-input" placeholder="Buscar hoteles, restaurantes, actividades...">
+                            </div>
+                            <div id="searchResults" style="max-height: 300px; overflow-y: auto;">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            
+            // Configurar búsqueda
+            const searchInput = document.getElementById('itemSearchInput');
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                const query = this.value.trim();
+                
+                if (query.length > 2) {
+                    searchTimeout = setTimeout(() => {
+                        searchItemsForPackage(query, packageId);
+                    }, 300);
+                } else if (query.length === 0) {
+                    showAllItemsForPackage(packageId);
+                }
+            });
+            
+            // Mostrar todos los items inicialmente
+            showAllItemsForPackage(packageId);
+        }
+
+        function showAllItemsForPackage(packageId) {
+            const container = document.getElementById('searchResults');
+            const allItems = [];
+            
+            // Recopilar todos los productos
+            for (const type in AppState.products) {
+                AppState.products[type].forEach(product => {
+                    allItems.push({...product, type});
+                });
+            }
+            
+            container.innerHTML = allItems.map(item => createItemCardForPackage(item, packageId)).join('');
+        }
+
+        function searchItemsForPackage(query, packageId) {
+            const container = document.getElementById('searchResults');
+            const results = [];
+            
+            for (const type in AppState.products) {
+                AppState.products[type].forEach(product => {
+                    if (product.name.toLowerCase().includes(query.toLowerCase()) ||
+                        product.description.toLowerCase().includes(query.toLowerCase())) {
+                        results.push({...product, type});
+                    }
+                });
+            }
+            
+            container.innerHTML = results.map(item => createItemCardForPackage(item, packageId)).join('');
+        }
+
+        function createItemCardForPackage(item, packageId) {
+            return `
+                <div style="display: flex; align-items: center; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 0.5rem;">
+                    <img src="${item.image}" alt="${item.name}" 
+                         style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; margin-right: 0.75rem;"
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjMDY2NjY2Ii8+Cjx0ZXh0IHg9IjI1IiB5PSIyNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZGlzcG9uaWJsZTwvdGV4dD4KPC9zdmc+Cg=='">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 0.875rem;">${item.name}</div>
+                        <div style="font-size: 0.75rem; color: #64748b;">${item.location || item.type || ''}</div>
+                        <div style="font-size: 0.75rem; color: #0ea5e9; font-weight: 600;">$${item.price || 'N/A'}</div>
+                    </div>
+                    <button class="btn btn-small" onclick="addItemToPackage('${packageId}', '${item.id}')">
+                        Agregar
+                    </button>
+                </div>
+            `;
+        }
+
+        function editPackage(packageId) {
+            const pkg = AppState.packages.find(p => p.id === packageId);
+            if (!pkg) return;
+            
+            const modalHTML = `
+                <div class="modal-overlay" id="editPackageModal">
+                    <div class="modal">
+                        <div class="modal-header">
+                            <h2 class="modal-title">Editar Paquete</h2>
+                            <button class="modal-close" data-close-modal>&times;</button>
+                        </div>
+                        <div class="modal-content">
+                            <form id="editPackageForm">
+                                <div class="form-group">
+                                    <label class="form-label" for="editPackageName">Nombre del Paquete</label>
+                                    <input type="text" id="editPackageName" class="form-input" value="${pkg.name}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="editPackageDescription">Descripción</label>
+                                    <textarea id="editPackageDescription" class="form-input form-textarea">${pkg.description}</textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-close-modal>Cancelar</button>
+                            <button class="btn" onclick="savePackageEdit('${packageId}')">Guardar Cambios</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        function savePackageEdit(packageId) {
+            const name = document.getElementById('editPackageName').value;
+            const description = document.getElementById('editPackageDescription').value;
+            
+            if (!name.trim()) {
+                showToast('El nombre del paquete es requerido', 'error');
+                return;
+            }
+            
+            const packageIndex = AppState.packages.findIndex(p => p.id === packageId);
+            if (packageIndex > -1) {
+                AppState.packages[packageIndex].name = name;
+                AppState.packages[packageIndex].description = description;
+                saveToLocalStorage('packages', AppState.packages);
+                
+                showToast('Paquete actualizado exitosamente');
+                closeModal();
+                loadMyPackages();
+            }
+        }
+
+        // Inicializar página
+        if (AppState.currentPage === 'mypackages') {
+            loadMyPackagesContent();
+        }
+    </script>
+</body>
+</html>

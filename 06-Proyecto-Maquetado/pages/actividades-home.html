@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividades Dashboard - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/provider.css">
+    <link rel="stylesheet" href="../assets/css/enhanced.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">Eco Tours Adventure</h1>
+                    <p class="user-welcome">Panel de Control</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">🎯</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Estadísticas de Actividades -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-info">
+                            <h3 id="actividadesTotales">12</h3>
+                            <p>Actividades Activas</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-info">
+                            <h3 id="toursHoy">5</h3>
+                            <p>Tours Hoy</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <h3 id="ingresosHoy">$450</h3>
+                            <p>Ingresos Hoy</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-info">
+                            <h3 id="ratingPromedio">4.9</h3>
+                            <p>Rating Promedio</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resumen de Actividad -->
+            <section class="resumen-section">
+                <h2>Resumen de Actividad</h2>
+                <div class="resumen-grid">
+                    <div class="resumen-card">
+                        <h3>📊 Estadísticas del Mes</h3>
+                        <div class="resumen-stats">
+                            <div class="resumen-item">
+                                <span class="resumen-label">Tours Realizados:</span>
+                                <span class="resumen-value">89</span>
+                            </div>
+                            <div class="resumen-item">
+                                <span class="resumen-label">Participantes:</span>
+                                <span class="resumen-value">1,234</span>
+                            </div>
+                            <div class="resumen-item">
+                                <span class="resumen-label">Ingresos:</span>
+                                <span class="resumen-value">$12,450</span>
+                            </div>
+                            <div class="resumen-item">
+                                <span class="resumen-label">Rating Promedio:</span>
+                                <span class="resumen-value">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resumen-card">
+                        <h3>📈 Tendencias</h3>
+                        <div class="tendencias-list">
+                            <div class="tendencia-item tendencia-positiva">
+                                <span class="tendencia-icon">📈</span>
+                                <span class="tendencia-text">Tours +28% vs mes anterior</span>
+                            </div>
+                            <div class="tendencia-item tendencia-positiva">
+                                <span class="tendencia-icon">💰</span>
+                                <span class="tendencia-text">Ingresos +35% vs mes anterior</span>
+                            </div>
+                            <div class="tendencia-item tendencia-positiva">
+                                <span class="tendencia-icon">👥</span>
+                                <span class="tendencia-text">Participantes +22%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Actividades Destacadas -->
+            <section class="actividades-section">
+                <h2 class="text-gradient">Actividades Más Populares</h2>
+                <div class="grid-enhanced">
+                    <div class="enhanced-card interactive">
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=250&fit=crop" alt="Tour Selva Tropical">
+                            <div class="image-overlay">
+                                <h3>Tour Selva Tropical</h3>
+                                <p>6 horas de aventura en la selva</p>
+                            </div>
+                        </div>
+                        <div class="actividad-stats" style="margin: 15px 0;">
+                            <div class="badge-enhanced badge-success">$80/persona</div>
+                            <div style="color: var(--text-secondary); margin-top: 5px;">15 personas</div>
+                        </div>
+                        <div class="actividad-rating">⭐⭐⭐⭐⭐</div>
+                    </div>
+
+                    <div class="enhanced-card interactive">
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1464822759844-d150baec1b4b?w=400&h=250&fit=crop" alt="Senderismo Montaña">
+                            <div class="image-overlay">
+                                <h3>Senderismo Montaña</h3>
+                                <p>4 horas de trekking por la sierra</p>
+                            </div>
+                        </div>
+                        <div class="actividad-stats" style="margin: 15px 0;">
+                            <div class="badge-enhanced badge-warning">$60/persona</div>
+                            <div style="color: var(--text-secondary); margin-top: 5px;">12 personas</div>
+                        </div>
+                        <div class="actividad-rating">⭐⭐⭐⭐⭐</div>
+                    </div>
+
+                    <div class="enhanced-card interactive">
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=250&fit=crop" alt="Kayak en Río">
+                            <div class="image-overlay">
+                                <h3>Kayak en Río</h3>
+                                <p>3 horas de kayak por el río</p>
+                            </div>
+                        </div>
+                        <div class="actividad-stats" style="margin: 15px 0;">
+                            <div class="badge-enhanced badge-info">$45/persona</div>
+                            <div style="color: var(--text-secondary); margin-top: 5px;">8 personas</div>
+                        </div>
+                        <div class="actividad-rating">⭐⭐⭐⭐⭐</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tours de Hoy -->
+            <section class="tours-section">
+                <h2>Tours de Hoy</h2>
+                <div class="tours-list">
+                    <div class="tour-item">
+                        <div class="tour-info">
+                            <h4>Tour Selva Tropical</h4>
+                            <p>8:00 AM - 14 personas</p>
+                            <span class="tour-guia">Guía: Carlos</span>
+                        </div>
+                        <div class="tour-status">
+                            <span class="status-badge status-en-progreso">En Progreso</span>
+                        </div>
+                        <div class="tour-precio">$1,120</div>
+                    </div>
+
+                    <div class="tour-item">
+                        <div class="tour-info">
+                            <h4>Senderismo Montaña</h4>
+                            <p>10:00 AM - 10 personas</p>
+                            <span class="tour-guia">Guía: Ana</span>
+                        </div>
+                        <div class="tour-status">
+                            <span class="status-badge status-confirmado">Confirmado</span>
+                        </div>
+                        <div class="tour-precio">$600</div>
+                    </div>
+
+                    <div class="tour-item">
+                        <div class="tour-info">
+                            <h4>Kayak en Río</h4>
+                            <p>14:00 PM - 6 personas</p>
+                            <span class="tour-guia">Guía: Luis</span>
+                        </div>
+                        <div class="tour-status">
+                            <span class="status-badge status-pendiente">Pendiente</span>
+                        </div>
+                        <div class="tour-precio">$270</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Botón Flotante Agregar -->
+    <button class="fab" onclick="mostrarModalAgregar()">
+        +
+    </button>
+
+    <!-- Modal Agregar Actividad -->
+    <div id="modalAgregar" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Agregar Nueva Actividad</h3>
+                <span class="close" onclick="Modal.hide('modalAgregar')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formAgregarActividad" class="actividad-form">
+                    <div class="form-group">
+                        <label for="nombreActividad">Nombre de la Actividad</label>
+                        <input type="text" id="nombreActividad" class="form-input" placeholder="Ej: Tour Aventura Selva" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="diaActividad">Día de la Semana</label>
+                            <select id="diaActividad" class="form-select" required>
+                                <option value="">Seleccionar día</option>
+                                <option value="lunes">Lunes</option>
+                                <option value="martes">Martes</option>
+                                <option value="miercoles">Miércoles</option>
+                                <option value="jueves">Jueves</option>
+                                <option value="viernes">Viernes</option>
+                                <option value="sabado">Sábado</option>
+                                <option value="domingo">Domingo</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="horaActividad">Hora de Inicio</label>
+                            <input type="time" id="horaActividad" class="form-input" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="personasActividad">Número de Personas</label>
+                            <input type="number" id="personasActividad" class="form-input" min="1" max="50" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="precioActividad">Precio por Persona</label>
+                            <input type="number" id="precioActividad" class="form-input" min="0" step="0.01" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="imagenActividad">Imagen de la Actividad</label>
+                        <input type="file" id="imagenActividad" class="form-input" accept="image/*" required>
+                        <small class="form-help">La imagen es muy importante para mostrar la actividad a los clientes</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="descripcionActividad">Descripción de la Actividad</label>
+                        <textarea id="descripcionActividad" class="form-textarea" rows="3" placeholder="Descripción detallada de la actividad, qué incluye, duración, dificultad..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="incluyeActividad">¿Qué incluye?</label>
+                        <textarea id="incluyeActividad" class="form-textarea" rows="2" placeholder="Guía, equipo, transporte, comidas, etc."></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="Modal.hide('modalAgregar')">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            Agregar Actividad
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="actividades-home.html" class="nav-item active">
+                <span class="nav-icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="actividades-editar.html" class="nav-item">
+                <span class="nav-icon">✏️</span>
+                <span>Editar</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showUserMenu()">
+                <span class="nav-icon">👤</span>
+                <span>Mi Cuenta</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-actividades.js"></script>
+    <script>
+        function mostrarModalAgregar() {
+            Modal.show('modalAgregar');
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('formAgregarActividad').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Actividad agregada exitosamente');
+            Modal.hide('modalAgregar');
+            // Aquí actualizarías la lista de actividades
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Actividades - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/provider.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">TravelApp Actividades</h1>
+                    <p class="user-welcome" id="userWelcome">Panel de Actividades</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">🎯</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Estadísticas de Actividades -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-info">
+                            <h3 id="totalReservas">0</h3>
+                            <p>Reservas Totales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <h3 id="ingresosTotales">$0</h3>
+                            <p>Ingresos Totales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-info">
+                            <h3 id="calificacionPromedio">0.0</h3>
+                            <p>Calificación</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-info">
+                            <h3 id="actividadesActivas">0</h3>
+                            <p>Actividades Activas</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Acciones de Actividades -->
+            <section class="actions-section">
+                <h2>Gestión de Actividades</h2>
+                <div class="actions-grid">
+                    <div class="action-card" onclick="showReservas()">
+                        <div class="action-icon">📋</div>
+                        <h3>Reservas</h3>
+                        <p>Gestiona las reservas de actividades</p>
+                    </div>
+                    <div class="action-card" onclick="showActividades()">
+                        <div class="action-icon">🎯</div>
+                        <h3>Actividades</h3>
+                        <p>Administra tus actividades</p>
+                    </div>
+                    <div class="action-card" onclick="showHorarios()">
+                        <div class="action-icon">⏰</div>
+                        <h3>Horarios</h3>
+                        <p>Configura horarios disponibles</p>
+                    </div>
+                    <div class="action-card" onclick="showPerfil()">
+                        <div class="action-icon">👤</div>
+                        <h3>Perfil</h3>
+                        <p>Edita información de actividades</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Información de Actividades -->
+            <section class="actividades-info-section">
+                <h2>Información de Actividades</h2>
+                <div class="actividades-info-card" id="actividadesInfoCard">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Reservas -->
+    <div id="reservasModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Reservas de Actividades</h3>
+                <span class="close" onclick="Modal.hide('reservasModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="reservas-list" id="reservasList">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Actividades -->
+    <div id="actividadesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Gestión de Actividades</h3>
+                <span class="close" onclick="Modal.hide('actividadesModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="actividades-content" id="actividadesContent">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Horarios -->
+    <div id="horariosModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Horarios de Actividades</h3>
+                <span class="close" onclick="Modal.hide('horariosModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="horarios-content" id="horariosContent">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Perfil -->
+    <div id="perfilModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Perfil de Actividades</h3>
+                <span class="close" onclick="Modal.hide('perfilModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="perfil-content" id="perfilContent">
+                    <!-- Se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="actividades-home.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="actividades-editar.html" class="nav-item">
+                <span class="nav-icon">✏️</span>
+                <span>Editar</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showUserMenu()">
+                <span class="nav-icon">👤</span>
+                <span>Mi Cuenta</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-actividades.js"></script>
+</body>
+</html>

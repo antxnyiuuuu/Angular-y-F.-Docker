@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Paquetes - TravelApp Admin</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="user-info">
+                    <h1 class="logo">TravelApp Admin</h1>
+                    <p class="user-welcome">Gestión de Paquetes</p>
+                </div>
+                <div class="user-avatar" id="userAvatar">👨‍💼</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar">
+        <div class="container">
+            <!-- Estadísticas de Paquetes -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📦</div>
+                        <div class="stat-info">
+                            <h3 id="totalPaquetes">45</h3>
+                            <p>Paquetes Totales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-info">
+                            <h3 id="paquetesActivos">38</h3>
+                            <p>Paquetes Activos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-info">
+                            <h3 id="paquetesPopulares">12</h3>
+                            <p>Más Reservados</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <h3 id="ingresosPaquetes">$45,230</h3>
+                            <p>Ingresos por Paquetes</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Acciones Rápidas -->
+            <section class="actions-section">
+                <div class="actions-header">
+                    <h2>Gestión de Paquetes</h2>
+                    <button class="btn btn-success" onclick="crearNuevoPaquete()">
+                        + Crear Nuevo Paquete
+                    </button>
+                </div>
+            </section>
+
+            <!-- Filtros -->
+            <section class="filtros-section">
+                <div class="filtros-grid">
+                    <div class="filtro-group">
+                        <label for="categoriaPaquete">Categoría</label>
+                        <select id="categoriaPaquete" class="form-select">
+                            <option value="">Todas las categorías</option>
+                            <option value="playa">Playa</option>
+                            <option value="montaña">Montaña</option>
+                            <option value="ciudad">Ciudad</option>
+                            <option value="aventura">Aventura</option>
+                            <option value="cultural">Cultural</option>
+                        </select>
+                    </div>
+                    <div class="filtro-group">
+                        <label for="estadoPaquete">Estado</label>
+                        <select id="estadoPaquete" class="form-select">
+                            <option value="">Todos los estados</option>
+                            <option value="activo">Activos</option>
+                            <option value="inactivo">Inactivos</option>
+                            <option value="agotado">Agotados</option>
+                            <option value="promocion">En Promoción</option>
+                        </select>
+                    </div>
+                    <div class="filtro-group">
+                        <label for="precioPaquete">Rango de Precio</label>
+                        <select id="precioPaquete" class="form-select">
+                            <option value="">Todos los precios</option>
+                            <option value="0-200">$0 - $200</option>
+                            <option value="200-500">$200 - $500</option>
+                            <option value="500-1000">$500 - $1000</option>
+                            <option value="1000+">$1000+</option>
+                        </select>
+                    </div>
+                    <div class="filtro-group">
+                        <button class="btn btn-primary" onclick="filtrarPaquetes()">
+                            Filtrar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lista de Paquetes -->
+            <section class="paquetes-section">
+                <div class="paquetes-grid">
+                    <div class="paquete-admin-card">
+                        <div class="paquete-header">
+                            <div class="paquete-image">🏖️</div>
+                            <div class="paquete-info">
+                                <h3>Paquete Playa Paradise</h3>
+                                <p>3 días y 2 noches en resort de lujo</p>
+                                <div class="paquete-meta">
+                                    <span class="paquete-id">ID: #PK001</span>
+                                    <span class="paquete-categoria">Playa</span>
+                                </div>
+                            </div>
+                            <div class="paquete-status">
+                                <span class="status-badge status-activo">Activo</span>
+                            </div>
+                        </div>
+                        <div class="paquete-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Precio:</span>
+                                <span class="stat-value">$450</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Reservas:</span>
+                                <span class="stat-value">127</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Disponibles:</span>
+                                <span class="stat-value">23</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Rating:</span>
+                                <span class="stat-value">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                        <div class="paquete-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesPaquete('PK001')">
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="editarPaquete('PK001')">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="duplicarPaquete('PK001')">
+                                Duplicar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarPaquete('PK001')">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="paquete-admin-card">
+                        <div class="paquete-header">
+                            <div class="paquete-image">🏔️</div>
+                            <div class="paquete-info">
+                                <h3>Paquete Montaña Adventure</h3>
+                                <p>5 días de trekking y naturaleza</p>
+                                <div class="paquete-meta">
+                                    <span class="paquete-id">ID: #PK002</span>
+                                    <span class="paquete-categoria">Aventura</span>
+                                </div>
+                            </div>
+                            <div class="paquete-status">
+                                <span class="status-badge status-promocion">En Promoción</span>
+                            </div>
+                        </div>
+                        <div class="paquete-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Precio:</span>
+                                <span class="stat-value">$650</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Reservas:</span>
+                                <span class="stat-value">89</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Disponibles:</span>
+                                <span class="stat-value">11</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Rating:</span>
+                                <span class="stat-value">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                        <div class="paquete-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesPaquete('PK002')">
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="editarPaquete('PK002')">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="duplicarPaquete('PK002')">
+                                Duplicar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarPaquete('PK002')">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="paquete-admin-card">
+                        <div class="paquete-header">
+                            <div class="paquete-image">🏙️</div>
+                            <div class="paquete-info">
+                                <h3>Paquete Ciudad Cultural</h3>
+                                <p>4 días explorando museos y sitios históricos</p>
+                                <div class="paquete-meta">
+                                    <span class="paquete-id">ID: #PK003</span>
+                                    <span class="paquete-categoria">Cultural</span>
+                                </div>
+                            </div>
+                            <div class="paquete-status">
+                                <span class="status-badge status-activo">Activo</span>
+                            </div>
+                        </div>
+                        <div class="paquete-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Precio:</span>
+                                <span class="stat-value">$320</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Reservas:</span>
+                                <span class="stat-value">156</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Disponibles:</span>
+                                <span class="stat-value">44</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Rating:</span>
+                                <span class="stat-value">⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                        <div class="paquete-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesPaquete('PK003')">
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="editarPaquete('PK003')">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="duplicarPaquete('PK003')">
+                                Duplicar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarPaquete('PK003')">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="paquete-admin-card">
+                        <div class="paquete-header">
+                            <div class="paquete-image">🌊</div>
+                            <div class="paquete-info">
+                                <h3>Paquete Spa & Wellness</h3>
+                                <p>2 días de relajación y tratamientos spa</p>
+                                <div class="paquete-meta">
+                                    <span class="paquete-id">ID: #PK004</span>
+                                    <span class="paquete-categoria">Relax</span>
+                                </div>
+                            </div>
+                            <div class="paquete-status">
+                                <span class="status-badge status-agotado">Agotado</span>
+                            </div>
+                        </div>
+                        <div class="paquete-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Precio:</span>
+                                <span class="stat-value">$280</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Reservas:</span>
+                                <span class="stat-value">200</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Disponibles:</span>
+                                <span class="stat-value">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Rating:</span>
+                                <span class="stat-value">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                        <div class="paquete-actions">
+                            <button class="btn btn-sm btn-info" onclick="verDetallesPaquete('PK004')">
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="editarPaquete('PK004')">
+                                Editar
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="duplicarPaquete('PK004')">
+                                Duplicar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarPaquete('PK004')">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Crear/Editar Paquete -->
+    <div id="paqueteModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 class="modal-title" id="paqueteModalTitle">Crear Nuevo Paquete</h3>
+                <span class="close" onclick="Modal.hide('paqueteModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="paqueteForm" class="paquete-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="paqueteNombre">Nombre del Paquete</label>
+                            <input type="text" id="paqueteNombre" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="paqueteCategoria">Categoría</label>
+                            <select id="paqueteCategoria" class="form-select" required>
+                                <option value="">Seleccionar categoría</option>
+                                <option value="playa">Playa</option>
+                                <option value="montaña">Montaña</option>
+                                <option value="ciudad">Ciudad</option>
+                                <option value="aventura">Aventura</option>
+                                <option value="cultural">Cultural</option>
+                                <option value="relax">Relax</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="paqueteDescripcion">Descripción</label>
+                        <textarea id="paqueteDescripcion" class="form-textarea" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="paquetePrecio">Precio</label>
+                            <input type="number" id="paquetePrecio" class="form-input" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="paqueteDuracion">Duración (días)</label>
+                            <input type="number" id="paqueteDuracion" class="form-input" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="paqueteDisponibles">Cupos Disponibles</label>
+                            <input type="number" id="paqueteDisponibles" class="form-input" min="1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="paqueteIncluye">¿Qué incluye?</label>
+                        <textarea id="paqueteIncluye" class="form-textarea" rows="4" placeholder="Lista los servicios incluidos..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="paqueteImagen">Imagen del Paquete</label>
+                        <input type="file" id="paqueteImagen" class="form-input" accept="image/*">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="Modal.hide('paqueteModal')">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            Guardar Paquete
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="dashboard-admin.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Inicio</span>
+            </a>
+            <a href="admin-usuarios.html" class="nav-item">
+                <span class="nav-icon">👥</span>
+                <span>Usuarios</span>
+            </a>
+            <a href="admin-paquetes.html" class="nav-item active">
+                <span class="nav-icon">📦</span>
+                <span>Paquetes</span>
+            </a>
+            <a href="admin-productos.html" class="nav-item">
+                <span class="nav-icon">🛍️</span>
+                <span>Productos</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/dashboard-admin.js"></script>
+    <script>
+        function filtrarPaquetes() {
+            const categoria = document.getElementById('categoriaPaquete').value;
+            const estado = document.getElementById('estadoPaquete').value;
+            const precio = document.getElementById('precioPaquete').value;
+            alert(`Filtrando paquetes: Categoría: ${categoria}, Estado: ${estado}, Precio: ${precio}`);
+        }
+
+        function crearNuevoPaquete() {
+            document.getElementById('paqueteModalTitle').textContent = 'Crear Nuevo Paquete';
+            document.getElementById('paqueteForm').reset();
+            Modal.show('paqueteModal');
+        }
+
+        function verDetallesPaquete(paqueteId) {
+            alert(`Viendo detalles del paquete ${paqueteId}`);
+        }
+
+        function editarPaquete(paqueteId) {
+            document.getElementById('paqueteModalTitle').textContent = 'Editar Paquete';
+            // Aquí cargarías los datos del paquete
+            Modal.show('paqueteModal');
+        }
+
+        function duplicarPaquete(paqueteId) {
+            if (confirm(`¿Duplicar el paquete ${paqueteId}?`)) {
+                alert(`Paquete ${paqueteId} duplicado`);
+            }
+        }
+
+        function eliminarPaquete(paqueteId) {
+            if (confirm(`¿Estás seguro de eliminar el paquete ${paqueteId}?`)) {
+                alert(`Paquete ${paqueteId} eliminado`);
+            }
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('paqueteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Paquete guardado exitosamente');
+            Modal.hide('paqueteModal');
+        });
+    </script>
+</body>
+</html>

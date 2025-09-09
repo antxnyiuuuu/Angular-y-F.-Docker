@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Hotel - TravelApp</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/registro.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">TravelApp</h1>
+            <p class="subtitle">Registra tu hotel</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main with-navbar form-page">
+        <div class="container">
+            <!-- Formulario de Registro -->
+            <section class="registro-section">
+                <div class="card">
+                    <h2>Registro de Hotel</h2>
+                    <p class="registro-subtitle">Completa la información de tu hotel para comenzar a recibir reservas</p>
+                    
+                    <form id="registroHotelForm" class="registro-form">
+                        <!-- Información Básica -->
+                        <div class="form-section">
+                            <h3>Información Básica</h3>
+                            
+                            <div class="form-group">
+                                <label for="nombre" class="form-label">Nombre del Hotel *</label>
+                                <input type="text" id="nombre" name="nombre" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="categoria" class="form-label">Categoría (Estrellas) *</label>
+                                <select id="categoria" name="categoria" class="form-select" required>
+                                    <option value="">Selecciona la categoría</option>
+                                    <option value="1">1 Estrella</option>
+                                    <option value="2">2 Estrellas</option>
+                                    <option value="3">3 Estrellas</option>
+                                    <option value="4">4 Estrellas</option>
+                                    <option value="5">5 Estrellas</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="descripcion" class="form-label">Descripción del Hotel *</label>
+                                <textarea id="descripcion" name="descripcion" class="form-textarea" rows="4" required></textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- Ubicación -->
+                        <div class="form-section">
+                            <h3>Ubicación</h3>
+                            
+                            <div class="form-group">
+                                <label for="pais" class="form-label">País *</label>
+                                <select id="pais" name="pais" class="form-select" required>
+                                    <option value="">Selecciona el país</option>
+                                    <option value="México">México</option>
+                                    <option value="Estados Unidos">Estados Unidos</option>
+                                    <option value="Canadá">Canadá</option>
+                                    <option value="España">España</option>
+                                    <option value="Francia">Francia</option>
+                                    <option value="Italia">Italia</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="estado" class="form-label">Estado/Provincia *</label>
+                                <input type="text" id="estado" name="estado" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="ciudad" class="form-label">Ciudad *</label>
+                                <input type="text" id="ciudad" name="ciudad" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="direccion" class="form-label">Dirección Completa *</label>
+                                <textarea id="direccion" name="direccion" class="form-textarea" rows="2" required></textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- Información de Contacto -->
+                        <div class="form-section">
+                            <h3>Información de Contacto</h3>
+                            
+                            <div class="form-group">
+                                <label for="telefono" class="form-label">Teléfono *</label>
+                                <input type="tel" id="telefono" name="telefono" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label">Correo Electrónico *</label>
+                                <input type="email" id="email" name="email" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="sitio_web" class="form-label">Sitio Web</label>
+                                <input type="url" id="sitio_web" name="sitio_web" class="form-input" placeholder="https://www.tuhotel.com">
+                            </div>
+                        </div>
+                        
+                        <!-- Configuración del Hotel -->
+                        <div class="form-section">
+                            <h3>Configuración del Hotel</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="habitaciones" class="form-label">Número de Habitaciones *</label>
+                                    <input type="number" id="habitaciones" name="habitaciones" class="form-input" min="1" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="precio_noche" class="form-label">Precio por Noche (USD) *</label>
+                                    <input type="number" id="precio_noche" name="precio_noche" class="form-input" min="1" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Servicios Incluidos</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="wifi" name="servicios" value="WiFi Gratis">
+                                        <label for="wifi">WiFi Gratis</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="piscina" name="servicios" value="Piscina">
+                                        <label for="piscina">Piscina</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="spa" name="servicios" value="Spa">
+                                        <label for="spa">Spa</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="gimnasio" name="servicios" value="Gimnasio">
+                                        <label for="gimnasio">Gimnasio</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="restaurante" name="servicios" value="Restaurante">
+                                        <label for="restaurante">Restaurante</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="bar" name="servicios" value="Bar">
+                                        <label for="bar">Bar</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="estacionamiento" name="servicios" value="Estacionamiento">
+                                        <label for="estacionamiento">Estacionamiento</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="servicio_habitacion" name="servicios" value="Servicio a la Habitación">
+                                        <label for="servicio_habitacion">Servicio a la Habitación</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="lavanderia" name="servicios" value="Lavandería">
+                                        <label for="lavanderia">Lavandería</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="concierge" name="servicios" value="Concierge">
+                                        <label for="concierge">Concierge</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Información del Propietario -->
+                        <div class="form-section">
+                            <h3>Información del Propietario</h3>
+                            
+                            <div class="form-group">
+                                <label for="propietario_nombre" class="form-label">Nombre del Propietario/Representante *</label>
+                                <input type="text" id="propietario_nombre" name="propietario_nombre" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="propietario_telefono" class="form-label">Teléfono del Propietario *</label>
+                                <input type="tel" id="propietario_telefono" name="propietario_telefono" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="propietario_email" class="form-label">Email del Propietario *</label>
+                                <input type="email" id="propietario_email" name="propietario_email" class="form-input" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Términos y Condiciones -->
+                        <div class="form-section">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="terminos" name="terminos" required>
+                                <label for="terminos">Acepto los <a href="#" onclick="showTerminos()">términos y condiciones</a> *</label>
+                            </div>
+                            
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="privacidad" name="privacidad" required>
+                                <label for="privacidad">Acepto la <a href="#" onclick="showPrivacidad()">política de privacidad</a> *</label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">
+                            Registrar Hotel
+                        </button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Términos y Condiciones -->
+    <div id="terminosModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Términos y Condiciones</h3>
+                <span class="close" onclick="Modal.hide('terminosModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="terminos-content">
+                    <h4>1. Aceptación de Términos</h4>
+                    <p>Al registrarse en TravelApp, usted acepta cumplir con estos términos y condiciones.</p>
+                    
+                    <h4>2. Responsabilidades del Hotel</h4>
+                    <p>El hotel se compromete a proporcionar información veraz y actualizada sobre sus servicios.</p>
+                    
+                    <h4>3. Política de Cancelaciones</h4>
+                    <p>Las cancelaciones están sujetas a las políticas específicas de cada hotel.</p>
+                    
+                    <h4>4. Comisiones</h4>
+                    <p>TravelApp cobra una comisión del 10% sobre cada reserva confirmada.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Política de Privacidad -->
+    <div id="privacidadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Política de Privacidad</h3>
+                <span class="close" onclick="Modal.hide('privacidadModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="privacidad-content">
+                    <h4>1. Recopilación de Información</h4>
+                    <p>Recopilamos información necesaria para proporcionar nuestros servicios.</p>
+                    
+                    <h4>2. Uso de la Información</h4>
+                    <p>Utilizamos su información para procesar reservas y mejorar nuestros servicios.</p>
+                    
+                    <h4>3. Protección de Datos</h4>
+                    <p>Implementamos medidas de seguridad para proteger su información personal.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="../index.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Inicio</span>
+            </a>
+            <a href="login.html" class="nav-item">
+                <span class="nav-icon">🔐</span>
+                <span>Login</span>
+            </a>
+            <a href="registro-hotel.html" class="nav-item active">
+                <span class="nav-icon">🏨</span>
+                <span>Registrar Hotel</span>
+            </a>
+            <a href="registro-restaurante.html" class="nav-item">
+                <span class="nav-icon">🍽️</span>
+                <span>Registrar Restaurante</span>
+            </a>
+        </div>
+    </nav>
+
+    <script src="../assets/js/global.js"></script>
+    <script src="../assets/js/registro-hotel.js"></script>
+</body>
+</html>
